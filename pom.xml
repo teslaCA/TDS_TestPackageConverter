@@ -25,6 +25,10 @@
 
 		<support-tool-client.version>4.1.1</support-tool-client.version>
 		<tds-common.version>5.0.1</tds-common.version>
+
+		<maven.compiler.plugin.version>3.5.1</maven.compiler.plugin.version>
+		<maven.release.plugin.version>2.5.3</maven.release.plugin.version>
+		<maven.source.plugin.version>2.1.2</maven.source.plugin.version>
 	</properties>
 
 	<dependencies>
@@ -52,8 +56,43 @@
 		</dependency>
 	</dependencies>
 
+    <scm>
+        <connection>scm:git:https://github.com/SmarterApp/TDS_TestPackageConverter.git</connection>
+        <developerConnection>scm:git:git://github.com/SmarterApp/TDS_TestPackageConverter.git</developerConnection>
+        <url>https://github.com/SmarterApp/TDS_TestPackageConverter</url>
+        <tag>HEAD</tag>
+    </scm>
+
 	<build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven.compiler.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>${maven.release.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${maven.source.plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
 		<plugins>
+			<plugin>
+				<artifactId>maven-release-plugin</artifactId>
+				<configuration>
+					<tagNameFormat>@{project.version}</tagNameFormat>
+					<useReleaseProfile>false</useReleaseProfile>
+					<releaseProfiles>release</releaseProfiles>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -61,5 +100,12 @@
 		</plugins>
 	</build>
 
+    <distributionManagement>
+        <repository>
+            <id>central</id>
+            <name>airdev-releases</name>
+            <url>https://airdev.jfrog.io/airdev/libs-releases-local</url>
+        </repository>
+    </distributionManagement>
 
 </project>
