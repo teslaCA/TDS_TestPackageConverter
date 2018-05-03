@@ -1,0 +1,1003 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="testspecification">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+        <testspecification> is the root element
+        It is a publication of a test for the purpose of registration, scoring, or administration.
+        The <identifier> testspecification subelement identifies the test and version of the test data.
+        The 'version' attribute of the <testspecification> identifies the version of the package itself.
+
+        <testspecification purpose="administration" publisher="Delaware_PT" publishdate="Mar 27 2013  1:40PM" version="1.0">
+          <identifier uniqueid="(Delaware_PT)DCAS-Reading-5-Fall-2011-2012" name="DCAS-Reading-5" label="Grade 5 Reading" version="1136"/>
+          <property name="subject" value="Reading" label="Reading"/>
+          <property name="grade" value="5" label="grade 5"/>
+
+        <testspecification purpose="administration" publisher="Delaware_PT" publishdate="Mar 27 2013  2:40PM" version="1.0">
+          <identifier uniqueid="(Delaware_PT)DCAS-EOC-AlgebraII-Spring-2012-2013" name="DCAS-EOC-AlgebraII" label="EOC-Algebra II" version="2747"/>
+          <property name="subject" value="Mathematics" label="Mathematics"/>
+          <property name="grade" value="10" label="grade 10"/>
+          <property name="grade" value="11" label="grade 11"/>
+          <property name="grade" value="12" label="grade 12"/>
+          <property name="grade" value="7" label="grade 7"/>
+          <property name="grade" value="8" label="grade 8"/>
+          <property name="grade" value="9" label="grade 9"/>
+        ...
+        </testspecification>]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="identifier" />
+                <xs:element ref="comment" minOccurs="0" />
+                <xs:element ref="description" minOccurs="0" />
+                <xs:element ref="property" minOccurs="0" maxOccurs="unbounded" />
+                <xs:choice>
+                    <xs:element ref="administration" />
+                    <xs:element ref="registration" />
+                    <xs:element ref="complete" />
+                    <xs:element ref="scoring" />
+                </xs:choice>
+            </xs:sequence>
+            <xs:attribute name="version" type="xs:decimal" use="optional" />
+            <xs:attribute name="purpose" use="required">
+                <xs:simpleType>
+                    <xs:restriction base="xs:NMTOKEN">
+                        <xs:enumeration value="administration" />
+                        <xs:enumeration value="registration" />
+                        <xs:enumeration value="complete" />
+                        <xs:enumeration value="scoring" />
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="publishdate" type="xs:token" use="required" />
+            <xs:attribute name="publisher" type="xs:token" use="required" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="administration">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+          the administration format is used by the Test Delivery component. It assumes that test scoring and test reporting
+          are separate components that work independently from Test Delivery.
+
+          <testform> is optional when there are no fixedform segments on the test
+        ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="testblueprint" />
+                <xs:element ref="poolproperty" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="itempool" />
+                <xs:element ref="testform" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="adminsegment" maxOccurs="unbounded" />
+                <xs:element ref="comment" minOccurs="0" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="scoring">
+        <xs:annotation>
+            <xs:documentation>
+                Provide blueprint and itempool information at the test-level together with scoring requirements to configure the test scorer
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="testblueprint" />
+                <xs:element ref="itempool" />
+                <xs:element ref="testform" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="performancelevels" />
+                <xs:element ref="scoringrules" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="complete">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+          The <complete> 'master' element provides ALL data related to the test encompassing all aspects of
+          registration, administration, scoring and reporting.
+          <complete> is probably most relevant to the component that runs simulations of tests.
+          It has a somewhat different structure from any of the other master elements to prevent duplication.
+        ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="testblueprint" />
+                <xs:element ref="poolproperty" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="itempool" />
+                <xs:element ref="testform" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="adminsegment" maxOccurs="unbounded" />
+                <xs:element ref="performancelevels" />
+                <xs:element ref="scoringrules" />
+                <xs:element ref="comment" minOccurs="0" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="registration">
+        <xs:annotation>
+            <xs:documentation>
+                The registration format is used by both the Test Registration and Test Administration SBAC system components
+                It provides high-level information about the test useful for establishing eligibility and accommodations
+                for examinees.
+                Properties of the test forms may be needed to assign specific forms to students with special needs.
+                Properties of the item pool may be needed for the same purpose for adaptive tests.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="poolproperty" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="registrationform" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="registrationsegment" maxOccurs="unbounded" />
+                <xs:element ref="comment" minOccurs="0" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+    <xs:element name="adminsegment">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+          Every test is segmented (unsegmented tests have a single segment)
+          A segment defines a partition of a test wherein various presentational aspects may be controlled (such as isolating calculator items from non-calculator items)
+          ATTRIBUTES:
+          - segmentid: coincides with the segment <identifier> given as a test-level blueprint element
+          - position: segments must be administered in a strict order.
+          - itemselection: currently 'adaptive' or 'fixedform'. Use of CDATA instead of enumerated allows for extension
+          SUBELEMENTS:
+          - segmentblueprint: constraints for selecting items, each references a test-level <bpelement>
+              The segment itself may be included in this set but it is not necessary since
+              segmentblueprint is optional for fixed form segments, but required for adaptive segments
+          - itemselector: the method for selecting items on the test (e.g. fixedform, adaptive)
+          - segmentform: references to all the <formpartition>s that may be selected for this segment.
+              Note that only the first segment has responsibility for selecting the form itself.
+              Once the (parent) <testform> is established all following fixed-form segments must follow suit.
+                However, that is up to the <itemselector> to enforce.
+
+             The two <segmentform>s in the example below represent an option. Each belongs to a different parent <testform>.
+             The selection of the parent test form determines which of the two partitions referenced by the <segmentform>
+             is administered to the examinee.
+
+          <adminsegment segmentid="(Delaware_PT)DCAS-PT-EOC2ALG2Seg1-Mathematics-HS-Spring-2012-2013" position="1" itemselection="fixedform">
+            <segmentblueprint>
+              <segmentbpelement bpelementid="Delaware_PT-Mathematics-Undesignated" minopitems="0" maxopitems="20"/>
+            </segmentblueprint>
+            <itemselector type="fixedform">
+              <identifier uniqueid="AIR FIXEDFORM1" name="AIR FIXEDFORM" label="AIR FIXEDFORM" version="1.0"/>
+            </itemselector>
+            <segmentform formpartitionid="150-172"/>
+            <segmentform formpartitionid="150-173"/>
+          </adminsegment>
+        ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="segmentblueprint" />
+                <xs:element ref="itemselector" />
+                <xs:choice>
+                    <xs:element ref="segmentpool" />
+                    <xs:element ref="segmentform" maxOccurs="unbounded" />
+                </xs:choice>
+            </xs:sequence>
+            <xs:attribute name="position" type="xs:token" use="required" />
+            <xs:attribute name="segmentid" type="xs:token" use="required" />
+            <xs:attribute name="itemselection" type="xs:token" use="required" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="bpelement">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+          Each element or component of a blueprint must have a corresponding bpelement.
+          A bpelement identifies a set of items for one or both of the following purposes:
+            Creating a test 'form' adaptively,
+            Scoring a test.
+
+          In addition to a subject's taxonomy of content standards, the following are also <bpelement>s:
+            The test itself (for establishing scoring and reporting features)
+            Every test segment (for item selection and administration)
+            Depth of Knowledge categories
+            Other (arbitrary) sets of items (may be useful for ad hoc identification of sets)
+
+          At AIR we lump Depth of Knowledge and other arbitrary sets of items into one object type we call an 'AffinityGroup'.
+          This is also used for the SBAC Content Standards Repository object called 'SOCK', an acronym for 'Some Other Category of Knowledge'
+
+
+          ATTRIBUTES:
+          - elementtype: an arbitrary designation, usually from some aspect of a taxonomy defining the subject-area.
+                          Other elementtypes exist outside of the taxonomy
+          - parentid: the uniqueid of another bpelement, generally within the taxonomy.
+              Since a <bpelement> may have at most one parent, at most hierarchies may be expressed.
+          - minopitems/maxopitems: the minimum and maximum operational items to administer from this blueprint category
+          - minftitems/maxftitems: the minimum and maximum field test items to administer
+          - opitemcount: the number of active operational items in the itempool (may be the target number for simulators where items themselves may be simulated)
+          - ftitemcount: the number of active field test items in the itempool
+
+          <testblueprint>
+            <bpelement elementtype="test" minopitems="42" maxopitems="42" minftitems="0" maxftitems="0" opitemcount="42" ftitemcount="0">
+              <identifier uniqueid="(Delaware_PT)DCAS-EOC-AlgebraII-Spring-2012-2013" name="DCAS-EOC-AlgebraII" version="2747"/>
+            </bpelement>
+            <bpelement elementtype="segment" minopitems="20" maxopitems="20" minftitems="0" maxftitems="0" opitemcount="20" ftitemcount="0">
+              <identifier uniqueid="(Delaware_PT)DCAS-PT-EOC2ALG2Seg1-Mathematics-HS-Spring-2012-2013" name="DCAS-PT-EOC2ALG2Seg1-Mathematics-HS" version="2747"/>
+            </bpelement>
+            <bpelement elementtype="segment" minopitems="22" maxopitems="22" minftitems="0" maxftitems="0" opitemcount="22" ftitemcount="0">
+              <identifier uniqueid="(Delaware_PT)DCAS-PT-EOC2ALG2Seg2-Mathematics-HS-Spring-2012-2013" name="DCAS-PT-EOC2ALG2Seg2-Mathematics-HS" version="2747"/>
+            </bpelement>
+            <bpelement elementtype="strand" minopitems="0" maxopitems="42" opitemcount="42" ftitemcount="0">
+              <identifier uniqueid="Delaware_PT-Mathematics-Undesignated" name="Mathematics-Undesignated" version="2747"/>
+            </bpelement>
+          </testblueprint>
+        ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="identifier" />
+                <xs:element ref="property" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+            <xs:attribute name="maxftitems" type="xs:integer" use="optional" />
+            <xs:attribute name="opitemcount" type="xs:integer" use="optional" />
+            <xs:attribute name="elementtype" type="xs:token" use="required" />
+            <xs:attribute name="minopitems" type="xs:integer" use="required" />
+            <xs:attribute name="maxopitems" type="xs:integer" use="required" />
+            <xs:attribute name="parentid" type="xs:token" use="optional" />
+            <xs:attribute name="ftitemcount" type="xs:integer" use="optional" />
+            <xs:attribute name="minftitems" type="xs:integer" use="optional" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="bpref">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+          Reference to a blueprint element, used when an object requires references to multiple <bpelement>s.
+          For elements in a one-to-one correspondence, an element attribute is more succinct. These attributes are usually called 'bpelementid'.
+        ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true" />
+    </xs:element>
+
+    <xs:element name="comment">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+          <comment> and <description> are elements of general usefulness for documenting objects in the XML
+        ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true" />
+    </xs:element>
+
+    <xs:element name="description">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+          <comment> and <description> are elements of general usefulness for documenting objects in the XML
+        ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true" />
+    </xs:element>
+
+    <xs:element name="computationrule">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+          A rule for computing a score element, such as
+          - overall theta or scaled score
+          - strand score
+          - benchmark score
+
+
+           <computationrule computationorder="1028" bpelementid="Delaware-ELA-4|4.1b">
+            <identifier uniqueid="11C284DA-C06A-4D8C-A071-1C5FF90588AB" name="DelawareGLEDelta" label="BenchmarkScore" version="1.0"/>
+            <computationruleparameter position="1" parametertype="string">
+              <identifier uniqueid="6892A949-6600-4F38-9CFC-E1A8D0E3E0C7" name="thetaName" version="1.0"/>
+              <computationruleparametervalue value="ThetaScore"/>
+            </computationruleparameter>
+          </computationrule>
+        ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="identifier" />
+                <xs:element ref="computationruleparameter" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+            <xs:attribute name="bpelementid" type="xs:token" use="required" />
+            <xs:attribute name="computationorder" type="xs:integer" use="required" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="computationruleparameter">
+        <xs:annotation>
+            <xs:documentation>
+                A parameter for a computation rule
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="identifier" />
+                <xs:element ref="property" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="computationruleparametervalue" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+            <xs:attribute name="position" type="xs:integer" use="required" />
+            <xs:attribute name="parametertype" use="optional">
+                <xs:simpleType>
+                    <xs:restriction base="xs:NMTOKEN">
+                        <xs:enumeration value="int" />
+                        <xs:enumeration value="double" />
+                        <xs:enumeration value="string" />
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="computationruleparametervalue">
+        <xs:complexType>
+            <xs:attribute name="index" type="xs:token" use="optional" />
+            <xs:attribute name="value" type="xs:token" use="required" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="conversiontable">
+        <xs:annotation>
+            <xs:documentation>
+                Set of value transformations. Often used to convert a raw score to a thetascore.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="identifier" />
+                <xs:element ref="conversiontuple" maxOccurs="unbounded" />
+            </xs:sequence>
+            <xs:attribute name="bpelementid" type="xs:token" use="required" />
+            <xs:attribute name="purpose" use="required">
+                <xs:simpleType>
+                    <xs:restriction base="xs:NMTOKEN">
+                        <xs:enumeration value="score" />
+                        <xs:enumeration value="standarderror" />
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="measureid" type="xs:token" use="required" />
+            <xs:attribute name="formid" type="xs:token" use="optional" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="conversiontuple">
+        <xs:annotation>
+            <xs:documentation>
+                A single value transformation member of a conversion table
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attribute name="outvalue" type="xs:token" use="required" />
+            <xs:attribute name="invalue" type="xs:token" use="required" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="identifier">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+          Uniquely identifies all major objects.
+
+          An object must be defined or declared to be referenced.
+          All declarations are done at the test level. An should be defined/declared exactly once.
+          Where an element has an <identifier> sub-element it is defined/declared.
+          No element should be allowed to reference an object that has not been declared somewhere within the same document.
+          This constraint allows test packages to be sound.
+
+          Two elements in different packages may identify the same object via the 'uniqueid', but with different versions (or the same version)
+          Version numbers should be provided for every object.  By doing so, the consumer of serial packages of the same test can make
+          determinations on which objects need to be updated and what impact those updates may have upon examinees' tests in progress
+
+          <identifier uniqueid="(Delaware_PT)DCAS-Reading-5-Fall-2011-2012" name="DCAS-Reading-5" label="Grade 5 Reading" version="1136"/>
+        ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attribute name="version" type="xs:decimal" use="required" />
+            <xs:attribute name="label" type="xs:token" use="optional" />
+            <xs:attribute name="name" type="xs:token" use="optional" />
+            <xs:attribute name="uniqueid" type="xs:token" use="required" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="itemgroup">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+          A collection of items and passages that are selected and administered as an atomic unit.
+
+          It is not necessarily the case that every item in an itemgroup will be administered every time.
+          Beside the fact that an item may be inactive, other forces include
+              item filtering due to examinee accommodations,
+              itemgroup pruning by an adaptive algorithm to avoid violating test constraints,
+              etc.
+
+          ATTRIBUTES:
+          - maxresponses: the maximum number of responses an examinee is required to provide. 'ALL' means every item administered must be responded to.
+          - formposition: applicable only to fixedform segments, this dictates the position of the itemgroup on the segment (not the test)
+          - maxitems: for adaptive segments only, the maximum number of items to administer from this group.
+              maxitems is useful for developing an excess of items to cover various ability levels,
+              for example, and allowing the adaptive algorithm to choose among them as the situation indicates
+              (maxitems may be used in future hybrid fixed-form/adaptive algorithms where, for example, the adaptive algorithm keeps track of the examinee's ability estimate and selects 'maxitems' from the group accordingly)
+
+
+           <itemgroup formposition="1" maxitems="ALL" maxresponses="ALL">
+              <identifier uniqueid="150-143:G-150-97" name="150-143:G-150-97" version="1.0"/>
+              <passageref passageid="150-97"/>
+              <groupitem itemid="150-6255" groupposition="1" adminrequired="false" responserequired="false" isactive="true"/>
+              <groupitem itemid="150-6256" groupposition="2" adminrequired="false" responserequired="false" isactive="true"/>
+              <groupitem itemid="150-6257" groupposition="3" adminrequired="false" responserequired="false" isactive="true"/>
+              <groupitem itemid="150-6259" groupposition="4" adminrequired="false" responserequired="false" isactive="true"/>
+            </itemgroup>
+        ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="identifier" />
+                <xs:element ref="passageref" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="groupitem" maxOccurs="unbounded" />
+                <xs:element ref="property" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+            <xs:attribute name="formposition" type="xs:token" use="optional" />
+            <xs:attribute name="maxresponses" type="xs:token" use="required" />
+            <xs:attribute name="maxitems" type="xs:token" use="optional" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="groupitem">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+          An item within an <itemgroup>
+
+          ATTRIBUTES:
+          - itemid: references a <testitem> 'uniqueid'
+          - groupposition: the item's relative position within its group. groupposition should be honored by the item renderer
+          - adminrequired: if true, the (adaptive) itemselector MUST administer this item (it may not be pruned to meet the itemgroup's 'maxitems' constraint)
+          - responserequired: if true, the examinee must respond to this item, if administered
+          - blockid: if there are multiple blocks within an itemgroup, at most one block may be administered on any given test. (i.e. the blocks are mutually exclusive)
+
+          <groupitem itemid="150-6255" formposition="1" groupposition="1" adminrequired="false" responserequired="false" isactive="true"/>
+        ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attribute name="blockid" type="xs:token" use="optional" />
+            <xs:attribute name="groupposition" type="xs:token" use="required" />
+            <xs:attribute name="isfieldtest" use="required">
+                <xs:simpleType>
+                    <xs:restriction base="xs:NMTOKEN">
+                        <xs:enumeration value="true" />
+                        <xs:enumeration value="false" />
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="responserequired" use="optional" default="false">
+                <xs:simpleType>
+                    <xs:restriction base="xs:NMTOKEN">
+                        <xs:enumeration value="true" />
+                        <xs:enumeration value="false" />
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="formposition" type="xs:integer" use="optional" />
+            <xs:attribute name="adminrequired" use="optional" default="false">
+                <xs:simpleType>
+                    <xs:restriction base="xs:NMTOKEN">
+                        <xs:enumeration value="true" />
+                        <xs:enumeration value="false" />
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="itemid" type="xs:token" use="required" />
+            <xs:attribute name="isactive" use="required">
+                <xs:simpleType>
+                    <xs:restriction base="xs:NMTOKEN">
+                        <xs:enumeration value="true" />
+                        <xs:enumeration value="false" />
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="itempool">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+          A complete collection of items, passages, and enemies on a test
+          regarding testitem* (implying 0 or more items): It is, of course, impossible to administer a test with no items,
+          however, it may be useful to simulate an itempool for the purposes of adaptive algorithm design or blueprint configuration.
+          In this special case, the <itempool> element is empty.
+        ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="passage" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="testitem" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="itemscoredimension">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+          A dimension along which an item may be scored.
+          ATTRIBUTES:
+          - measurementmodel: e.g. IRT3PL, IRTPCL (must be recognizable by the test scoring engine; simulator may also need this info)
+          - scorepoints: maximum number of points an examinee may received for this item
+          - dimension: an item may have scores on multiple dimensions, each with its own scales and rules. Typically, however, there is a single dimension
+          - weight: where an item is scored separately on multiple dimensions, a composite score may be computed from a weighted combination of the dimension scores
+
+          <itemscoredimension measuremodel="IRT3pl" scorepoints="1" weight="1.000000000000000e+000">
+            <itemscoreparameter measurementparameter="a" value="1.000000000000000e+000"/>
+            <itemscoreparameter measurementparameter="b" value="-1.704800000000000e-001"/>
+            <itemscoreparameter measurementparameter="c" value="0.000000000000000e+000"/>
+          </itemscoredimension>
+        ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="itemscoreparameter" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="property" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+            <xs:attribute name="measurementmodel" type="xs:token" use="required" />
+            <xs:attribute name="weight" type="xs:float" use="required" />
+            <xs:attribute name="dimension" type="xs:token" use="optional" />
+            <xs:attribute name="scorepoints" type="xs:integer" use="required" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="itemscoreparameter">
+        <xs:annotation>
+            <xs:documentation>
+                A parameter within a dimension. e.g. for IRT3pl there are 3 parameters, named a, b, and c.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attribute name="value" type="xs:float" use="required" />
+            <xs:attribute name="measurementparameter" type="xs:token" use="required" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="itemselectionparameter">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+          Control parameters needed by the item selector beyond the core blueprint values of min/max item targets.
+          These are generally needed by adaptive item selection algorithms only and are unique and specific to each algorithm.
+
+          <itemselectionparameter bpelementid="Delaware-ELA-2">
+            <property name="bpweight" value="3" label="Blueprint weight relative to other elements"/>
+            <property name="adaptivecut" value="0.5024" label="adaptive cut point"/>
+            <property name="startability" value="0.855226" label="start ability"/>
+            <property name="startinfo" value="0.2" label="start information"/>
+            <property name="scalar" value="5" label="relative ability strand weight"/>
+          </itemselectionparameter>
+        ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="property" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+            <xs:attribute name="bpelementid" type="xs:token" use="required" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="itemselector">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+          Specify which itemselection algorithm is to be used and the control parameters it needs to work
+          The identifier uniqueid must unambiguously tell the item selection shell which algorithm to use
+
+          <itemselector type="fixedform">
+            <identifier uniqueid="AIR FIXEDFORM1" name="AIR FIXEDFORM" label="AIR FIXEDFORM" version="1.0"/>
+          </itemselector>
+
+          <itemselector type="adaptive">
+              <identifier uniqueid="AIR ADAPTIVE1" name="AIR ADAPTIVE" label="AIR ADAPTIVE" version="1.0"/>
+        ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="identifier" />
+                <xs:element ref="itemselectionparameter" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+            <xs:attribute name="type" type="xs:token" use="required" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="passage">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+          A means of identifying a passage that appears in a test's itempool together with arbitrary properties it may possess
+          <passage filename="stim-150-100167.xml">
+            <identifier uniqueid="150-100167" name="100167" version="1136"/>
+          </passage>
+        ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="identifier" />
+                <xs:element ref="property" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+            <xs:attribute name="filename" type="xs:token" use="required" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="passageref">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+          A reference to a passage (the passage itself is defined at the test level; the element value is a reference to that <identifier>.uniqueid).
+        ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true" />
+    </xs:element>
+
+    <xs:element name="performancelevel">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+          Cutscore that determines a coarse-grained level of skill-attainment
+          Performance levels may be part of scoring or part of reporting (reporting specifications are not covered by this DTD).
+
+          <performancelevel bpelementid="(Delaware_PT)DCAS-EOC-AlgebraII-Spring-2012-2013" plevel="1" scaledlo="0.000000000000000e+000" scaledhi="7.000000000000000e+002"/>
+        ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attribute name="bpelementid" type="xs:token" use="required" />
+            <xs:attribute name="scaledhi" type="xs:float" use="required" />
+            <xs:attribute name="scaledlo" type="xs:float" use="required" />
+            <xs:attribute name="plevel" type="xs:integer" use="required" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="performancelevels">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[A collection of <performancelevel>s]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="performancelevel" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="poolproperty">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+          A property that at least one item possesses.
+
+          Poolproperty, when given on a test or testform, is primarily useful for determining accommodations.
+          On fixed form tests it may be desirable to pre-assign to examinees a specific form which possess pool properties needed to support certain accommodations.
+          On adaptive tests, accommodations may be linked to pool properties to dynamically filter items in or out of an individual examinee's itempool.
+
+          <poolproperty property="Language" value="ENU" label="English" itemcount="20"/>
+          <poolproperty property="Language" value="ESN" label="Spanish" itemcount="20"/>
+          <poolproperty property="ITEMTYPE" value="MC" label="Multiple Choice" itemcount="17"/>
+          <poolproperty property="ITEMTYPE" value="SCR" label="Short Constructed Response" itemcount="2"/>
+        ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="comment" minOccurs="0" />
+                <xs:element ref="description" minOccurs="0" />
+            </xs:sequence>
+            <xs:attribute name="label" type="xs:token" use="required" />
+            <xs:attribute name="itemcount" type="xs:integer" use="optional" />
+            <xs:attribute name="value" type="xs:token" use="required" />
+            <xs:attribute name="property" type="xs:token" use="optional" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="property">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+          A general-purpose element used especially to create extensibility of objects in the test package
+
+          <property name="subject" value="Reading" label="Reading"/>
+          <property name="grade" value="5" label="grade 5"/>
+
+          The 'sequence' attribute may be useful in creating pseudo-arrays of properties
+        ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attribute name="label" type="xs:token" use="required" />
+            <xs:attribute name="name" type="xs:token" use="required" />
+            <xs:attribute name="value" type="xs:token" use="required" />
+            <xs:attribute name="sequence" type="xs:token" use="optional" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="registrationform">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+          A reduced-format of the <testform> intended to provide enough information for the registration/administration component
+          to assign forms to examinees if desired.
+        ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="identifier" />
+                <xs:element ref="property" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="poolproperty" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+            <xs:attribute name="length" type="xs:token" use="required" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="registrationsegment">
+        <xs:annotation>
+            <xs:documentation>
+                Reduced amount of data for purposes of setting up rendering and administrative controls on a segment such as
+                - Segment-specific accommodations or test tools (e.g. calculators, text-to-speech)
+                - Pause points where test proctors may control segment entry and exit
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="identifier" />
+                <xs:element ref="poolproperty" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+            <xs:attribute name="position" type="xs:token" use="required" />
+            <xs:attribute name="minitems" type="xs:integer" use="required" />
+            <xs:attribute name="maxitems" type="xs:integer" use="required" />
+            <xs:attribute name="itemselection" type="xs:token" use="required" />
+        </xs:complexType>
+    </xs:element>
+
+
+    <xs:element name="scoretype">
+        <xs:annotation>
+            <xs:documentation>
+                Specifies to the reporting system how to identify a score.
+                'scorename' and 'scorelabel' are often the same, though 'scorename' may refer to an internal scoring function.
+                'scorelabel' is terminology to present to users, however, the Data Warehouse may be configure to present alternative names.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attribute name="scorelabel" type="xs:token" use="required" />
+            <xs:attribute name="scorename" type="xs:token" use="required" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="scoringrules">
+        <xs:annotation>
+            <xs:documentation>
+                Configurations for scoring the test, consisting of
+                - rules for computation,
+                - score cut points for determining performance levels,
+                - and conversion tables for value transformations
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="computationrule" maxOccurs="unbounded" />
+                <xs:element ref="conversiontable" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="segmentblueprint">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+          Test-level blueprint is needed to score a test.
+          Segment-level blueprint is needed to construct a test for a given examinee.
+          The segment blueprint attributes should not be repeated here since it can be defined in full as a test-level <bpelement>
+        ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="segmentbpelement" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="segmentbpelement">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+        Each element or component of a blueprint at every level of a test must have a corresponding bpelement.
+        ATTRIBUTES:
+        - minopitems/maxopitems: the minimum and maximum operational items to administer from this blueprint category
+        - minftitems/maxftitems: the minimum and maximum field test items to administer
+
+        <segmentbpelement minopitems="0" maxopitems="3" >
+          <bpref>"Delaware-ELA-2|2.4bL" name="ELA-2|2.4bL"</bpref>
+        </segmentbpelement>
+        ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="property" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+            <xs:attribute name="maxftitems" type="xs:integer" use="optional" />
+            <xs:attribute name="bpelementid" type="xs:token" use="optional" />
+            <xs:attribute name="minopitems" type="xs:integer" use="required" />
+            <xs:attribute name="maxopitems" type="xs:integer" use="required" />
+            <xs:attribute name="minftitems" type="xs:integer" use="optional" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="segmentform">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+          For fixed form segments it references a <formpartition> within a form cohort,
+          As such, there should be exactly one segmentform for each cohort per segment.
+        ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="property" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+            <xs:attribute name="formpartitionid" type="xs:token" use="optional" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="segmentpool">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="itemgroup" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="testblueprint">
+        <xs:annotation>
+            <xs:documentation>
+                Test or segment top-level blueprint specification.
+                Test-level blueprint is needed to score or report a test.
+
+                (Segment-level blueprint is needed to construct an adaptive test for a given examinee.)
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="bpelement" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="property" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="testform">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+          Test-level form definition. (Only required when segments use the 'fixed form' item selection algorithm)
+
+          This is used by the test registration/administration module to pre-assign specific forms to examinees.
+          It also is used to establish the defined and finite set of cohorts to which every segment fixed form must belong
+          poolproperty provides an overview of properties of items on the form.
+
+          <testform length="42">
+            <identifier uniqueid="(Delaware_PT)DCAS-EOC-AlgebraII-Spring-2012-2013:DEFAULT-ENU" name="(Delaware_PT)DCAS-EOC-AlgebraII-Spring-2012-2013:DEFAULT-ENU" version="2747"/>
+            <property name="language" value="ENU" label="English"/>
+            <poolproperty property="ITEMTYPE" value="GI" label="GI" itemcount="4"/>
+            <poolproperty property="ITEMTYPE" value="MC" label="MC" itemcount="38"/>
+            <poolproperty property="Language" value="ENU" label="English" itemcount="42"/>
+            <formpartition>
+              <identifier uniqueid="150-172" name="EOC Algebra II Practice Seg 1::ENG" version="2747"/>
+              <itemgroup formposition="1" maxitems="ALL" maxresponses="0">
+                <identifier uniqueid="150-172:I-150-15869" name="150-172:I-150-15869" version="2747"/>
+                <groupitem itemid="150-15869" formposition="1" groupposition="1" adminrequired="true" responserequired="true" isactive="true" isfieldtest="false" blockid="A"/>
+              </itemgroup>
+          ...
+          </testform>
+        ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="identifier" />
+                <xs:element ref="property" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="poolproperty" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="formpartition" maxOccurs="unbounded" />
+            </xs:sequence>
+            <xs:attribute name="length" type="xs:integer" use="required" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="formpartition">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+          Identifies a subset of the testform. The formpartition is referenced by <segmentform> where its itemgroup sequence is specified.
+
+          (See <testform> for XML exmaple)
+        ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="identifier" />
+                <xs:element ref="itemgroup" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="testitem">
+        <xs:annotation>
+            <xs:documentation>
+                <![CDATA[
+          An item on a test, this is the primary object (all others reference this object, e.g. <groupitem>, <enemy>)
+          All properties of <testitem> are considered immutable across segments and itemgroups except that a segment may restrict the item to a proper subset
+          of the properties it possesses at the test level through various means. (see <itemgroup> and <segmentblueprint>)
+
+          Every item is assumed to reference the 'test' <bpelement> so it is not necessary to include it here.
+          ATTRIBUTES:
+          - filename: If an item's content file(s) can be identified by the <identifier>'uniqueid' then this is not needed.
+          - itemtype: e.g. MC, ECR, SCR, etc. (Multiple Choice, Extended Constructed Response, Short Constructed Response).
+
+          <testitem filename="item-150-11466.xml" itemtype="MC">
+            <identifier uniqueid="150-11466" name="" version="2747"/>
+            <bpref>(Delaware_PT)DCAS-PT-EOC2ALG2Seg1-Mathematics-HS-Spring-2012-2013</bpref>
+            <bpref>Delaware_PT-Mathematics-Undesignated</bpref>
+            <poolproperty property="Language" value="ENU" label="English"/>
+            <poolproperty property="Language" value="ESN" label="Spanish"/>
+            <itemscoredimension measuremodel="IRT3pl" scorepoints="1" weight="1.000000000000000e+000">
+              <itemscoreparameter measurementparameter="a" value="1.000000000000000e+000"/>
+              <itemscoreparameter measurementparameter="b" value="0.000000000000000e+000"/>
+              <itemscoreparameter measurementparameter="c" value="0.000000000000000e+000"/>
+            </itemscoredimension>
+          </testitem>
+
+          (We assume that item scoring rubrics whether for human hand scoring or for machine scoring are contained
+          in the item's content XML.)
+        ]]>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="identifier" />
+                <xs:element ref="bpref" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="passageref" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="poolproperty" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="itemscoredimension" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+            <xs:attribute name="itemtype" type="xs:token" use="required" />
+            <xs:attribute name="filename" type="xs:token" use="required" />
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
