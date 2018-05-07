@@ -56,6 +56,19 @@ public class ConvertToNewTestPackageCommandLineRunnerTest {
     }
 
     @Test
+    public void shouldConvertTestPackageSuccessfullyVerbose() throws Exception {
+        runner.run("convert-to-new",
+                "converted-test-package.xml",
+                "--administration", "test-package-admin1.xml", "test-package-admin2.xml",
+                "--scoring", "test-package-scoring.xml",
+                "--diff", "test-package-diff.xml");
+
+        verify(mockConverterService, times(0)).extractAndConvertTestSpecifications(eq("converted-test-package.xml"), isA(File.class));
+        verify(mockConverterService).convertTestSpecifications(eq("converted-test-package.xml"),
+                eq(Arrays.asList("test-package-admin1.xml", "test-package-admin2.xml", "test-package-scoring.xml")), eq("test-package-diff.xml"));
+    }
+
+    @Test
     public void shouldConvertTestPackageSuccessfullyNoDiff() throws Exception {
         runner.run("convert-to-new",
                 "-a", "test-package-admin1.xml", "test-package-admin2.xml",
@@ -72,6 +85,15 @@ public class ConvertToNewTestPackageCommandLineRunnerTest {
 
         runner.run("convert-to-new",
                 "-z", "test-package.zip",
+                "converted-test-package.xml");
+        verify(mockConverterService).extractAndConvertTestSpecifications(eq("converted-test-package.xml"), isA(File.class));
+    }
+
+    @Test
+    public void shouldConvertTestPackageSuccessfullyForZipVerbose() throws Exception {
+
+        runner.run("convert-to-new",
+                "--zip", "test-package.zip",
                 "converted-test-package.xml");
         verify(mockConverterService).extractAndConvertTestSpecifications(eq("converted-test-package.xml"), isA(File.class));
     }

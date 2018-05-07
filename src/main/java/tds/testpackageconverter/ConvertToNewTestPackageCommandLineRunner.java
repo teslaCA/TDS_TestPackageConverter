@@ -50,6 +50,7 @@ public class ConvertToNewTestPackageCommandLineRunner implements CommandLineRunn
         final Option administrationFileOption = Option.builder(ADMINISTRATION_FLAG)
                 .argName("administration")
                 .hasArgs()
+                .longOpt("administration")
                 .desc("Administration file(s) to be converted")
                 .optionalArg(false)
                 .required(false)
@@ -57,6 +58,7 @@ public class ConvertToNewTestPackageCommandLineRunner implements CommandLineRunn
 
         final Option scoringFileOption = Option.builder(SCORING_FLAG)
                 .argName("scoring")
+                .longOpt("scoring")
                 .hasArg()
                 .desc("Scoring file(s) to be converted")
                 .optionalArg(false)
@@ -65,6 +67,7 @@ public class ConvertToNewTestPackageCommandLineRunner implements CommandLineRunn
 
         final Option diffFileOption = Option.builder(DIFF_FLAG)
                 .argName("diff")
+                .longOpt("diff")
                 .hasArg()
                 .desc("Diff file to be included in the conversion")
                 .optionalArg(false)
@@ -73,6 +76,7 @@ public class ConvertToNewTestPackageCommandLineRunner implements CommandLineRunn
 
         final Option zipFileOption = Option.builder(ZIP_FLAG)
                 .argName("zip")
+                .longOpt("zip")
                 .hasArg()
                 .desc("Zip file containing all test package parts")
                 .optionalArg(false)
