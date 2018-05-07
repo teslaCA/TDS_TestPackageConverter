@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.eq;
@@ -49,26 +50,43 @@ public class TestPackageServiceImplTest extends TestPackageBaseTest {
     }
 
     @Test
-    public void shouldConvertTestPackageSuccessfully() throws IOException, ParseException {
-        final String testPackageName = "A Test Package";
+    public void shouldConvertTestPackageZipSuccessfully() throws IOException, ParseException {
+        final String testPackageName = "converted-test-package.xml";
         when(mockMapper.readValue(isA(InputStream.class), eq(Testspecification.class)))
                 .thenReturn(mockPerfAdminLegacyTestPackage);
-        final String result = service.extractAndConvertTestSpecifications(testPackageName, mockFile);
-        assertThat(result).isNotNull();
-        assertThat(result).isEqualTo("testpackage");
+        final boolean result = service.extractAndConvertTestSpecifications(testPackageName, mockFile);
+        assertThat(result).isTrue();
         verify(mockMapper, times(2)).readValue(isA(InputStream.class), eq(Testspecification.class));
+    }
+
+    @Test
+    public void shouldConvertTestPackageFilesSuccessfully() throws IOException, ParseException {
+        final String testPackageName = "converted-test-package.xml";
+        final String file1 = "src/test/resources/(SBAC_PT)SBAC-IRP-CAT-MATH-11-Summer-2015-2016.xml";
+        final String file2 = "src/test/resources/(SBAC_PT)SBAC-IRP-MATH-11-COMBINED-Summer-2015-2016.xml";
+        final String file3 = "src/test/resources/(SBAC_PT)SBAC-IRP-Perf-MATH-11-Summer-2015-2016.xml";
+
+        when(mockMapper.readValue(new File(file1), Testspecification.class)).thenReturn(mockCATAdminLegacyTestPackage);
+        when(mockMapper.readValue(new File(file2), Testspecification.class)).thenReturn(mockCombinedScoringPackage);
+        when(mockMapper.readValue(new File(file3), Testspecification.class)).thenReturn(mockPerfAdminLegacyTestPackage);
+
+        service.convertTestSpecifications(testPackageName, Arrays.asList(file1, file2, file3));
+
+        verify(mockMapper).readValue(new File(file1), Testspecification.class);
+        verify(mockMapper).readValue(new File(file2), Testspecification.class);
+        verify(mockMapper).readValue(new File(file3), Testspecification.class);
     }
 
     @Test(expected = IOException.class)
     public void shouldThrowIOExceptionIfInputIsNotAZip() throws IOException, ParseException {
-        final String testPackageName = "A Test Package";
+        final String testPackageName = "converted-test-package.xml";
         File file = new File("src/test/resources/(SBAC_PT)SBAC-IRP-Perf-MATH-11-Summer-2015-2016.xml");
         service.extractAndConvertTestSpecifications(testPackageName, file);
     }
 
     @Test(expected = IOException.class)
     public void shouldThrowIOExceptionIfZipContainsNoXmlFiles() throws IOException, ParseException {
-        final String testPackageName = "A Test Package";
+        final String testPackageName = "converted-test-package.xml";
         File file = new File("src/test/resources/textfile.zip");
         service.extractAndConvertTestSpecifications(testPackageName, file);
     };

@@ -3,6 +3,7 @@ package tds.testpackageconverter.converter;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.List;
 
 /**
  * An interface for a service responsible for unzipping and deserializing test packages
@@ -11,9 +12,32 @@ public interface TestPackageConverterService {
     /**
      * @param testPackageName The name of the test package to convert to
      * @param file            The zip file containing legacy {@link tds.testpackage.legacy.model.Testspecification} files
-     *
-     * @return An XML blob of the converted {@link tds.testpackage.model.TestPackage}
+     * @return {@code true} if the file was created, {@code false} if the file already exists
      * @throws IOException If an error occurs while unzipping the test package zip file, or deserializing the content
      */
-    String extractAndConvertTestSpecifications(final String testPackageName, final File file) throws IOException, ParseException;
+    boolean extractAndConvertTestSpecifications(final String testPackageName, final File file) throws IOException, ParseException;
+
+    /**
+     * Converts one or more legacy test specifications to the new Test Package format
+     *
+     * @param testPackageName          A the name of the test package to produce
+     * @param adminAndScoringFileNames The filenames of the administration and scoring packages to convert
+     * @return {@code true} if this test package file was successfully created, {@code false} otherwise
+     * @throws IOException    If there is an error reading any of the test packages
+     * @throws ParseException If there is an error parsing any of the test packages
+     */
+    boolean convertTestSpecifications(String testPackageName, List<String> adminAndScoringFileNames) throws IOException, ParseException;
+
+    /**
+     * Converts one or more legacy test specifications to the new Test Package format
+     *
+     * @param testPackageName          A the name of the test package to produce
+     * @param adminAndScoringFileNames The filenames of the administration and scoring packages to convert
+     * @param diffFileName             The filename of the "diff" test package
+     * @return {@code true} if this test package file was successfully created, {@code false} otherwise
+     * @throws IOException    If there is an error reading any of the test packages
+     * @throws ParseException If there is an error parsing any of the test packages
+     */
+    boolean convertTestSpecifications(String testPackageName, List<String> adminAndScoringFileNames,
+                                      String diffFileName) throws IOException, ParseException;
 }
