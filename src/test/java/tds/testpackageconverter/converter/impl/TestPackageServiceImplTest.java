@@ -10,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import tds.support.tool.testpackage.configuration.TestPackageObjectMapperConfiguration;
 import tds.testpackage.legacy.model.Testspecification;
-import tds.testpackage.model.TestPackage;
 import tds.testpackageconverter.converter.TestPackageBaseTest;
 import tds.testpackageconverter.converter.TestPackageConverterService;
 
@@ -43,8 +42,6 @@ public class TestPackageServiceImplTest extends TestPackageBaseTest {
     @Before
     public void setup() throws JsonProcessingException {
         when(mockConfiguration.getLegacyTestSpecXmlMapper()).thenReturn(mockMapper);
-        when(mockObjectWriter.writeValueAsString(isA(TestPackage.class))).thenReturn("testpackage");
-        when(mockMapper.writerWithDefaultPrettyPrinter()).thenReturn(mockObjectWriter);
         service = new TestPackageConverterServiceImpl(mockConfiguration);
         mockFile = new File("src/test/resources/legacy-combined-testspec.zip");
     }
