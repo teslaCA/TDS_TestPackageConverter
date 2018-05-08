@@ -72,8 +72,9 @@ public class TestPackageMapperTest extends TestPackageBaseTest {
         assertThat(item.getType()).isEqualTo("GI");
         assertThat(item.administrationRequired()).isFalse();
         assertThat(item.active()).isTrue();
-        assertThat(item.handScored()).isFalse();
+        assertThat(item.handScored()).isTrue();
         assertThat(item.doNotScore()).isFalse();
+
         // Item Score Dimension
         assertThat(item.getItemScoreDimension()).isNotNull();
         assertThat(item.getItemScoreDimension().getDimension()).isNotPresent();

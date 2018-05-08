@@ -78,6 +78,7 @@
                 <passageref>187-3688</passageref>
                 <poolproperty property="--ITEMTYPE--" value="GI" label="GI" />
                 <poolproperty property="Language" value="ENU" label="English" />
+                <poolproperty property="Scoring Engine" value="HandScored" label="Scoring Engine = HandScored" itemcount="3"/>
                 <itemscoredimension measurementmodel="IRT3PLn" scorepoints="1" weight="1.000000000000000e+000">
                     <itemscoreparameter measurementparameter="a" value="6.389300000000000e-001" />
                     <itemscoreparameter measurementparameter="b" value="3.027330000000000e+000" />
