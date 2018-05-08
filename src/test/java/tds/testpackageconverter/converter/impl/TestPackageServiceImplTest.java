@@ -55,7 +55,7 @@ public class TestPackageServiceImplTest extends TestPackageBaseTest {
         when(mockMapper.readValue(isA(InputStream.class), eq(Testspecification.class)))
                 .thenReturn(mockPerfAdminLegacyTestPackage);
         final boolean result = service.extractAndConvertTestSpecifications(testPackageName, mockFile);
-        assertThat(result).isTrue();
+        assertThat(result).isFalse();
         verify(mockMapper, times(2)).readValue(isA(InputStream.class), eq(Testspecification.class));
     }
 

@@ -213,7 +213,7 @@ public class TestPackageMapperTest extends TestPackageBaseTest {
         assertThat(catItem.getType()).isEqualTo("GI");
         assertThat(catItem.administrationRequired()).isFalse();
         assertThat(catItem.active()).isTrue();
-        assertThat(catItem.handScored()).isFalse();
+        assertThat(catItem.handScored()).isTrue();
         assertThat(catItem.doNotScore()).isFalse();
         // Item Score Dimension
         assertThat(catItem.getItemScoreDimension()).isNotNull();
@@ -339,7 +339,7 @@ public class TestPackageMapperTest extends TestPackageBaseTest {
         assertThat(catItem.getType()).isEqualTo("GI");
         assertThat(catItem.administrationRequired()).isFalse();
         assertThat(catItem.active()).isTrue();
-        assertThat(catItem.handScored()).isFalse();
+        assertThat(catItem.handScored()).isTrue();
         assertThat(catItem.doNotScore()).isFalse();
         // Item Score Dimension
         assertThat(catItem.getItemScoreDimension()).isNotNull();
