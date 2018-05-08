@@ -31,8 +31,9 @@ public class TestPackageConverterServiceImpl implements TestPackageConverterServ
     }
 
     @Override
-    public String extractAndConvertTestSpecifications(final String testPackageName, final File file) throws IOException, ParseException {
+    public boolean extractAndConvertTestSpecifications(final String testPackageName, final File file) throws IOException, ParseException {
         ZipFile zipFile = new ZipFile(file);
+        File convertedTestPackageFile = new File(testPackageName);
 
         List<Testspecification> specifications = zipFile.stream()
                 .filter(entry -> !entry.isDirectory() && entry.getName().endsWith(".xml")
@@ -45,15 +46,49 @@ public class TestPackageConverterServiceImpl implements TestPackageConverterServ
         }
 
         TestPackage testPackage = TestPackageMapper.toNew(testPackageName, specifications);
-        return xmlMapper.writerWithDefaultPrettyPrinter().writeValueAsString(testPackage);
+        xmlMapper.writeValue(convertedTestPackageFile, testPackage);
+
+        return convertedTestPackageFile.createNewFile();
+    }
+
+    @Override
+    public boolean convertTestSpecifications(final String testPackageName, final List<String> adminAndScoringFileNames) throws IOException, ParseException {
+        return convertTestSpecifications(testPackageName, adminAndScoringFileNames, null);
+    }
+
+    @Override
+    public boolean convertTestSpecifications(final String testPackageName, final List<String> adminAndScoringFileNames,
+                                             final String diffFileName) throws IOException, ParseException {
+        File convertedTestPackageFile = new File(testPackageName);
+
+        List<Testspecification> specifications = adminAndScoringFileNames.stream()
+                .map(this::read)
+                .collect(Collectors.toList());
+
+        TestPackage testPackage = diffFileName == null
+                ? TestPackageMapper.toNew(testPackageName, specifications)
+                : TestPackageMapper.toNew(testPackageName, specifications); //TODO: Update this conditional to include the diff
+        xmlMapper.writeValue(convertedTestPackageFile, testPackage);
+
+        return convertedTestPackageFile.createNewFile();
+    }
+
+    private Testspecification read(final String fileName) {
+        try {
+            return xmlMapper.readValue(new File(fileName), Testspecification.class);
+        } catch (IOException e) {
+            log.error("An exception occurred while reading the file: {}", fileName, e);
+            throw new RuntimeException(e);
+        }
     }
 
     private Testspecification unzipAndRead(final ZipFile zipFile, final ZipEntry entry) {
         try {
+            System.out.println("Reading file in zip: " + entry.getName());
             InputStream inputStream = zipFile.getInputStream(entry);
             return xmlMapper.readValue(inputStream, Testspecification.class);
         } catch (IOException e) {
-            log.warn("An exception occurred: {}", e);
+            log.error("An exception occurred: {}", e);
             throw new RuntimeException(e);
         }
     }

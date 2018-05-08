@@ -1,18 +1,16 @@
 package tds.testpackageconverter;
 
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Import;
+import tds.support.tool.testpackage.configuration.TestPackageObjectMapperConfiguration;
 
 @SpringBootApplication
-public class TestPackageConverterConsoleApplication implements CommandLineRunner {
+@Import(TestPackageObjectMapperConfiguration.class)
+public class TestPackageConverterConsoleApplication {
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(TestPackageConverterConsoleApplication.class, args);
     }
 
-    @Override
-    public void run(final String... args) throws Exception {
-
-    }
 }
