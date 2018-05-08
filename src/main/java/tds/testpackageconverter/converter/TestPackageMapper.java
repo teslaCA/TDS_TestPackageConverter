@@ -1,5 +1,6 @@
 package tds.testpackageconverter.converter;
 
+import com.google.common.collect.ImmutableMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tds.common.Algorithm;
@@ -18,6 +19,12 @@ import java.util.stream.Collectors;
  */
 public class TestPackageMapper {
     private static final Logger log = LoggerFactory.getLogger(TestPackageMapper.class);
+
+    private static final Map<String, String> languageLabelMap = ImmutableMap.of(
+            "ENU", "English",
+            "ESN", "Spanish",
+            "ENU-Braille", "Braille"
+    );
 
     /**
      * Maps one or more legacy {@link Testspecification}s to a {@link TestPackage}. At minimum one administration legacy
@@ -186,12 +193,14 @@ public class TestPackageMapper {
 
             final Property languageProperty = testForm.getProperty().stream().filter(p -> p.getName().equalsIgnoreCase("language")).findFirst().get();
             final String presentationCode = languageProperty.getValue();
-            final String presentationLabel = languageProperty.getLabel();
+            final String presentationLabel = languageLabelMap.containsKey(languageProperty.getValue())
+                    ? languageLabelMap.get(languageProperty.getValue())
+                    : languageProperty.getLabel();
             Presentation presentation = Presentation.builder().setCode(presentationCode).setLabel(presentationLabel).build();
             segmentForms.add(SegmentForm.builder()
                     .setCohort(TestPackageUtils.parseCohort(testForm.getIdentifier().getUniqueid()))
                     .setId(formPartition.getIdentifier().getName())
-                    .setPresentations(Arrays.asList(presentation))
+                    .setPresentations(Collections.singletonList(presentation))
                     .setItemGroups(mapItemGroups(formPartition.getItemgroup(), itemPool, bluePrintIdsToNames, presentation))
                     .build());
         }
