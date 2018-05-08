@@ -237,18 +237,27 @@ public class TestPackageMapper {
                     }
                 })
                 .filter(gi -> testItemMap.containsKey(gi.getItemid()))
-                .map(gi -> Item.builder()
-                        // If the item key is "187-1234" the item ID is "1234"
-                        .setId(TestPackageUtils.parseIdFromKey(gi.getItemid()))
-                        .setAdministrationRequired(Optional.ofNullable(gi.getAdminrequired()))
-                        .setFieldTest(Optional.ofNullable(gi.getIsfieldtest()))
-                        .setActive(Optional.ofNullable(gi.getIsactive()))
-                        .setResponseRequired(Optional.ofNullable(gi.getResponserequired()))
-                        .setType(testItemMap.get(gi.getItemid()).getItemtype())
-                        .setPresentations((presentation != null) ? Arrays.asList(presentation) : mapPresentations(testItemMap.get(gi.getItemid()).getPoolproperty()))
-                        .setItemScoreDimension(mapItemScoreDimensions(testItemMap.get(gi.getItemid()).getItemscoredimension().get(0)))
-                        .setBlueprintReferences(mapBlueprintReferences(testItemMap.get(gi.getItemid()).getBpref(), bluePrintIdsToNames))
-                        .build())
+                .map(gi -> {
+                    Testitem item = testItemMap.get(gi.getItemid());
+                    return Item.builder()
+                            // If the item key is "187-1234" the item ID is "1234"
+                            .setId(TestPackageUtils.parseIdFromKey(gi.getItemid()))
+                            .setAdministrationRequired(Optional.ofNullable(gi.getAdminrequired()))
+                            .setFieldTest(Optional.ofNullable(gi.getIsfieldtest()))
+                            .setActive(Optional.ofNullable(gi.getIsactive()))
+                            .setHandScored(Optional.of(
+                                    // Check if any "HandScored" poolproperty is defined
+                                    String.valueOf(item.getPoolproperty().stream()
+                                            .anyMatch(prop -> prop.getValue().equals("HandScored")))))
+                            .setResponseRequired(Optional.ofNullable(gi.getResponserequired()))
+                            .setType(item.getItemtype())
+                            .setPresentations((presentation != null)
+                                    ? Collections.singletonList(presentation)
+                                    : mapPresentations(item.getPoolproperty()))
+                            .setItemScoreDimension(mapItemScoreDimensions(item.getItemscoredimension().get(0)))
+                            .setBlueprintReferences(mapBlueprintReferences(item.getBpref(), bluePrintIdsToNames))
+                            .build();
+                })
                 .collect(Collectors.toList());
     }
 
