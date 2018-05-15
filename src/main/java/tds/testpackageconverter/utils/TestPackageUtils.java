@@ -1,6 +1,8 @@
 package tds.testpackageconverter.utils;
 
 import tds.testpackage.legacy.model.Testspecification;
+import tds.testpackage.model.BlueprintElement;
+import tds.testpackage.model.BlueprintElementTypes;
 import tds.testpackage.model.TestPackage;
 
 import java.math.BigDecimal;
@@ -53,5 +55,13 @@ public class TestPackageUtils {
     public static String formatDate(final String publishDate) throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat("MMM dd yyyy hh:mma");
         return formatter.parse(publishDate).toInstant().toString();
+    }
+
+    public static String getBlueprintKeyFromId(final BlueprintElement element, final String clientName) {
+        if (BlueprintElementTypes.CLAIM_AND_TARGET_TYPES.contains(element.getType())) {
+            return String.format("%s-%s", clientName, element.getId());
+        }
+
+        return element.getId();
     }
 }

@@ -1,5 +1,7 @@
 package tds.testpackageconverter.converter;
 
+import tds.testpackage.model.TestPackage;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
@@ -40,4 +42,6 @@ public interface TestPackageConverterService {
      */
     boolean convertTestSpecifications(String testPackageName, List<String> adminAndScoringFileNames,
                                       String diffFileName) throws IOException, ParseException;
+
+    boolean convertTestPackage(final TestPackage testPackage);
 }

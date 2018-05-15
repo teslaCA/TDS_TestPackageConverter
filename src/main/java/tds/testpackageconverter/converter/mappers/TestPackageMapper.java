@@ -1,4 +1,4 @@
-package tds.testpackageconverter.converter;
+package tds.testpackageconverter.converter.mappers;
 
 import com.google.common.collect.ImmutableMap;
 import org.slf4j.Logger;

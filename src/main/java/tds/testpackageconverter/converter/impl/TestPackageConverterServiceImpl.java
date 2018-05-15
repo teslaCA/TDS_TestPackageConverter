@@ -1,8 +1,9 @@
 package tds.testpackageconverter.converter.impl;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import tds.testpackageconverter.converter.mappers.LegacyAdministrationTestPackageMapper;
 import tds.testpackageconverter.converter.TestPackageConverterService;
-import tds.testpackageconverter.converter.TestPackageMapper;
+import tds.testpackageconverter.converter.mappers.TestPackageMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +72,14 @@ public class TestPackageConverterServiceImpl implements TestPackageConverterServ
         xmlMapper.writeValue(convertedTestPackageFile, testPackage);
 
         return convertedTestPackageFile.createNewFile();
+    }
+
+    @Override
+    public boolean convertTestPackage(final TestPackage testPackage) {
+        List<Testspecification> administrationPackages = LegacyAdministrationTestPackageMapper.fromNew(testPackage);
+
+
+        return true;
     }
 
     private Testspecification read(final String fileName) {
