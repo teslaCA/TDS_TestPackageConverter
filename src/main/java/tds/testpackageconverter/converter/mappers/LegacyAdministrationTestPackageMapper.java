@@ -26,7 +26,7 @@ public class LegacyAdministrationTestPackageMapper {
         final Testspecification testSpecification = new Testspecification();
         testSpecification.setPurpose("administration");
         testSpecification.setPublisher(testPackage.getPublisher());
-        testSpecification.setPublishdate(testPackage.getPublishDate());
+        testSpecification.setPublishdate(testPackage.getPublishDate()); //TODO: Should be formatted
         testSpecification.setVersion(version);
 
         // Map Identifier
@@ -71,10 +71,10 @@ public class LegacyAdministrationTestPackageMapper {
         final Map<String, Long> formIdToKeyMap = generateFormKeys(assessment);
 
         final Administration administration = new Administration();
-        administration.setTestblueprint(LegacyAdministrationTestPackageBlueprintMapper.mapBlueprint(assessment, testPackage));
+        administration.setTestblueprint(LegacyAdministrationTestPackageBlueprintMapper.mapBlueprint(testPackage, assessment));
         administration.setItempool(LegacyAdministrationTestPackageItemPoolMapper.mapItemPool(testPackage, assessment));
-        administration.getTestform().addAll(LegacyAdministrationTestPackageFormMapper.mapTestForms(assessment,
-                formIdToKeyMap, testPackage.getVersion(), testPackage.getBankKey()));
+        administration.getTestform().addAll(LegacyAdministrationTestPackageFormMapper.mapTestForms(testPackage, assessment,
+                formIdToKeyMap));
         administration.getAdminsegment().addAll(LegacyAdministrationTestPackageSegmentMapper.mapAdminSegments(testPackage,
                 assessment, formIdToKeyMap));
         return administration;

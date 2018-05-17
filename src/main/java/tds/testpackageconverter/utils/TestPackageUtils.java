@@ -64,4 +64,17 @@ public class TestPackageUtils {
 
         return element.getId();
     }
+
+    public static String getFormIdForLanguage(final String formId, final String languageCode) {
+        switch (languageCode) {
+            case "ENU":
+                return String.format("%s::%s", formId, "ENU");
+            case "ESN":
+                return String.format("%s::%s", formId, "SPA");
+            case "ENU-Braille":
+                return String.format("%s::%s", formId, "BRL");
+            default:
+                return String.format("%s::%s", formId, languageCode);
+        }
+    }
 }

@@ -2,10 +2,7 @@ package tds.testpackageconverter.converter.mappers;
 
 import tds.common.Algorithm;
 import tds.testpackage.legacy.model.*;
-import tds.testpackage.model.Assessment;
-import tds.testpackage.model.Item;
-import tds.testpackage.model.ItemScoreDimension;
-import tds.testpackage.model.TestPackage;
+import tds.testpackage.model.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -15,6 +12,42 @@ import java.util.stream.Collectors;
 public class LegacyAdministrationTestPackageItemPoolMapper {
     public static Itempool mapItemPool(final TestPackage testPackage, final Assessment assessment) {
         final Itempool itempool = new Itempool();
+
+
+        itempool.getPassage().addAll(mapPassages(testPackage, assessment));
+        itempool.getTestitem().addAll(mapTestItems(testPackage, assessment));
+        return itempool;
+    }
+
+    private static List<Passage> mapPassages(final TestPackage testPackage, final Assessment assessment) {
+        final List<Stimulus> stimuli = assessment.getSegments().stream()
+                .flatMap(segment -> {
+                    if (segment.getAlgorithmType().equalsIgnoreCase(Algorithm.FIXED_FORM.getType())) {
+                        return segment.segmentForms().stream()
+                                .flatMap(form -> form.itemGroups().stream()
+                                        .filter(itemGroup -> itemGroup.getStimulus().isPresent())
+                                        .map(itemGroup -> itemGroup.getStimulus().get())
+                                );
+                    } else {
+                        return segment.pool().stream()
+                                .filter(itemGroup -> itemGroup.getStimulus().isPresent())
+                                .map(itemGroup -> itemGroup.getStimulus().get());
+                    }
+                })
+                .collect(Collectors.toList());
+
+        return stimuli.stream().map(stimulus -> {
+            final Passage passage = new Passage();
+            passage.setFilename(String.format("stim-%s-%s.xml", testPackage.getBankKey(), stimulus.getId()));
+            final Identifier passageIdentifier = new Identifier();
+            passageIdentifier.setUniqueid(String.format("%s-%s", testPackage.getBankKey(), stimulus.getId()));
+            passageIdentifier.setVersion(new BigDecimal(testPackage.getVersion()));
+            passage.setIdentifier(passageIdentifier);
+            return passage;
+        }).collect(Collectors.toList());
+    }
+
+    private static List<Testitem> mapTestItems(final TestPackage testPackage, final Assessment assessment) {
         final List<Item> items = assessment.getSegments().stream()
                 .flatMap(segment -> {
                     if (segment.getAlgorithmType().equalsIgnoreCase(Algorithm.FIXED_FORM.getType())) {
@@ -30,17 +63,17 @@ public class LegacyAdministrationTestPackageItemPoolMapper {
                 })
                 .collect(Collectors.toList());
 
-        final List<Testitem> testItems = items.stream().map(item -> {
-            Testitem testItem = new Testitem();
+        return items.stream().map(item -> {
+            final Testitem testItem = new Testitem();
             testItem.setFilename(String.format("item-%s-%s.xml", testPackage.getBankKey(), item.getId()));
             testItem.setItemtype(item.getType());
 
-            Identifier testItemIdentifier = new Identifier();
+            final Identifier testItemIdentifier = new Identifier();
             testItemIdentifier.setUniqueid(String.format("%s-%s", testPackage.getBankKey(), item.getId()));
             testItemIdentifier.setVersion(new BigDecimal(testPackage.getVersion()));
             testItem.setIdentifier(testItemIdentifier);
 
-            List<Bpref> bpRefs = testItem.getBpref();
+            final List<Bpref> bpRefs = testItem.getBpref();
 
             item.getBlueprintReferences().forEach(bpRef -> {
                 Bpref ref = new Bpref();
@@ -48,7 +81,7 @@ public class LegacyAdministrationTestPackageItemPoolMapper {
                 bpRefs.add(ref);
             });
 
-            List<Poolproperty> itemProperties = testItem.getPoolproperty();
+            final List<Poolproperty> itemProperties = testItem.getPoolproperty();
 
             item.getPresentations().forEach(presentation -> {
                 Poolproperty languageProp = new Poolproperty();
@@ -58,19 +91,22 @@ public class LegacyAdministrationTestPackageItemPoolMapper {
                 itemProperties.add(languageProp);
             });
 
-            Poolproperty itemTypeProperty = new Poolproperty();
+            final Poolproperty itemTypeProperty = new Poolproperty();
             itemTypeProperty.setProperty("--ITEMTYPE--");
             itemTypeProperty.setValue(item.getType());
             itemTypeProperty.setLabel("ItemType = " + item.getType());
             itemProperties.add(itemTypeProperty);
 
+            if (item.getItemGroup().getStimulus().isPresent()) {
+                final Passageref passageRef = new Passageref();
+                passageRef.setContent(item.getItemGroup().getStimulus().get().getKey());
+                testItem.getPassageref().add(passageRef);
+            }
+
             testItem.getItemscoredimension().add(mapItemScoreDimensions(item.getItemScoreDimension()));
 
             return testItem;
         }).collect(Collectors.toList());
-
-        itempool.getTestitem().addAll(testItems);
-        return itempool;
     }
 
     private static Itemscoredimension mapItemScoreDimensions(final ItemScoreDimension itemScoreDimension) {

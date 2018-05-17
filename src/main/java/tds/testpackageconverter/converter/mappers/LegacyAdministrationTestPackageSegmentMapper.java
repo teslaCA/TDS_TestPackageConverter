@@ -17,6 +17,7 @@ public class LegacyAdministrationTestPackageSegmentMapper {
     public static List<Adminsegment> mapAdminSegments(final TestPackage testPackage, final Assessment assessment,
                                                       final Map<String, Long> formIdToKeyMap) {
         final List<Adminsegment> adminSegments = new ArrayList<>();
+        final Map<String, BlueprintElement> blueprintMap = testPackage.getBlueprintMap();
 
         for (Segment segment : assessment.getSegments()) {
             final Adminsegment adminSegment = new Adminsegment();
@@ -24,11 +25,14 @@ public class LegacyAdministrationTestPackageSegmentMapper {
             adminSegment.setPosition(String.valueOf(segment.position()));
             adminSegment.setItemselection(segment.getAlgorithmType());
 
-            final List<Segmentbpelement> segmentBpElements = adminSegment.getSegmentblueprint().getSegmentbpelement();
+            final Segmentblueprint segmentblueprint = new Segmentblueprint();
+            final List<Segmentbpelement> segmentBpElements = new ArrayList<>();
 
             segment.segmentBlueprint().forEach(segmentBlueprintElement -> {
+                BlueprintElement el = blueprintMap.get(segmentBlueprintElement.getIdRef());
+
                 final Segmentbpelement segmentBpEl = new Segmentbpelement();
-                segmentBpEl.setBpelementid(segmentBlueprintElement.getIdRef());
+                segmentBpEl.setBpelementid(TestPackageUtils.getBlueprintKeyFromId(el, testPackage.getPublisher()));
                 segmentBpEl.setMinopitems(BigInteger.valueOf(segmentBlueprintElement.getMinExamItems()));
                 segmentBpEl.setMaxopitems(BigInteger.valueOf(segmentBlueprintElement.getMaxExamItems()));
                 segmentBpEl.setMinftitems(BigInteger.valueOf(segmentBlueprintElement.minFieldTestItems()));
@@ -40,20 +44,26 @@ public class LegacyAdministrationTestPackageSegmentMapper {
 
             if (segment.getAlgorithmType().equalsIgnoreCase(Algorithm.FIXED_FORM.getType())) {
                 final List<Segmentform> segmentForms = segment.segmentForms().stream()
-                        .map(segmentForm -> {
-                            final Segmentform form = new Segmentform();
-                            form.setFormpartitionid(String.format("%s-%s", testPackage.getBankKey(), formIdToKeyMap.get(segmentForm.getId())));
-                            return form;
-                        })
+                        .flatMap(form -> form.getPresentations().stream()
+                                .map(language -> {
+                                    final Segmentform segmentForm = new Segmentform();
+                                    final String formId = TestPackageUtils.getFormIdForLanguage(form.getId(), language.getCode());
+                                    segmentForm.setFormpartitionid(String.format("%s-%s", testPackage.getBankKey(), formIdToKeyMap.get(formId)));
+                                    return segmentForm;
+                                })
+                        )
                         .collect(Collectors.toList());
 
                 adminSegment.getSegmentform().addAll(segmentForms);
 
             } else { // Adaptive
-                final Segmentpool segmentPool = adminSegment.getSegmentpool();
+                final Segmentpool segmentPool = new Segmentpool();
                 segmentPool.getItemgroup().addAll(mapItemGroups(segment, testPackage.getBankKey(), testPackage.getVersion()));
+                adminSegment.setSegmentpool(segmentPool);
             }
 
+            segmentblueprint.getSegmentbpelement().addAll(segmentBpElements);
+            adminSegment.setSegmentblueprint(segmentblueprint);
             adminSegments.add(adminSegment);
         }
 
@@ -117,14 +127,19 @@ public class LegacyAdministrationTestPackageSegmentMapper {
                 .filter(segmentBlueprintElement -> !segmentBlueprintElement.itemSelection().isEmpty())
                 .map(segmentBlueprintElement -> {
                     Itemselectionparameter param = new Itemselectionparameter();
-                    param.setBpelementid(TestPackageUtils.getBlueprintKeyFromId(blueprintMap.get(segmentBlueprintElement.getIdRef()),
-                            segmentBlueprintElement.getIdRef()));
+                    BlueprintElement bpEl = blueprintMap.get(segmentBlueprintElement.getIdRef());
+                    if (bpEl.getType().equals("test") || bpEl.getType().equals("segment")) {
+                        param.setBpelementid(segment.getKey());
+                    } else {
+                        param.setBpelementid(TestPackageUtils.getBlueprintKeyFromId(bpEl, testPackage.getPublisher()));
+                    }
 
                     param.getProperty().addAll(segmentBlueprintElement.itemSelection().stream()
                             .map(prop -> {
                                 Property property = new Property();
                                 property.setName(prop.getName());
                                 property.setValue(prop.getValue());
+                                property.setLabel(prop.getName());
                                 return property;
                             }).collect(Collectors.toList())
                     );
