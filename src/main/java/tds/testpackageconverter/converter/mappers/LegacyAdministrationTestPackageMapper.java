@@ -40,7 +40,7 @@ public class LegacyAdministrationTestPackageMapper {
             log.warn("Unable to parse publish date time. Adding date without parsing");
             testSpecification.setPublishdate(testPackage.getPublishDate());
         }
-        testSpecification.setVersion(version);
+        testSpecification.setVersion(new BigDecimal(1));
 
         // Map Identifier
         final Identifier testSpecIdentifier = new Identifier();
