@@ -1,10 +1,11 @@
-package tds.testpackageconverter.converter;
+package tds.testpackageconverter.converter.mappers;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import tds.common.Algorithm;
 import tds.testpackage.model.*;
+import tds.testpackageconverter.converter.TestPackageBaseTest;
 import tds.testpackageconverter.utils.TestPackageUtils;
 
 import java.text.ParseException;

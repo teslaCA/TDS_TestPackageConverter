@@ -1,8 +1,9 @@
 package tds.testpackageconverter.converter.impl;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import tds.testpackageconverter.converter.mappers.LegacyAdministrationTestPackageMapper;
 import tds.testpackageconverter.converter.TestPackageConverterService;
-import tds.testpackageconverter.converter.TestPackageMapper;
+import tds.testpackageconverter.converter.mappers.TestPackageMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import tds.testpackage.model.TestPackage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,7 +34,7 @@ public class TestPackageConverterServiceImpl implements TestPackageConverterServ
     }
 
     @Override
-    public boolean extractAndConvertTestSpecifications(final String testPackageName, final File file) throws IOException, ParseException {
+    public void extractAndConvertTestSpecifications(final String testPackageName, final File file) throws IOException, ParseException {
         ZipFile zipFile = new ZipFile(file);
         File convertedTestPackageFile = new File(testPackageName);
 
@@ -48,16 +51,16 @@ public class TestPackageConverterServiceImpl implements TestPackageConverterServ
         TestPackage testPackage = TestPackageMapper.toNew(testPackageName, specifications);
         xmlMapper.writeValue(convertedTestPackageFile, testPackage);
 
-        return convertedTestPackageFile.createNewFile();
+        convertedTestPackageFile.createNewFile();
     }
 
     @Override
-    public boolean convertTestSpecifications(final String testPackageName, final List<String> adminAndScoringFileNames) throws IOException, ParseException {
-        return convertTestSpecifications(testPackageName, adminAndScoringFileNames, null);
+    public void convertTestSpecifications(final String testPackageName, final List<String> adminAndScoringFileNames) throws IOException, ParseException {
+        convertTestSpecifications(testPackageName, adminAndScoringFileNames, null);
     }
 
     @Override
-    public boolean convertTestSpecifications(final String testPackageName, final List<String> adminAndScoringFileNames,
+    public void convertTestSpecifications(final String testPackageName, final List<String> adminAndScoringFileNames,
                                              final String diffFileName) throws IOException, ParseException {
         File convertedTestPackageFile = new File(testPackageName);
 
@@ -70,7 +73,12 @@ public class TestPackageConverterServiceImpl implements TestPackageConverterServ
                 : TestPackageMapper.toNew(testPackageName, specifications); //TODO: Update this conditional to include the diff
         xmlMapper.writeValue(convertedTestPackageFile, testPackage);
 
-        return convertedTestPackageFile.createNewFile();
+        convertedTestPackageFile.createNewFile();
+    }
+
+    @Override
+    public void convertTestPackage(final TestPackage testPackage) {
+        List<Testspecification> administrationPackages = LegacyAdministrationTestPackageMapper.fromNew(testPackage);
     }
 
     private Testspecification read(final String fileName) {

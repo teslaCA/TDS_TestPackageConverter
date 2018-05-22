@@ -12,6 +12,7 @@ import tds.testpackageconverter.converter.TestPackageConverterService;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,6 +26,7 @@ public class ConvertToNewTestPackageCommandLineRunner implements CommandLineRunn
     private static final String ADMINISTRATION_FLAG = "a";
     private static final String SCORING_FLAG = "s";
     private static final String DIFF_FLAG = "d";
+    private static final String VERBOSE_FLAG = "v";
 
     private final TestPackageConverterService service;
 
@@ -83,10 +85,19 @@ public class ConvertToNewTestPackageCommandLineRunner implements CommandLineRunn
                 .required(false)
                 .build();
 
+        final Option verboseOption = Option.builder(VERBOSE_FLAG)
+                .argName("verbose")
+                .longOpt("verbose")
+                .hasArg(false)
+                .desc("Prints more verbose output in case of errors")
+                .required(false)
+                .build();
+
         options.addOption(administrationFileOption);
         options.addOption(scoringFileOption);
         options.addOption(diffFileOption);
         options.addOption(zipFileOption);
+        options.addOption(verboseOption);
     }
 
     @Override
@@ -103,33 +114,40 @@ public class ConvertToNewTestPackageCommandLineRunner implements CommandLineRunn
             // Get the output test package filename
             final String outputFilename = cmd.getArgList().get(1);
 
-            if (cmd.hasOption(ZIP_FLAG) && !cmd.getOptionValue(ZIP_FLAG).isEmpty()) {
-                convertTestPackageFromZipFile(outputFilename);
-            } else {
-                List<String> testSpecifications = new ArrayList<>();
-
-                if (cmd.hasOption(ADMINISTRATION_FLAG) && !cmd.getOptionValue(ADMINISTRATION_FLAG).isEmpty()) {
-                    System.out.println("Administration package(s): " + Arrays.toString(cmd.getOptionValues(ADMINISTRATION_FLAG)));
-
-                    testSpecifications.addAll(Lists.newArrayList(cmd.getOptionValues(ADMINISTRATION_FLAG)));
-                }
-
-                if (cmd.hasOption(SCORING_FLAG) && !cmd.getOptionValue(SCORING_FLAG).isEmpty()) {
-                    System.out.println("Scoring package: " + cmd.getOptionValue(SCORING_FLAG));
-                    testSpecifications.add(cmd.getOptionValue(SCORING_FLAG));
-                }
-
-                boolean success;
-
-                if (cmd.hasOption(DIFF_FLAG) && !cmd.getOptionValue(DIFF_FLAG).isEmpty()) {
-                    System.out.println("Diff package: " + cmd.getOptionValue(DIFF_FLAG));
-                    success = service.convertTestSpecifications(outputFilename, testSpecifications, cmd.getOptionValue(DIFF_FLAG));
+            try {
+                if (cmd.hasOption(ZIP_FLAG) && !cmd.getOptionValue(ZIP_FLAG).isEmpty()) {
+                    convertTestPackageFromZipFile(outputFilename);
                 } else {
-                    success = service.convertTestSpecifications(outputFilename, testSpecifications);
-                }
+                    List<String> testSpecifications = new ArrayList<>();
 
-                System.out.println(String.format("The test package '%s' was %s successfully created", outputFilename, success ? "" : "not"));
+                    if (cmd.hasOption(ADMINISTRATION_FLAG) && !cmd.getOptionValue(ADMINISTRATION_FLAG).isEmpty()) {
+                        System.out.println("Administration package(s): " + Arrays.toString(cmd.getOptionValues(ADMINISTRATION_FLAG)));
+
+                        testSpecifications.addAll(Lists.newArrayList(cmd.getOptionValues(ADMINISTRATION_FLAG)));
+                    }
+
+                    if (cmd.hasOption(SCORING_FLAG) && !cmd.getOptionValue(SCORING_FLAG).isEmpty()) {
+                        System.out.println("Scoring package: " + cmd.getOptionValue(SCORING_FLAG));
+                        testSpecifications.add(cmd.getOptionValue(SCORING_FLAG));
+                    }
+
+                    if (cmd.hasOption(DIFF_FLAG) && !cmd.getOptionValue(DIFF_FLAG).isEmpty()) {
+                        System.out.println("Diff package: " + cmd.getOptionValue(DIFF_FLAG));
+                        service.convertTestSpecifications(outputFilename, testSpecifications, cmd.getOptionValue(DIFF_FLAG));
+                    } else {
+                        service.convertTestSpecifications(outputFilename, testSpecifications);
+                    }
+
+                    System.out.println(String.format("The test package '%s' was successfully created", outputFilename));
+                }
+            } catch (IOException e) {
+                System.out.println(String.format("The test package '%s' was not successfully created", outputFilename));
+
+                if (cmd.hasOption(VERBOSE_FLAG)) {
+                    e.printStackTrace();
+                }
             }
+
         }
     }
 
@@ -163,8 +181,16 @@ public class ConvertToNewTestPackageCommandLineRunner implements CommandLineRunn
             System.out.println("Finished converting the test package " + outputFilename);
         } catch (FileNotFoundException e) {
             System.out.println(String.format("ERROR: Zip file could not be found at path %s", cmd.getOptionValue(ZIP_FLAG)));
+
+            if (cmd.hasOption(VERBOSE_FLAG)) {
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             System.out.println(String.format("ERROR: Error opening or unzipping the test package zip file at path %s", cmd.getOptionValue(ZIP_FLAG)));
+
+            if (cmd.hasOption(VERBOSE_FLAG)) {
+                e.printStackTrace();
+            }
         }
     }
 

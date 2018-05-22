@@ -1,5 +1,7 @@
 package tds.testpackageconverter.converter;
 
+import tds.testpackage.model.TestPackage;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
@@ -15,7 +17,7 @@ public interface TestPackageConverterService {
      * @return {@code true} if the file was created, {@code false} if the file already exists
      * @throws IOException If an error occurs while unzipping the test package zip file, or deserializing the content
      */
-    boolean extractAndConvertTestSpecifications(final String testPackageName, final File file) throws IOException, ParseException;
+    void extractAndConvertTestSpecifications(final String testPackageName, final File file) throws IOException, ParseException;
 
     /**
      * Converts one or more legacy test specifications to the new Test Package format
@@ -26,7 +28,7 @@ public interface TestPackageConverterService {
      * @throws IOException    If there is an error reading any of the test packages
      * @throws ParseException If there is an error parsing any of the test packages
      */
-    boolean convertTestSpecifications(String testPackageName, List<String> adminAndScoringFileNames) throws IOException, ParseException;
+    void convertTestSpecifications(String testPackageName, List<String> adminAndScoringFileNames) throws IOException, ParseException;
 
     /**
      * Converts one or more legacy test specifications to the new Test Package format
@@ -38,6 +40,8 @@ public interface TestPackageConverterService {
      * @throws IOException    If there is an error reading any of the test packages
      * @throws ParseException If there is an error parsing any of the test packages
      */
-    boolean convertTestSpecifications(String testPackageName, List<String> adminAndScoringFileNames,
+    void convertTestSpecifications(String testPackageName, List<String> adminAndScoringFileNames,
                                       String diffFileName) throws IOException, ParseException;
+
+    void convertTestPackage(final TestPackage testPackage);
 }

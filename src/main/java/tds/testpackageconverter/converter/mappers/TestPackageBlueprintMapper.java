@@ -1,4 +1,4 @@
-package tds.testpackageconverter.converter;
+package tds.testpackageconverter.converter.mappers;
 
 import tds.testpackage.legacy.model.*;
 import tds.testpackage.model.*;
