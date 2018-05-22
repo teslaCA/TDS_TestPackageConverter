@@ -1,5 +1,7 @@
 package tds.testpackageconverter.converter.mappers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tds.testpackage.legacy.model.Administration;
 import tds.testpackage.legacy.model.Identifier;
 import tds.testpackage.legacy.model.Property;
@@ -8,13 +10,19 @@ import tds.testpackage.model.Assessment;
 import tds.testpackage.model.TestPackage;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static tds.testpackageconverter.utils.TestPackageUtils.formatDate;
+
 public class LegacyAdministrationTestPackageMapper {
+    private static final Logger log = LoggerFactory.getLogger(LegacyAdministrationTestPackageMapper.class);
+
     public static List<Testspecification> fromNew(final TestPackage testPackage) {
         return testPackage.getAssessments().stream()
                 .map(assessment -> mapTestSpecification(testPackage, assessment))
@@ -26,7 +34,12 @@ public class LegacyAdministrationTestPackageMapper {
         final Testspecification testSpecification = new Testspecification();
         testSpecification.setPurpose("administration");
         testSpecification.setPublisher(testPackage.getPublisher());
-        testSpecification.setPublishdate(testPackage.getPublishDate()); //TODO: Should be formatted
+        try {
+            testSpecification.setPublishdate(formatDate(Instant.parse(testPackage.getPublishDate())));
+        } catch (ParseException e) {
+            log.warn("Unable to parse publish date time. Adding date without parsing");
+            testSpecification.setPublishdate(testPackage.getPublishDate());
+        }
         testSpecification.setVersion(version);
 
         // Map Identifier

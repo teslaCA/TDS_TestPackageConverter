@@ -21,7 +21,7 @@ public class LegacyAdministrationTestPackageMapperTest extends LegacyTestPackage
         Testspecification perfTestSpec = testSpecifications.get(0);
 
         assertThat(perfTestSpec.getPurpose()).isEqualTo("administration");
-        assertThat(perfTestSpec.getPublishdate()).isEqualTo("2015-08-19T22:44:00Z");
+        assertThat(perfTestSpec.getPublishdate()).isEqualTo("Aug 19 2015 03:44PM");
         assertThat(perfTestSpec.getIdentifier().getName()).isEqualTo("SBAC-IRP-Perf-MATH-11");
         assertThat(perfTestSpec.getIdentifier().getUniqueid()).isEqualTo("(SBAC_PT)SBAC-IRP-Perf-MATH-11-2018");
         assertThat(perfTestSpec.getIdentifier().getLabel()).isEqualTo("Grade 11 MATH");
@@ -51,7 +51,7 @@ public class LegacyAdministrationTestPackageMapperTest extends LegacyTestPackage
         Testspecification catTestSpec = testSpecifications.get(1);
 
         assertThat(catTestSpec.getPurpose()).isEqualTo("administration");
-        assertThat(catTestSpec.getPublishdate()).isEqualTo("2015-08-19T22:44:00Z");
+        assertThat(catTestSpec.getPublishdate()).isEqualTo("Aug 19 2015 03:44PM");
         assertThat(catTestSpec.getIdentifier().getName()).isEqualTo("SBAC-IRP-CAT-MATH-11");
         assertThat(catTestSpec.getIdentifier().getUniqueid()).isEqualTo("(SBAC_PT)SBAC-IRP-CAT-MATH-11-2018");
         assertThat(catTestSpec.getIdentifier().getLabel()).isEqualTo("Grade 11 MATH");

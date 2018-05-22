@@ -104,7 +104,6 @@ public class TestPackageMapper {
                             // The legacy spec calls the segmentKey a "segment id". We need to fetch the actual segmentId from the blueprint
                             .setId(findSegmentIdFromBlueprint(adminSegment.getSegmentid(), administration.getTestblueprint().getBpelement()))
                             .setPosition(Integer.parseInt(adminSegment.getPosition()))
-                            //TODO: replace with Algorithm enum
                             .setAlgorithmType(adminSegment.getItemselection().equalsIgnoreCase(Algorithm.ADAPTIVE_2.getType())
                                     ? "adaptive" : adminSegment.getItemselection())
                             .setAlgorithmImplementation(adminSegment.getItemselector().getIdentifier().getUniqueid())

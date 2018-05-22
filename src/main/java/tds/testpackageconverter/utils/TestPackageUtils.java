@@ -6,10 +6,14 @@ import tds.testpackage.model.BlueprintElementTypes;
 import tds.testpackage.model.TestPackage;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 
 public class TestPackageUtils {
+    public static String DATE_PATTERN = "MMM dd yyyy hh:mma";
+
     public static String getAssessmentKey(final TestPackage testPackage, final String assessmentId) {
         return String.format("(%s)%s-%s", testPackage.getPublisher(), assessmentId, testPackage.getAcademicYear());
     }
@@ -53,8 +57,13 @@ public class TestPackageUtils {
     }
 
     public static String formatDate(final String publishDate) throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("MMM dd yyyy hh:mma");
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_PATTERN);
         return formatter.parse(publishDate).toInstant().toString();
+    }
+
+    public static String formatDate(final Instant publishDate) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_PATTERN);
+        return formatter.format(Date.from(publishDate));
     }
 
     public static String getBlueprintKeyFromId(final BlueprintElement element, final String clientName) {
