@@ -21,7 +21,7 @@ public class LegacyAdministrationTestPackageMapperTest extends LegacyTestPackage
         Testspecification perfTestSpec = testSpecifications.get(0);
 
         assertThat(perfTestSpec.getPurpose()).isEqualTo("administration");
-        assertThat(perfTestSpec.getPublishdate()).isEqualTo("Aug 19 2015 03:44PM");
+        assertThat(perfTestSpec.getPublishdate()).isEqualTo("Aug 19 2015 10:44PM");
         assertThat(perfTestSpec.getIdentifier().getName()).isEqualTo("SBAC-IRP-Perf-MATH-11");
         assertThat(perfTestSpec.getIdentifier().getUniqueid()).isEqualTo("(SBAC_PT)SBAC-IRP-Perf-MATH-11-2018");
         assertThat(perfTestSpec.getIdentifier().getLabel()).isEqualTo("Grade 11 MATH");

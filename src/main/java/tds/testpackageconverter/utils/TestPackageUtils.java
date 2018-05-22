@@ -10,6 +10,7 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.TimeZone;
 
 public class TestPackageUtils {
     public static String DATE_PATTERN = "MMM dd yyyy hh:mma";
@@ -65,6 +66,7 @@ public class TestPackageUtils {
 
     public static String formatDate(final Instant publishDate) throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_PATTERN);
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
         return formatter.format(Date.from(publishDate));
     }
 
