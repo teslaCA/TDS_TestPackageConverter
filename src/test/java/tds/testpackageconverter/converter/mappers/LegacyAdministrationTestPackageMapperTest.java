@@ -51,7 +51,7 @@ public class LegacyAdministrationTestPackageMapperTest extends LegacyTestPackage
         Testspecification catTestSpec = testSpecifications.get(1);
 
         assertThat(catTestSpec.getPurpose()).isEqualTo("administration");
-        assertThat(catTestSpec.getPublishdate()).isEqualTo("Aug 19 2015 03:44PM");
+        assertThat(catTestSpec.getPublishdate()).isEqualTo("Aug 19 2015 10:44PM");
         assertThat(catTestSpec.getIdentifier().getName()).isEqualTo("SBAC-IRP-CAT-MATH-11");
         assertThat(catTestSpec.getIdentifier().getUniqueid()).isEqualTo("(SBAC_PT)SBAC-IRP-CAT-MATH-11-2018");
         assertThat(catTestSpec.getIdentifier().getLabel()).isEqualTo("Grade 11 MATH");
