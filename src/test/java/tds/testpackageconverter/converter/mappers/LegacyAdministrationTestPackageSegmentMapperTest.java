@@ -22,10 +22,10 @@ public class LegacyAdministrationTestPackageSegmentMapperTest extends LegacyTest
         Assessment assessment = mockFixedMultiSegmentPackage.getAssessments().get(0);
         Map<String, Long> formKeyMap = ImmutableMap.<String, Long>builder()
                 .put("PracTest::MG6::S1::FA17::ENU", 949L)
-                .put("PracTest::MG6::S1::FA17::BRA", 950L)
+                .put("PracTest::MG6::S1::FA17::BRL", 950L)
                 .put("PracTest::MG6::S1::FA17::SPA", 951L)
                 .put("PracTest::MG6::S2::FA17::ENU", 952L)
-                .put("PracTest::MG6::S2::FA17::BRA", 953L)
+                .put("PracTest::MG6::S2::FA17::BRL", 953L)
                 .put("PracTest::MG6::S2::FA17::SPA", 954L)
                 .build();
         List<Adminsegment> adminSegments = LegacyAdministrationTestPackageSegmentMapper.mapAdminSegments(mockFixedMultiSegmentPackage, assessment, formKeyMap);
