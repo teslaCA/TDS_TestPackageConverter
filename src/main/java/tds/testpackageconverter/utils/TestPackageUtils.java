@@ -19,8 +19,10 @@ public class TestPackageUtils {
     }
 
     public static String parseCohort(final String formKey) {
+        // <segment key>:<cohort>-<language code>
         // e.g., SBAC-OP-FIXED-G8E-Perf-BrainWorks-Spring-2015-2016:SleepDream-ENU - the cohort is "SleepDream"
-        return formKey.substring(formKey.indexOf(":") + 1, formKey.lastIndexOf("-"));
+        final String cohortAndLanguageCode = formKey.substring(formKey.indexOf(":") + 1);
+        return cohortAndLanguageCode.substring(0, cohortAndLanguageCode.indexOf("-"));
     }
 
     public static String parseIdFromKey(final String key) {

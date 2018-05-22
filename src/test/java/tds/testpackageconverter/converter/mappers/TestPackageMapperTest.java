@@ -6,7 +6,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import tds.common.Algorithm;
 import tds.testpackage.model.*;
 import tds.testpackageconverter.converter.TestPackageBaseTest;
-import tds.testpackageconverter.converter.mappers.TestPackageMapper;
+import tds.testpackageconverter.utils.TestPackageUtils;
 
 import java.text.ParseException;
 import java.util.Arrays;
@@ -16,6 +16,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestPackageMapperTest extends TestPackageBaseTest {
+    @Test
+    public void shouldParseCohort() throws ParseException {
+        // Default-ENU-Braille
+        String cohort = TestPackageUtils.parseCohort("(SBAC_PT)SBAC-Perf-MATH-7-Fall-2017-2018:Default-ENU-Braille-1");
+        assertThat(cohort).isEqualToIgnoringCase("Default");
+    }
+
     @Test
     public void shouldConvertFixedFormTestPackage() throws ParseException {
         assertThat(mockPerfAdminLegacyTestPackage).isNotNull();

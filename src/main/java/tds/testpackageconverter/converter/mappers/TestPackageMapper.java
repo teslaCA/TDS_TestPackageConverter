@@ -13,6 +13,7 @@ import java.text.ParseException;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * A class responsible for mapping between legacy (AIR) and Fairway developed test packages
@@ -168,6 +169,68 @@ public class TestPackageMapper {
         return segmentBlueprintElements;
     }
 
+    // Add new item to an existing list of items.
+    // Used in the merging of segment forms.
+    // If the new item already exists in the item list,
+    // only add the new item's presentation to the existing item in the list.
+    private static List<Item> addItem(final List<Item> items, final Item newItem) {
+        final Optional<Item> duplicateOptional = items.stream().filter(i -> i.getId().equals(newItem.getId())).findFirst();
+        if (!duplicateOptional.isPresent()) {
+            items.add(newItem);
+            return items;
+        }
+
+        return items.stream().map(item -> {
+            if (item.getId().equals(newItem.getId())) {
+                final Set<Presentation> presentations = new HashSet<>(item.getPresentations());
+                presentations.addAll(newItem.getPresentations());
+                return item.withPresentations(new ArrayList<>(presentations));
+            }
+            return item;
+        }).collect(Collectors.toList());
+    }
+
+    // Given two lists of items, merge them into one list of items.
+    // If items have the same ids, combine them into one item.
+    private static List<Item> mergeItems(final List<Item> acc, final LinkedList<Item> items) {
+        if (!items.isEmpty()) {
+            final Item head = items.pop();
+            return mergeItems(addItem(acc, head), items);
+        }
+        return acc;
+    }
+
+
+    private static ItemGroup mergeItemGroups(final ItemGroup itemGroup, final ItemGroup itemGroup1) {
+        final List<Item> mergedItems = mergeItems(itemGroup.items(), new LinkedList<>(itemGroup1.items()));
+        return itemGroup.withItems(mergedItems);
+    }
+
+    private static SegmentForm mergeSegmentForms(
+        final SegmentForm existingSegmentForm,
+        final SegmentForm newSegmentForm) {
+
+        final Set<Presentation> presentationSet = new HashSet<>(existingSegmentForm.getPresentations());
+        presentationSet.addAll(newSegmentForm.getPresentations());
+
+        final List<ItemGroup> mergedItemGroups = existingSegmentForm.itemGroups().stream().map(itemGroup0 -> {
+            final Optional<ItemGroup> itemGroupOptional = newSegmentForm.itemGroups().stream().filter(itemGroup1 -> itemGroup0.getId().equals(itemGroup1.getId())).findFirst();
+            return itemGroupOptional.map(duplicate -> mergeItemGroups(itemGroup0, duplicate)).orElse(itemGroup0);
+        }).collect(Collectors.toList());
+
+        return existingSegmentForm.toBuilder().
+            setPresentations(new ArrayList<>(presentationSet)).
+            setItemGroups(mergedItemGroups).
+            build();
+    }
+
+
+    private static List<SegmentForm> mergeDuplicateSegmentForms(final List<SegmentForm> segmentForms) {
+        final Map<String, List<SegmentForm>> segmentFormsByCohort = segmentForms.stream().collect(Collectors.groupingBy(SegmentForm::getCohort));
+        final Stream<Optional<SegmentForm>> mergedSegmentForms = segmentFormsByCohort.entrySet().stream().map(entry -> entry.getValue().stream().reduce(TestPackageMapper::mergeSegmentForms));
+        return mergedSegmentForms.filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList());
+    }
+
     private static List<SegmentForm> mapSegmentForms(final List<Segmentform> legacySegmentForms, final List<Testform> testForms,
                                                      final Itempool itemPool, final Map<String, String> bluePrintIdsToNames) {
         List<SegmentForm> segmentForms = new ArrayList<>();
@@ -203,7 +266,8 @@ public class TestPackageMapper {
                     .setItemGroups(mapItemGroups(formPartition.getItemgroup(), itemPool, bluePrintIdsToNames, presentation))
                     .build());
         }
-        return segmentForms;
+
+        return mergeDuplicateSegmentForms(segmentForms);
     }
 
     private static List<ItemGroup> mapItemGroups(final List<Itemgroup> itemGroups, final Itempool itemPool,
