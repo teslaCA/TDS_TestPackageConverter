@@ -51,8 +51,7 @@ public class TestPackageServiceImplTest extends TestPackageBaseTest {
         final String testPackageName = "converted-test-package.xml";
         when(mockMapper.readValue(isA(InputStream.class), eq(Testspecification.class)))
                 .thenReturn(mockPerfAdminLegacyTestPackage);
-        final boolean result = service.extractAndConvertTestSpecifications(testPackageName, mockFile);
-        assertThat(result).isFalse();
+        service.extractAndConvertTestSpecifications(testPackageName, mockFile);
         verify(mockMapper, times(2)).readValue(isA(InputStream.class), eq(Testspecification.class));
     }
 
