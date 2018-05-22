@@ -56,7 +56,11 @@ public class TestPackageUtils {
 
     public static String parseVersion(final BigDecimal version) {
         final String rawVersion = String.valueOf(version);
-        return rawVersion.substring(0, rawVersion.indexOf(".")); // ignore the decimal
+        if (rawVersion.contains(".")) {
+            return rawVersion.substring(0, rawVersion.indexOf(".")); // ignore the decimal
+        }
+
+        return rawVersion;
     }
 
     public static String formatDate(final String publishDate) throws ParseException {

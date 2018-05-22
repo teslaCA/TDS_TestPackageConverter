@@ -34,7 +34,7 @@ public class TestPackageMapperTest extends TestPackageBaseTest {
         assertThat(testPackage.getPublishDate()).isNotNull();
         assertThat(testPackage.getSubject()).isEqualTo("MATH");
         assertThat(testPackage.getType()).isEqualTo("summative");
-        assertThat(testPackage.getVersion()).isEqualTo("1");
+        assertThat(testPackage.getVersion()).isEqualTo("8185");
         assertThat(testPackage.getBankKey()).isEqualTo(187);
         assertThat(testPackage.getAcademicYear()).isNotNull();
         // Assessments
@@ -108,7 +108,7 @@ public class TestPackageMapperTest extends TestPackageBaseTest {
         assertThat(testPackage.getPublishDate()).isNotNull();
         assertThat(testPackage.getSubject()).isEqualTo("MATH");
         assertThat(testPackage.getType()).isEqualTo("summative");
-        assertThat(testPackage.getVersion()).isEqualTo("1");
+        assertThat(testPackage.getVersion()).isEqualTo("8185");
         assertThat(testPackage.getBankKey()).isEqualTo(187);
         assertThat(testPackage.getAcademicYear()).isNotNull();
         // Assessments
@@ -174,7 +174,7 @@ public class TestPackageMapperTest extends TestPackageBaseTest {
         assertThat(testPackage.getPublishDate()).isNotNull();
         assertThat(testPackage.getSubject()).isEqualTo("MATH");
         assertThat(testPackage.getType()).isEqualTo("summative");
-        assertThat(testPackage.getVersion()).isEqualTo("1");
+        assertThat(testPackage.getVersion()).isEqualTo("8185");
         assertThat(testPackage.getBankKey()).isEqualTo(187);
         assertThat(testPackage.getAcademicYear()).isNotNull();
 
@@ -297,7 +297,7 @@ public class TestPackageMapperTest extends TestPackageBaseTest {
         assertThat(testPackage.getPublishDate()).isNotNull();
         assertThat(testPackage.getSubject()).isEqualTo("MATH");
         assertThat(testPackage.getType()).isEqualTo("summative");
-        assertThat(testPackage.getVersion()).isEqualTo("1");
+        assertThat(testPackage.getVersion()).isEqualTo("8185");
         assertThat(testPackage.getBankKey()).isEqualTo(187);
         assertThat(testPackage.getAcademicYear()).isNotNull();
 

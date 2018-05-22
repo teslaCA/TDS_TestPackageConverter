@@ -60,7 +60,7 @@ public class TestPackageMapper {
         Testspecification testSpecification = adminTestPackages.get(0);
         return TestPackage.builder()
                 /* Attributes */
-                .setVersion(TestPackageUtils.parseVersion(testSpecification.getVersion()))
+                .setVersion(TestPackageUtils.parseVersion(testSpecification.getIdentifier().getVersion()))
                 .setPublisher(testSpecification.getPublisher())
                 .setPublishDate(TestPackageUtils.formatDate(testSpecification.getPublishdate()))
                 // This value is not found in the legacy spec, but is required in the new spec
