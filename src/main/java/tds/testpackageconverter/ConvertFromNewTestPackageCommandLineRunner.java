@@ -61,7 +61,7 @@ public class ConvertFromNewTestPackageCommandLineRunner implements CommandLineRu
             try {
                 service.convertTestPackage(testPackagePath);
                 System.out.println(String.format("The test package '%s' was successfully converted", testPackagePath));
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 System.out.println(String.format("The test package '%s' was not successfully created", testPackagePath));
 
                 if (cmd.hasOption(VERBOSE_FLAG)) {

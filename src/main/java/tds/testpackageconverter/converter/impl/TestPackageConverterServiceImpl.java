@@ -87,6 +87,7 @@ public class TestPackageConverterServiceImpl implements TestPackageConverterServ
             try {
                 legacyXmlMapper.writeValue(administrationFile, testSpecification);
                 administrationFile.createNewFile();
+                System.out.println("Successfully created the administration testspecification file " + administrationOutputFilename);
             } catch (IOException e) {
                 log.error("An exception occurred while creating the file: {}", administrationOutputFilename, e);
                 throw new RuntimeException(e);
