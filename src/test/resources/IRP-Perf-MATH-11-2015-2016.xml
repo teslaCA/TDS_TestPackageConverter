@@ -1,4 +1,4 @@
-<TestPackage publisher="SBAC_PT" publishDate="2015-08-19T22:44:00Z" subject="MATH" type="summative" version="1" bankKey="187" academicYear="2018">
+<TestPackage publisher="SBAC_PT" publishDate="2015-08-19T22:44:00Z" subject="MATH" type="summative" version="8185" bankKey="187" academicYear="2018">
   <Blueprint>
     <BlueprintElement id="SBAC-IRP-Perf-MATH-11" type="test"/>
     <BlueprintElement id="2" type="claim">
