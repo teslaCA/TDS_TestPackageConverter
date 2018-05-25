@@ -59,6 +59,7 @@ public class TestPackageMapper {
         // bank key and publisher information
         Testspecification testSpecification = adminTestPackages.get(0);
         return TestPackage.builder()
+                .setId(testPackageName.replace(".xml", ""))
                 /* Attributes */
                 .setVersion(TestPackageUtils.parseVersion(testSpecification.getIdentifier().getVersion()))
                 .setPublisher(testSpecification.getPublisher())
@@ -326,7 +327,7 @@ public class TestPackageMapper {
                             .setPresentations((presentation != null)
                                     ? Collections.singletonList(presentation)
                                     : mapPresentations(item.getPoolproperty()))
-                            .setItemScoreDimension(mapItemScoreDimensions(item.getItemscoredimension().get(0)))
+                            .setItemScoreDimensions(mapItemScoreDimensions(item.getItemscoredimension()))
                             .setBlueprintReferences(mapBlueprintReferences(item.getBpref(), bluePrintIdsToNames))
                             .build();
                 })
@@ -342,21 +343,23 @@ public class TestPackageMapper {
                 .collect(Collectors.toList());
     }
 
-    private static ItemScoreDimension mapItemScoreDimensions(final Itemscoredimension legacyISD) {
-        return ItemScoreDimension.builder()
-                .setMeasurementModel(legacyISD.getMeasurementmodel())
-                .setScorePoints(legacyISD.getScorepoints().intValue())
-                .setWeight(legacyISD.getWeight())
-                .setDimension(legacyISD.getDimension() == null ? Optional.empty() : Optional.of(legacyISD.getDimension()))
-                .setItemScoreParameters(
-                        // map the legacy item score params
-                        legacyISD.getItemscoreparameter().stream()
-                                .map(param -> ItemScoreParameter.builder()
-                                        .setMeasurementParameter(param.getMeasurementparameter())
-                                        .setValue(param.getValue())
-                                        .build())
-                                .collect(Collectors.toList()))
-                .build();
+    private static List<ItemScoreDimension> mapItemScoreDimensions(final List<Itemscoredimension> legacyISDs) {
+        return legacyISDs.stream().map(
+                legacyISD -> ItemScoreDimension.builder()
+                        .setMeasurementModel(legacyISD.getMeasurementmodel())
+                        .setScorePoints(legacyISD.getScorepoints().intValue())
+                        .setWeight(legacyISD.getWeight())
+                        .setDimension(legacyISD.getDimension() == null ? Optional.empty() : Optional.of(legacyISD.getDimension()))
+                        .setItemScoreParameters(
+                                // map the legacy item score params
+                                legacyISD.getItemscoreparameter().stream()
+                                        .map(param -> ItemScoreParameter.builder()
+                                                .setMeasurementParameter(param.getMeasurementparameter())
+                                                .setValue(param.getValue())
+                                                .build())
+                                        .collect(Collectors.toList()))
+                        .build()
+        ).collect(Collectors.toList());
     }
 
     private static List<Presentation> mapPresentations(final List<Poolproperty> poolProperties) {

@@ -103,32 +103,36 @@ public class LegacyAdministrationTestPackageItemPoolMapper {
                 testItem.getPassageref().add(passageRef);
             }
 
-            testItem.getItemscoredimension().add(mapItemScoreDimensions(item.getItemScoreDimension()));
+            testItem.getItemscoredimension().addAll(mapItemScoreDimensions(item.getItemScoreDimensions()));
 
             return testItem;
         }).collect(Collectors.toList());
     }
 
-    private static Itemscoredimension mapItemScoreDimensions(final ItemScoreDimension itemScoreDimension) {
-        final Itemscoredimension legacyItemScoreDimension = new Itemscoredimension();
-        legacyItemScoreDimension.setMeasurementmodel(itemScoreDimension.getMeasurementModel());
-        legacyItemScoreDimension.setScorepoints(BigInteger.valueOf(itemScoreDimension.getScorePoints()));
-        legacyItemScoreDimension.setWeight((float) itemScoreDimension.getWeight());
+    private static List<Itemscoredimension> mapItemScoreDimensions(final List<ItemScoreDimension> itemScoreDimensions) {
+        return itemScoreDimensions.stream().map(
+                itemScoreDimension -> {
+                    final Itemscoredimension legacyItemScoreDimension = new Itemscoredimension();
+                    legacyItemScoreDimension.setMeasurementmodel(itemScoreDimension.getMeasurementModel());
+                    legacyItemScoreDimension.setScorepoints(BigInteger.valueOf(itemScoreDimension.getScorePoints()));
+                    legacyItemScoreDimension.setWeight((float) itemScoreDimension.getWeight());
 
-        if (itemScoreDimension.getDimension().isPresent()) {
-            legacyItemScoreDimension.setDimension(itemScoreDimension.getDimension().get());
-        }
+                    if (itemScoreDimension.getDimension().isPresent()) {
+                        legacyItemScoreDimension.setDimension(itemScoreDimension.getDimension().get());
+                    }
 
-        final List<Itemscoreparameter> legacyParams = legacyItemScoreDimension.getItemscoreparameter();
-        itemScoreDimension.itemScoreParameters().forEach(
-                param -> {
-                    Itemscoreparameter legacyParam = new Itemscoreparameter();
-                    legacyParam.setMeasurementparameter(param.getMeasurementParameter());
-                    legacyParam.setValue((float) param.getValue());
-                    legacyParams.add(legacyParam);
+                    final List<Itemscoreparameter> legacyParams = legacyItemScoreDimension.getItemscoreparameter();
+                    itemScoreDimension.itemScoreParameters().forEach(
+                            param -> {
+                                final Itemscoreparameter legacyParam = new Itemscoreparameter();
+                                legacyParam.setMeasurementparameter(param.getMeasurementParameter());
+                                legacyParam.setValue((float) param.getValue());
+                                legacyParams.add(legacyParam);
+                            }
+                    );
+
+                    return legacyItemScoreDimension;
                 }
-        );
-
-        return legacyItemScoreDimension;
+        ).collect(Collectors.toList());
     }
 }
