@@ -28,7 +28,7 @@ public interface TestPackageConverterService {
      * @throws IOException    If there is an error reading any of the test packages
      * @throws ParseException If there is an error parsing any of the test packages
      */
-    void convertTestSpecifications(String testPackageName, List<String> adminAndScoringFileNames) throws IOException, ParseException;
+    void convertTestSpecifications(final String testPackageName, final List<String> adminAndScoringFileNames) throws IOException, ParseException;
 
     /**
      * Converts one or more legacy test specifications to the new Test Package format
@@ -40,8 +40,13 @@ public interface TestPackageConverterService {
      * @throws IOException    If there is an error reading any of the test packages
      * @throws ParseException If there is an error parsing any of the test packages
      */
-    void convertTestSpecifications(String testPackageName, List<String> adminAndScoringFileNames,
-                                      String diffFileName) throws IOException, ParseException;
+    void convertTestSpecifications(final String testPackageName, final List<String> adminAndScoringFileNames,
+                                   final String diffFileName) throws IOException, ParseException;
 
-    void convertTestPackage(final TestPackage testPackage);
+    /**
+     * Converts a {@link TestPackage} into one or more legacy administration packages and potentially a scoring package
+     *
+     * @param testPackagePath The path of the {@link TestPackage} to unmarshall and convert
+     */
+    void convertTestPackage(final String testPackagePath);
 }

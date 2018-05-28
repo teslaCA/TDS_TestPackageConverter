@@ -3,17 +3,17 @@ package tds.testpackageconverter.converter.mappers;
 import tds.common.Algorithm;
 import tds.testpackage.legacy.model.*;
 import tds.testpackage.model.*;
+import tds.testpackageconverter.utils.TestPackageUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class LegacyAdministrationTestPackageItemPoolMapper {
     public static Itempool mapItemPool(final TestPackage testPackage, final Assessment assessment) {
         final Itempool itempool = new Itempool();
-
-
         itempool.getPassage().addAll(mapPassages(testPackage, assessment));
         itempool.getTestitem().addAll(mapTestItems(testPackage, assessment));
         return itempool;
@@ -48,6 +48,7 @@ public class LegacyAdministrationTestPackageItemPoolMapper {
     }
 
     private static List<Testitem> mapTestItems(final TestPackage testPackage, final Assessment assessment) {
+        final Map<String, BlueprintElement> blueprintMap = testPackage.getBlueprintMap();
         final List<Item> items = assessment.getSegments().stream()
                 .flatMap(segment -> {
                     if (segment.getAlgorithmType().equalsIgnoreCase(Algorithm.FIXED_FORM.getType())) {
@@ -76,8 +77,13 @@ public class LegacyAdministrationTestPackageItemPoolMapper {
             final List<Bpref> bpRefs = testItem.getBpref();
 
             item.getBlueprintReferences().forEach(bpRef -> {
-                Bpref ref = new Bpref();
-                ref.setContent(bpRef.getIdRef());
+                final Bpref ref = new Bpref();
+                final BlueprintElement bpEl = blueprintMap.get(bpRef.getIdRef());
+                if (bpEl.getType().equals("test") || bpEl.getType().equals("segment")) {
+                    ref.setContent(TestPackageUtils.getAssessmentKey(testPackage, bpRef.getIdRef()));
+                } else {
+                    ref.setContent(TestPackageUtils.getBlueprintKeyFromId(bpEl, testPackage.getPublisher()));
+                }
                 bpRefs.add(ref);
             });
 
