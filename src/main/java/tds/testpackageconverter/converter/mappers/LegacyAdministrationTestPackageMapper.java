@@ -99,7 +99,10 @@ public class LegacyAdministrationTestPackageMapper {
         final int generatedKey = (int) UUID.randomUUID().getMostSignificantBits();
         assessment.getSegments()
                 .forEach(segment -> segment.segmentForms()
-                        .forEach(form -> formKeyMap.put(form.getId(), (long) generatedKey))
+                        .forEach(form -> form.getPresentations()
+                            .forEach(presentation ->
+                                    formKeyMap.put(String.format("%s::%s", form.getId(), presentation.getCode()), (long) generatedKey))
+                        )
                 );
         return formKeyMap;
     }

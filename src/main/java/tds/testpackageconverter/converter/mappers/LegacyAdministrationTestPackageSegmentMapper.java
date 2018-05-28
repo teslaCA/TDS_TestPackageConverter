@@ -35,8 +35,12 @@ public class LegacyAdministrationTestPackageSegmentMapper {
                 segmentBpEl.setBpelementid(TestPackageUtils.getBlueprintKeyFromId(el, testPackage.getPublisher()));
                 segmentBpEl.setMinopitems(BigInteger.valueOf(segmentBlueprintElement.getMinExamItems()));
                 segmentBpEl.setMaxopitems(BigInteger.valueOf(segmentBlueprintElement.getMaxExamItems()));
-                segmentBpEl.setMinftitems(BigInteger.valueOf(segmentBlueprintElement.minFieldTestItems()));
-                segmentBpEl.setMaxftitems(BigInteger.valueOf(segmentBlueprintElement.maxFieldTestItems()));
+                if (segmentBlueprintElement.minFieldTestItems() > 0) {
+                    segmentBpEl.setMinftitems(BigInteger.valueOf(segmentBlueprintElement.minFieldTestItems()));
+                }
+                if (segmentBlueprintElement.maxFieldTestItems() > 0) {
+                    segmentBpEl.setMaxftitems(BigInteger.valueOf(segmentBlueprintElement.maxFieldTestItems()));
+                }
                 segmentBpElements.add(segmentBpEl);
             });
 
@@ -86,17 +90,18 @@ public class LegacyAdministrationTestPackageSegmentMapper {
             itemGroupIdentifier.setUniqueid(itemGroupId);
             itemGroupIdentifier.setName(itemGroupId);
             itemGroupIdentifier.setVersion(new BigDecimal(version));
+            legacyItemGroup.setIdentifier(itemGroupIdentifier);
 
             mapPassageRef(itemGroup, legacyItemGroup);
 
             final List<Groupitem> groupItems = legacyItemGroup.getGroupitem();
 
             // Map items
-            for (int itemPositionInGroup = 1; itemPositionInGroup < itemGroup.items().size(); itemPositionInGroup++) {
+            for (int itemPositionInGroup = 0; itemPositionInGroup < itemGroup.items().size(); itemPositionInGroup++) {
                 final Item item = itemGroup.items().get(itemPositionInGroup);
                 final Groupitem groupItem = new Groupitem();
                 groupItem.setItemid(item.getKey());
-                groupItem.setGroupposition(String.valueOf(itemPositionInGroup));
+                groupItem.setGroupposition(String.valueOf(itemPositionInGroup + 1));
                 groupItem.setAdminrequired(String.valueOf(item.administrationRequired()));
                 groupItem.setResponserequired(String.valueOf(item.responseRequired()));
                 groupItem.setIsactive(String.valueOf(item.active()));
@@ -126,8 +131,8 @@ public class LegacyAdministrationTestPackageSegmentMapper {
         final List<Itemselectionparameter> parameters = segment.segmentBlueprint().stream()
                 .filter(segmentBlueprintElement -> !segmentBlueprintElement.itemSelection().isEmpty())
                 .map(segmentBlueprintElement -> {
-                    Itemselectionparameter param = new Itemselectionparameter();
-                    BlueprintElement bpEl = blueprintMap.get(segmentBlueprintElement.getIdRef());
+                    final Itemselectionparameter param = new Itemselectionparameter();
+                    final BlueprintElement bpEl = blueprintMap.get(segmentBlueprintElement.getIdRef());
                     if (bpEl.getType().equals("test") || bpEl.getType().equals("segment")) {
                         param.setBpelementid(segment.getKey());
                     } else {

@@ -128,11 +128,6 @@ public class LegacyAdministrationTestPackageBlueprintMapper {
                     bpElement.setOpitemcount(BigInteger.valueOf(segmentCounts.getExamItemCount()));
                     bpElement.setFtitemcount(BigInteger.valueOf(segmentCounts.getFieldTestItemCount()));
 
-                    if (blueprintElement.getParentBlueprintElement().isPresent()) {
-                        bpElement.setParentid(TestPackageUtils.getBlueprintKeyFromId(blueprintElement.getParentBlueprintElement().get(),
-                                testPackage.getPublisher()));
-                    }
-
                     final Identifier bpElementIdentifier = new Identifier();
                     bpElementIdentifier.setName(blueprintElement.getId());
                     bpElementIdentifier.setUniqueid(getBlueprintKeyFromId(blueprintElement, testPackage.getPublisher()));
@@ -217,7 +212,8 @@ public class LegacyAdministrationTestPackageBlueprintMapper {
             bpElement.setFtitemcount(BigInteger.valueOf(segmentCounts != null ? segmentCounts.getFieldTestItemCount() : 0));
 
             if (blueprintElement.getParentBlueprintElement().isPresent()) {
-                bpElement.setParentid(blueprintElement.getParentBlueprintElement().get().getId());
+                bpElement.setParentid(TestPackageUtils.getBlueprintKeyFromId(blueprintElement.getParentBlueprintElement().get(),
+                        testPackage.getPublisher()));
             }
 
             final Identifier bpElementIdentifier = new Identifier();

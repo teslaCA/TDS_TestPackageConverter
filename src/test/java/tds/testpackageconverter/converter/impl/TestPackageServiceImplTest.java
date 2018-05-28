@@ -19,7 +19,6 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.util.Arrays;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.*;
@@ -40,7 +39,7 @@ public class TestPackageServiceImplTest extends TestPackageBaseTest {
     private File mockFile;
 
     @Before
-    public void setup() throws JsonProcessingException {
+    public void setup() {
         when(mockConfiguration.getLegacyTestSpecXmlMapper()).thenReturn(mockMapper);
         service = new TestPackageConverterServiceImpl(mockConfiguration);
         mockFile = new File("src/test/resources/legacy-combined-testspec.zip");
@@ -85,5 +84,7 @@ public class TestPackageServiceImplTest extends TestPackageBaseTest {
         final String testPackageName = "converted-test-package.xml";
         File file = new File("src/test/resources/textfile.zip");
         service.extractAndConvertTestSpecifications(testPackageName, file);
-    };
+    }
+
+    ;
 }

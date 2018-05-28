@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class LegacyAdministrationTestPackageBlueprintMapperTest extends LegacyTestPackageBaseTest {
 
     @Test
-    public void shouldConvertTestPackageBlueprintSuccessfullyForSingleAssessment() {
+    public void shouldConvertCATTestPackageBlueprintSuccessfullyForSingleAssessment() {
         Assessment assessment = mockCATAdminLegacyTestPackage.getAssessments().get(0);
         Testblueprint convertedBlueprint = LegacyAdministrationTestPackageBlueprintMapper.mapBlueprint(mockCATAdminLegacyTestPackage, assessment);
         assertThat(convertedBlueprint).isNotNull();
@@ -103,7 +103,7 @@ public class LegacyAdministrationTestPackageBlueprintMapperTest extends LegacyTe
         assertThat(targetEl.getMinopitems()).isEqualTo(0);
         assertThat(targetEl.getOpitemcount()).isEqualTo(1);
         assertThat(targetEl.getFtitemcount()).isEqualTo(0);
-        assertThat(targetEl.getParentid()).isEqualTo("1|A-REI|H");
+        assertThat(targetEl.getParentid()).isEqualTo("SBAC_PT-1|A-REI|H");
     }
 
     @Test
@@ -158,5 +158,78 @@ public class LegacyAdministrationTestPackageBlueprintMapperTest extends LegacyTe
         assertThat(segment2BpEl.getOpitemcount()).isEqualTo(0);
         assertThat(segment2BpEl.getFtitemcount()).isEqualTo(22);
         assertThat(segment2BpEl.getParentid()).isNull();
+    }
+
+    @Test
+    public void shouldConvertFixedFormTestPackageBlueprintSuccessfullyForSingleAssessment() {
+        Assessment assessment = mockPerfAdminLegacyTestPackage.getAssessments().get(0);
+        Testblueprint convertedBlueprint = LegacyAdministrationTestPackageBlueprintMapper.mapBlueprint(mockPerfAdminLegacyTestPackage, assessment);
+        assertThat(convertedBlueprint).isNotNull();
+
+        assertThat(convertedBlueprint.getBpelement()).hasSize(13);
+
+        // Get test blueprint
+        Bpelement testBpEl = convertedBlueprint.getBpelement().stream()
+                .filter(bpEl -> bpEl.getElementtype().equalsIgnoreCase("test"))
+                .findFirst()
+                .get();
+
+        assertThat(testBpEl.getIdentifier().getName()).isEqualTo(assessment.getId());
+        assertThat(testBpEl.getIdentifier().getUniqueid()).isEqualTo(assessment.getKey());
+        assertThat(testBpEl.getMaxftitems()).isEqualTo(0);
+        assertThat(testBpEl.getMinftitems()).isEqualTo(0);
+        assertThat(testBpEl.getMaxopitems()).isEqualTo(7);
+        assertThat(testBpEl.getMinopitems()).isEqualTo(7);
+        assertThat(testBpEl.getOpitemcount()).isEqualTo(2);
+        assertThat(testBpEl.getFtitemcount()).isEqualTo(0);
+        assertThat(testBpEl.getParentid()).isNull();
+
+        // Get segment blueprint
+        Bpelement segmentBpEl = convertedBlueprint.getBpelement().stream()
+                .filter(bpEl -> bpEl.getElementtype().equalsIgnoreCase("segment"))
+                .findFirst()
+                .get();
+
+        assertThat(segmentBpEl.getIdentifier().getName()).isEqualTo(assessment.getId());
+        assertThat(segmentBpEl.getIdentifier().getUniqueid()).isEqualTo(assessment.getKey());
+        assertThat(segmentBpEl.getMaxftitems()).isEqualTo(0);
+        assertThat(segmentBpEl.getMinftitems()).isEqualTo(0);
+        assertThat(segmentBpEl.getMaxopitems()).isEqualTo(7);
+        assertThat(segmentBpEl.getMinopitems()).isEqualTo(7);
+        assertThat(segmentBpEl.getOpitemcount()).isEqualTo(2);
+        assertThat(segmentBpEl.getFtitemcount()).isEqualTo(0);
+        assertThat(segmentBpEl.getParentid()).isNull();
+
+        //Get a claim
+        Bpelement claimEl = convertedBlueprint.getBpelement().stream()
+                .filter(bpEl -> bpEl.getIdentifier().getName().equalsIgnoreCase("2"))
+                .findFirst()
+                .get();
+
+        assertThat(claimEl.getElementtype()).isEqualTo("strand");
+        assertThat(claimEl.getIdentifier().getUniqueid()).isEqualTo("SBAC_PT-2");
+        assertThat(claimEl.getMaxftitems()).isEqualTo(0);
+        assertThat(claimEl.getMinftitems()).isEqualTo(0);
+        assertThat(claimEl.getMaxopitems()).isEqualTo(7);
+        assertThat(claimEl.getMinopitems()).isEqualTo(0);
+        assertThat(claimEl.getOpitemcount()).isEqualTo(1);
+        assertThat(claimEl.getFtitemcount()).isEqualTo(0);
+        assertThat(claimEl.getParentid()).isNull();
+
+        //Get a target
+        Bpelement targetEl = convertedBlueprint.getBpelement().stream()
+                .filter(bpEl -> bpEl.getIdentifier().getName().equalsIgnoreCase("2|F-IF|A"))
+                .findFirst()
+                .get();
+
+        assertThat(targetEl.getElementtype()).isEqualTo("contentlevel");
+        assertThat(targetEl.getIdentifier().getUniqueid()).isEqualTo("SBAC_PT-2|F-IF|A");
+        assertThat(targetEl.getMaxftitems()).isEqualTo(0);
+        assertThat(targetEl.getMinftitems()).isEqualTo(0);
+        assertThat(targetEl.getMaxopitems()).isEqualTo(7);
+        assertThat(targetEl.getMinopitems()).isEqualTo(0);
+        assertThat(targetEl.getOpitemcount()).isEqualTo(1);
+        assertThat(targetEl.getFtitemcount()).isEqualTo(0);
+        assertThat(targetEl.getParentid()).isEqualTo("SBAC_PT-2|F-IF");
     }
 }

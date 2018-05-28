@@ -15,8 +15,6 @@ import tds.testpackage.model.TestPackage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,11 +24,13 @@ import java.util.zip.ZipFile;
 @Service
 public class TestPackageConverterServiceImpl implements TestPackageConverterService {
     private final Logger log = LoggerFactory.getLogger(TestPackageConverterServiceImpl.class);
-    private final XmlMapper xmlMapper;
+    private final XmlMapper legacyXmlMapper;
+    private final XmlMapper testPackageMapper;
 
     @Autowired
     public TestPackageConverterServiceImpl(final TestPackageObjectMapperConfiguration testPackageObjectMapperConfiguration) {
-        this.xmlMapper = testPackageObjectMapperConfiguration.getLegacyTestSpecXmlMapper();
+        this.legacyXmlMapper = testPackageObjectMapperConfiguration.getLegacyTestSpecXmlMapper();
+        this.testPackageMapper = testPackageObjectMapperConfiguration.getXmlMapper();
     }
 
     @Override
@@ -49,7 +49,7 @@ public class TestPackageConverterServiceImpl implements TestPackageConverterServ
         }
 
         TestPackage testPackage = TestPackageMapper.toNew(testPackageName, specifications);
-        xmlMapper.writeValue(convertedTestPackageFile, testPackage);
+        legacyXmlMapper.writeValue(convertedTestPackageFile, testPackage);
 
         convertedTestPackageFile.createNewFile();
     }
@@ -61,31 +61,54 @@ public class TestPackageConverterServiceImpl implements TestPackageConverterServ
 
     @Override
     public void convertTestSpecifications(final String testPackageName, final List<String> adminAndScoringFileNames,
-                                             final String diffFileName) throws IOException, ParseException {
+                                          final String diffFileName) throws IOException, ParseException {
         File convertedTestPackageFile = new File(testPackageName);
 
         List<Testspecification> specifications = adminAndScoringFileNames.stream()
-                .map(this::read)
+                .map(this::readTestSpecification)
                 .collect(Collectors.toList());
 
         TestPackage testPackage = diffFileName == null
                 ? TestPackageMapper.toNew(testPackageName, specifications)
                 : TestPackageMapper.toNew(testPackageName, specifications); //TODO: Update this conditional to include the diff
-        xmlMapper.writeValue(convertedTestPackageFile, testPackage);
+        legacyXmlMapper.writeValue(convertedTestPackageFile, testPackage);
 
         convertedTestPackageFile.createNewFile();
     }
 
     @Override
-    public void convertTestPackage(final TestPackage testPackage) {
-        List<Testspecification> administrationPackages = LegacyAdministrationTestPackageMapper.fromNew(testPackage);
+    public void convertTestPackage(final String testPackagePath) {
+        final TestPackage testPackage = readTestPackage(testPackagePath);
+        final List<Testspecification> administrationPackages = LegacyAdministrationTestPackageMapper.fromNew(testPackage);
+
+        administrationPackages.forEach(testSpecification -> {
+            final String administrationOutputFilename = testSpecification.getIdentifier().getUniqueid() + ".xml";
+            final File administrationFile = new File(administrationOutputFilename);
+            try {
+                legacyXmlMapper.writeValue(administrationFile, testSpecification);
+                administrationFile.createNewFile();
+                System.out.println("Successfully created the administration testspecification file " + administrationOutputFilename);
+            } catch (IOException e) {
+                log.error("An exception occurred while creating the file: {}", administrationOutputFilename, e);
+                throw new RuntimeException(e);
+            }
+        });
     }
 
-    private Testspecification read(final String fileName) {
+    private Testspecification readTestSpecification(final String filePath) {
         try {
-            return xmlMapper.readValue(new File(fileName), Testspecification.class);
+            return legacyXmlMapper.readValue(new File(filePath), Testspecification.class);
         } catch (IOException e) {
-            log.error("An exception occurred while reading the file: {}", fileName, e);
+            log.error("An exception occurred while reading the file: {}", filePath, e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    private TestPackage readTestPackage(final String filePath) {
+        try {
+            return testPackageMapper.readValue(new File(filePath), TestPackage.class);
+        } catch (IOException e) {
+            log.error("An exception occurred while reading the file: {}", filePath, e);
             throw new RuntimeException(e);
         }
     }
@@ -94,7 +117,7 @@ public class TestPackageConverterServiceImpl implements TestPackageConverterServ
         try {
             System.out.println("Reading file in zip: " + entry.getName());
             InputStream inputStream = zipFile.getInputStream(entry);
-            return xmlMapper.readValue(inputStream, Testspecification.class);
+            return legacyXmlMapper.readValue(inputStream, Testspecification.class);
         } catch (IOException e) {
             log.error("An exception occurred: {}", e);
             throw new RuntimeException(e);
