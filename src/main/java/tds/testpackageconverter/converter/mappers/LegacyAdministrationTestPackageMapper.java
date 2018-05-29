@@ -8,6 +8,7 @@ import tds.testpackage.legacy.model.Property;
 import tds.testpackage.legacy.model.Testspecification;
 import tds.testpackage.model.Assessment;
 import tds.testpackage.model.TestPackage;
+import tds.testpackageconverter.utils.TestPackageUtils;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -97,11 +98,13 @@ public class LegacyAdministrationTestPackageMapper {
         final Map<String, Long> formKeyMap = new HashMap<>();
         // Down cast the auto-generated long to an int so its a bit more human readable;
         final int generatedKey = (int) UUID.randomUUID().getMostSignificantBits();
+        final int finalGenKey = generatedKey < 0 ? generatedKey * -1 : generatedKey; // Ensure the key is positive
+
         assessment.getSegments()
                 .forEach(segment -> segment.segmentForms()
                         .forEach(form -> form.getPresentations()
                             .forEach(presentation ->
-                                    formKeyMap.put(String.format("%s::%s", form.getId(), presentation.getCode()), (long) generatedKey))
+                                    formKeyMap.put(TestPackageUtils.getFormIdForLanguage(form.getId(), presentation.getCode()), (long) finalGenKey))
                         )
                 );
         return formKeyMap;

@@ -101,7 +101,7 @@ public class LegacyAdministrationTestPackageFormMapper {
 
             final Identifier itemGroupIdentifier = new Identifier();
 
-            final String itemGroupId = itemGroup.items().size() > 1
+            final String itemGroupId = itemGroup.getStimulus().isPresent()
                     ? String.format("%s:G-%s-%s-0", formKey, bankKey, itemGroup.getId())
                     : String.format("%s:I-%s-%s", formKey, bankKey, itemGroup.getId());
             itemGroupIdentifier.setUniqueid(itemGroupId);
