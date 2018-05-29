@@ -1,4 +1,4 @@
-<TestPackage publisher="SBAC_PT" publishDate="2017-07-17T23:15:00Z" subject="MATH" type="summative" version="1" bankKey="187" academicYear="2018">
+<TestPackage id="SBAC-Mathematics-6" publisher="SBAC_PT" publishDate="2017-07-17T23:15:00Z" subject="MATH" type="summative" version="1" bankKey="187" academicYear="2018">
   <Blueprint>
     <BlueprintElement id="SBAC-Mathematics-6" type="test">
       <BlueprintElement id="SBAC-SEG1-MATH-6" type="segment"/>
@@ -34,7 +34,9 @@
                   <BlueprintReference idRef="SBAC-SEG1-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Braille" code="ENU-Braille"/>
                   <Presentation label="Spanish" code="ESN"/>
@@ -48,7 +50,9 @@
                   <BlueprintReference idRef="SBAC-SEG1-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Braille" code="ENU-Braille"/>
                   <Presentation label="Spanish" code="ESN"/>
@@ -62,7 +66,9 @@
                   <BlueprintReference idRef="SBAC-SEG1-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Braille" code="ENU-Braille"/>
                   <Presentation label="Spanish" code="ESN"/>
@@ -76,7 +82,9 @@
                   <BlueprintReference idRef="SBAC-SEG1-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Braille" code="ENU-Braille"/>
                   <Presentation label="Spanish" code="ESN"/>
@@ -90,7 +98,9 @@
                   <BlueprintReference idRef="SBAC-SEG1-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Braille" code="ENU-Braille"/>
                   <Presentation label="Spanish" code="ESN"/>
@@ -104,7 +114,9 @@
                   <BlueprintReference idRef="SBAC-SEG1-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Braille" code="ENU-Braille"/>
                   <Presentation label="Spanish" code="ESN"/>
@@ -118,7 +130,9 @@
                   <BlueprintReference idRef="SBAC-SEG1-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="2" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Braille" code="ENU-Braille"/>
                   <Presentation label="Spanish" code="ESN"/>
@@ -132,7 +146,9 @@
                   <BlueprintReference idRef="SBAC-SEG1-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Braille" code="ENU-Braille"/>
                   <Presentation label="Spanish" code="ESN"/>
@@ -166,7 +182,9 @@
                   <BlueprintReference idRef="SBAC-SEG2-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Braille" code="ENU-Braille"/>
                   <Presentation label="Spanish" code="ESN"/>
@@ -180,7 +198,9 @@
                   <BlueprintReference idRef="SBAC-SEG2-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Spanish" code="ESN"/>
                   <Presentation label="English" code="ENU"/>
@@ -193,7 +213,9 @@
                   <BlueprintReference idRef="SBAC-SEG2-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Braille" code="ENU-Braille"/>
                   <Presentation label="Spanish" code="ESN"/>
@@ -207,7 +229,9 @@
                   <BlueprintReference idRef="SBAC-SEG2-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Braille" code="ENU-Braille"/>
                   <Presentation label="Spanish" code="ESN"/>
@@ -221,7 +245,9 @@
                   <BlueprintReference idRef="SBAC-SEG2-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="3" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Spanish" code="ESN"/>
                   <Presentation label="English" code="ENU"/>
@@ -234,7 +260,9 @@
                   <BlueprintReference idRef="SBAC-SEG2-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Spanish" code="ESN"/>
                   <Presentation label="English" code="ENU"/>
@@ -247,7 +275,9 @@
                   <BlueprintReference idRef="SBAC-SEG2-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Braille" code="ENU-Braille"/>
                   <Presentation label="Spanish" code="ESN"/>
@@ -261,7 +291,9 @@
                   <BlueprintReference idRef="SBAC-SEG2-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Braille" code="ENU-Braille"/>
                   <Presentation label="Spanish" code="ESN"/>
@@ -275,7 +307,9 @@
                   <BlueprintReference idRef="SBAC-SEG2-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Braille" code="ENU-Braille"/>
                   <Presentation label="Spanish" code="ESN"/>
@@ -289,7 +323,9 @@
                   <BlueprintReference idRef="SBAC-SEG2-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Braille" code="ENU-Braille"/>
                   <Presentation label="Spanish" code="ESN"/>
@@ -303,7 +339,9 @@
                   <BlueprintReference idRef="SBAC-SEG2-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Braille" code="ENU-Braille"/>
                   <Presentation label="Spanish" code="ESN"/>
@@ -317,7 +355,9 @@
                   <BlueprintReference idRef="SBAC-SEG2-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Braille" code="ENU-Braille"/>
                   <Presentation label="Spanish" code="ESN"/>
@@ -331,7 +371,9 @@
                   <BlueprintReference idRef="SBAC-SEG2-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Braille" code="ENU-Braille"/>
                   <Presentation label="Spanish" code="ESN"/>
@@ -345,7 +387,9 @@
                   <BlueprintReference idRef="SBAC-SEG2-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Braille" code="ENU-Braille"/>
                   <Presentation label="Spanish" code="ESN"/>
@@ -359,7 +403,9 @@
                   <BlueprintReference idRef="SBAC-SEG2-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Braille" code="ENU-Braille"/>
                   <Presentation label="Spanish" code="ESN"/>
@@ -373,7 +419,9 @@
                   <BlueprintReference idRef="SBAC-SEG2-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Braille" code="ENU-Braille"/>
                   <Presentation label="Spanish" code="ESN"/>
@@ -387,7 +435,9 @@
                   <BlueprintReference idRef="SBAC-SEG2-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Braille" code="ENU-Braille"/>
                   <Presentation label="Spanish" code="ESN"/>
@@ -401,7 +451,9 @@
                   <BlueprintReference idRef="SBAC-SEG2-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Braille" code="ENU-Braille"/>
                   <Presentation label="Spanish" code="ESN"/>
@@ -415,7 +467,9 @@
                   <BlueprintReference idRef="SBAC-SEG2-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Braille" code="ENU-Braille"/>
                   <Presentation label="Spanish" code="ESN"/>
@@ -429,7 +483,9 @@
                   <BlueprintReference idRef="SBAC-SEG2-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="2" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Braille" code="ENU-Braille"/>
                   <Presentation label="Spanish" code="ESN"/>
@@ -443,7 +499,9 @@
                   <BlueprintReference idRef="SBAC-SEG2-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Braille" code="ENU-Braille"/>
                   <Presentation label="Spanish" code="ESN"/>
@@ -457,7 +515,9 @@
                   <BlueprintReference idRef="SBAC-SEG2-MATH-6"/>
                   <BlueprintReference idRef="MA-Undesignated"/>
                 </BlueprintReferences>
-                <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                <ItemScoreDimensions>
+                  <ItemScoreDimension scorePoints="1" measurementModel="RAWSCORE" weight="1.0"/>
+                </ItemScoreDimensions>
                 <Presentations>
                   <Presentation label="Braille" code="ENU-Braille"/>
                   <Presentation label="Spanish" code="ESN"/>

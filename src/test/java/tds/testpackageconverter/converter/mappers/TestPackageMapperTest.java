@@ -85,14 +85,15 @@ public class TestPackageMapperTest extends TestPackageBaseTest {
         assertThat(item.doNotScore()).isFalse();
 
         // Item Score Dimension
-        assertThat(item.getItemScoreDimension()).isNotNull();
-        assertThat(item.getItemScoreDimension().getDimension()).isNotPresent();
-        assertThat(item.getItemScoreDimension().getMeasurementModel()).isEqualTo("IRT3PLn");
-        assertThat(item.getItemScoreDimension().getScorePoints()).isEqualTo(1);
-        assertThat(item.getItemScoreDimension().getWeight()).isEqualTo(1.0);
+        assertThat(item.getItemScoreDimensions()).hasSize(1);
+        assertThat(item.getItemScoreDimensions().get(0)).isNotNull();
+        assertThat(item.getItemScoreDimensions().get(0).getDimension()).isNotPresent();
+        assertThat(item.getItemScoreDimensions().get(0).getMeasurementModel()).isEqualTo("IRT3PLn");
+        assertThat(item.getItemScoreDimensions().get(0).getScorePoints()).isEqualTo(1);
+        assertThat(item.getItemScoreDimensions().get(0).getWeight()).isEqualTo(1.0);
         // Item Score Parameter
-        assertThat(item.getItemScoreDimension().itemScoreParameters()).hasSize(3);
-        ItemScoreParameter parameter = item.getItemScoreDimension().itemScoreParameters().get(0);
+        assertThat(item.getItemScoreDimensions().get(0).itemScoreParameters()).hasSize(3);
+        ItemScoreParameter parameter = item.getItemScoreDimensions().get(0).itemScoreParameters().get(0);
         assertThat(parameter.getMeasurementParameter()).isEqualTo("a");
         assertThat(parameter.getValue()).isEqualTo(0.6389300227165222);
     }
@@ -151,14 +152,15 @@ public class TestPackageMapperTest extends TestPackageBaseTest {
         assertThat(item.handScored()).isFalse();
         assertThat(item.doNotScore()).isFalse();
         // Item Score Dimension
-        assertThat(item.getItemScoreDimension()).isNotNull();
-        assertThat(item.getItemScoreDimension().getDimension()).isNotPresent();
-        assertThat(item.getItemScoreDimension().getMeasurementModel()).isEqualTo("IRT3PLn");
-        assertThat(item.getItemScoreDimension().getScorePoints()).isEqualTo(1);
-        assertThat(item.getItemScoreDimension().getWeight()).isEqualTo(1.0);
+        assertThat(item.getItemScoreDimensions()).hasSize(1);
+        assertThat(item.getItemScoreDimensions().get(0)).isNotNull();
+        assertThat(item.getItemScoreDimensions().get(0).getDimension()).isNotPresent();
+        assertThat(item.getItemScoreDimensions().get(0).getMeasurementModel()).isEqualTo("IRT3PLn");
+        assertThat(item.getItemScoreDimensions().get(0).getScorePoints()).isEqualTo(1);
+        assertThat(item.getItemScoreDimensions().get(0).getWeight()).isEqualTo(1.0);
         // Item Score Parameter
-        assertThat(item.getItemScoreDimension().itemScoreParameters()).hasSize(3);
-        ItemScoreParameter parameter = item.getItemScoreDimension().itemScoreParameters().get(0);
+        assertThat(item.getItemScoreDimensions().get(0).itemScoreParameters()).hasSize(3);
+        ItemScoreParameter parameter = item.getItemScoreDimensions().get(0).itemScoreParameters().get(0);
         assertThat(parameter.getMeasurementParameter()).isEqualTo("a");
         assertThat(parameter.getValue()).isEqualTo(1.0);
     }
@@ -225,14 +227,15 @@ public class TestPackageMapperTest extends TestPackageBaseTest {
         assertThat(catItem.handScored()).isTrue();
         assertThat(catItem.doNotScore()).isFalse();
         // Item Score Dimension
-        assertThat(catItem.getItemScoreDimension()).isNotNull();
-        assertThat(catItem.getItemScoreDimension().getDimension()).isNotPresent();
-        assertThat(catItem.getItemScoreDimension().getMeasurementModel()).isEqualTo("IRT3PLn");
-        assertThat(catItem.getItemScoreDimension().getScorePoints()).isEqualTo(1);
-        assertThat(catItem.getItemScoreDimension().getWeight()).isEqualTo(1.0);
+        assertThat(catItem.getItemScoreDimensions()).hasSize(1);
+        assertThat(catItem.getItemScoreDimensions().get(0)).isNotNull();
+        assertThat(catItem.getItemScoreDimensions().get(0).getDimension()).isNotPresent();
+        assertThat(catItem.getItemScoreDimensions().get(0).getMeasurementModel()).isEqualTo("IRT3PLn");
+        assertThat(catItem.getItemScoreDimensions().get(0).getScorePoints()).isEqualTo(1);
+        assertThat(catItem.getItemScoreDimensions().get(0).getWeight()).isEqualTo(1.0);
         // Item Score Parameter
-        assertThat(catItem.getItemScoreDimension().itemScoreParameters()).hasSize(3);
-        ItemScoreParameter catParameter = catItem.getItemScoreDimension().itemScoreParameters().get(0);
+        assertThat(catItem.getItemScoreDimensions().get(0).itemScoreParameters()).hasSize(3);
+        ItemScoreParameter catParameter = catItem.getItemScoreDimensions().get(0).itemScoreParameters().get(0);
         assertThat(catParameter.getMeasurementParameter()).isEqualTo("a");
         assertThat(catParameter.getValue()).isEqualTo(0.6389300227165222);
 
@@ -274,14 +277,15 @@ public class TestPackageMapperTest extends TestPackageBaseTest {
         assertThat(fixedFormItem.handScored()).isFalse();
         assertThat(fixedFormItem.doNotScore()).isFalse();
         // Item Score Dimension
-        assertThat(fixedFormItem.getItemScoreDimension()).isNotNull();
-        assertThat(fixedFormItem.getItemScoreDimension().getDimension()).isNotPresent();
-        assertThat(fixedFormItem.getItemScoreDimension().getMeasurementModel()).isEqualTo("IRT3PLn");
-        assertThat(fixedFormItem.getItemScoreDimension().getScorePoints()).isEqualTo(1);
-        assertThat(fixedFormItem.getItemScoreDimension().getWeight()).isEqualTo(1.0);
+        assertThat(fixedFormItem.getItemScoreDimensions()).hasSize(1);
+        assertThat(fixedFormItem.getItemScoreDimensions().get(0)).isNotNull();
+        assertThat(fixedFormItem.getItemScoreDimensions().get(0).getDimension()).isNotPresent();
+        assertThat(fixedFormItem.getItemScoreDimensions().get(0).getMeasurementModel()).isEqualTo("IRT3PLn");
+        assertThat(fixedFormItem.getItemScoreDimensions().get(0).getScorePoints()).isEqualTo(1);
+        assertThat(fixedFormItem.getItemScoreDimensions().get(0).getWeight()).isEqualTo(1.0);
         // Item Score Parameter
-        assertThat(fixedFormItem.getItemScoreDimension().itemScoreParameters()).hasSize(3);
-        ItemScoreParameter fixedFormParameter = fixedFormItem.getItemScoreDimension().itemScoreParameters().get(0);
+        assertThat(fixedFormItem.getItemScoreDimensions().get(0).itemScoreParameters()).hasSize(3);
+        ItemScoreParameter fixedFormParameter = fixedFormItem.getItemScoreDimensions().get(0).itemScoreParameters().get(0);
         assertThat(fixedFormParameter.getMeasurementParameter()).isEqualTo("a");
         assertThat(fixedFormParameter.getValue()).isEqualTo(1.0);
     }
@@ -351,14 +355,15 @@ public class TestPackageMapperTest extends TestPackageBaseTest {
         assertThat(catItem.handScored()).isTrue();
         assertThat(catItem.doNotScore()).isFalse();
         // Item Score Dimension
-        assertThat(catItem.getItemScoreDimension()).isNotNull();
-        assertThat(catItem.getItemScoreDimension().getDimension()).isNotPresent();
-        assertThat(catItem.getItemScoreDimension().getMeasurementModel()).isEqualTo("IRT3PLn");
-        assertThat(catItem.getItemScoreDimension().getScorePoints()).isEqualTo(1);
-        assertThat(catItem.getItemScoreDimension().getWeight()).isEqualTo(1.0);
+        assertThat(catItem.getItemScoreDimensions()).hasSize(1);
+        assertThat(catItem.getItemScoreDimensions().get(0)).isNotNull();
+        assertThat(catItem.getItemScoreDimensions().get(0).getDimension()).isNotPresent();
+        assertThat(catItem.getItemScoreDimensions().get(0).getMeasurementModel()).isEqualTo("IRT3PLn");
+        assertThat(catItem.getItemScoreDimensions().get(0).getScorePoints()).isEqualTo(1);
+        assertThat(catItem.getItemScoreDimensions().get(0).getWeight()).isEqualTo(1.0);
         // Item Score Parameter
-        assertThat(catItem.getItemScoreDimension().itemScoreParameters()).hasSize(3);
-        ItemScoreParameter catParameter = catItem.getItemScoreDimension().itemScoreParameters().get(0);
+        assertThat(catItem.getItemScoreDimensions().get(0).itemScoreParameters()).hasSize(3);
+        ItemScoreParameter catParameter = catItem.getItemScoreDimensions().get(0).itemScoreParameters().get(0);
         assertThat(catParameter.getMeasurementParameter()).isEqualTo("a");
         assertThat(catParameter.getValue()).isEqualTo(0.6389300227165222);
 
@@ -400,14 +405,15 @@ public class TestPackageMapperTest extends TestPackageBaseTest {
         assertThat(fixedFormItem.handScored()).isFalse();
         assertThat(fixedFormItem.doNotScore()).isFalse();
         // Item Score Dimension
-        assertThat(fixedFormItem.getItemScoreDimension()).isNotNull();
-        assertThat(fixedFormItem.getItemScoreDimension().getDimension()).isNotPresent();
-        assertThat(fixedFormItem.getItemScoreDimension().getMeasurementModel()).isEqualTo("IRT3PLn");
-        assertThat(fixedFormItem.getItemScoreDimension().getScorePoints()).isEqualTo(1);
-        assertThat(fixedFormItem.getItemScoreDimension().getWeight()).isEqualTo(1.0);
+        assertThat(fixedFormItem.getItemScoreDimensions()).hasSize(1);
+        assertThat(fixedFormItem.getItemScoreDimensions().get(0)).isNotNull();
+        assertThat(fixedFormItem.getItemScoreDimensions().get(0).getDimension()).isNotPresent();
+        assertThat(fixedFormItem.getItemScoreDimensions().get(0).getMeasurementModel()).isEqualTo("IRT3PLn");
+        assertThat(fixedFormItem.getItemScoreDimensions().get(0).getScorePoints()).isEqualTo(1);
+        assertThat(fixedFormItem.getItemScoreDimensions().get(0).getWeight()).isEqualTo(1.0);
         // Item Score Parameter
-        assertThat(fixedFormItem.getItemScoreDimension().itemScoreParameters()).hasSize(3);
-        ItemScoreParameter fixedFormParameter = fixedFormItem.getItemScoreDimension().itemScoreParameters().get(0);
+        assertThat(fixedFormItem.getItemScoreDimensions().get(0).itemScoreParameters()).hasSize(3);
+        ItemScoreParameter fixedFormParameter = fixedFormItem.getItemScoreDimensions().get(0).itemScoreParameters().get(0);
         assertThat(fixedFormParameter.getMeasurementParameter()).isEqualTo("a");
         assertThat(fixedFormParameter.getValue()).isEqualTo(1.0);
     }

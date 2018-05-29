@@ -1,4 +1,4 @@
-<TestPackage publisher="SBAC_PT" publishDate="2015-08-19T22:44:00Z" subject="MATH" type="summative" version="8185" bankKey="187" academicYear="2018">
+<TestPackage id="SBAC-IRP-Perf-MATH-11" publisher="SBAC_PT" publishDate="2015-08-19T22:44:00Z" subject="MATH" type="summative" version="8185" bankKey="187" academicYear="2018">
   <Blueprint>
     <BlueprintElement id="SBAC-IRP-CAT-MATH-11" type="test"/>
     <BlueprintElement id="G11Math_Claim1_MC/MS" type="affinitygroup"/>
@@ -585,11 +585,13 @@
                 <BlueprintReference idRef="1|N-RN|A|a/s"/>
                 <BlueprintReference idRef="1|N-RN|A|a/s|N-RN.2"/>
               </BlueprintReferences>
-              <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
-                <ItemScoreParameter value="1.0" measurementParameter="a"/>
-                <ItemScoreParameter value="1.0000000036274937E-15" measurementParameter="b"/>
-                <ItemScoreParameter value="0.0" measurementParameter="c"/>
-              </ItemScoreDimension>
+              <ItemScoreDimensions>
+                <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
+                  <ItemScoreParameter value="1.0" measurementParameter="a"/>
+                  <ItemScoreParameter value="1.0000000036274937E-15" measurementParameter="b"/>
+                  <ItemScoreParameter value="0.0" measurementParameter="c"/>
+                </ItemScoreDimension>
+              </ItemScoreDimensions>
             </Item>
           </ItemGroup>
           <ItemGroup maxItems="ALL" maxResponses="ALL" id="1915">
@@ -605,11 +607,13 @@
                 <BlueprintReference idRef="1|A-SSE|D|m"/>
                 <BlueprintReference idRef="1|A-SSE|D|m|A-SSE.2"/>
               </BlueprintReferences>
-              <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
-                <ItemScoreParameter value="1.0" measurementParameter="a"/>
-                <ItemScoreParameter value="1.0000000036274937E-15" measurementParameter="b"/>
-                <ItemScoreParameter value="0.0" measurementParameter="c"/>
-              </ItemScoreDimension>
+              <ItemScoreDimensions>
+                <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
+                  <ItemScoreParameter value="1.0" measurementParameter="a"/>
+                  <ItemScoreParameter value="1.0000000036274937E-15" measurementParameter="b"/>
+                  <ItemScoreParameter value="0.0" measurementParameter="c"/>
+                </ItemScoreDimension>
+              </ItemScoreDimensions>
             </Item>
           </ItemGroup>
           <ItemGroup maxItems="ALL" maxResponses="ALL" id="1916">
@@ -626,11 +630,13 @@
                 <BlueprintReference idRef="1|A-SSE|E|m"/>
                 <BlueprintReference idRef="1|A-SSE|E|m|A-SSE.3b"/>
               </BlueprintReferences>
-              <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
-                <ItemScoreParameter value="0.10171999782323837" measurementParameter="a"/>
-                <ItemScoreParameter value="2.5457699298858643" measurementParameter="b"/>
-                <ItemScoreParameter value="0.0" measurementParameter="c"/>
-              </ItemScoreDimension>
+              <ItemScoreDimensions>
+                <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
+                  <ItemScoreParameter value="0.10171999782323837" measurementParameter="a"/>
+                  <ItemScoreParameter value="2.5457699298858643" measurementParameter="b"/>
+                  <ItemScoreParameter value="0.0" measurementParameter="c"/>
+                </ItemScoreDimension>
+              </ItemScoreDimensions>
             </Item>
           </ItemGroup>
           <ItemGroup maxItems="ALL" maxResponses="ALL" id="1926">
@@ -648,11 +654,13 @@
                 <BlueprintReference idRef="1|A-REI|H|m"/>
                 <BlueprintReference idRef="1|A-REI|H|m|A-REI.2"/>
               </BlueprintReferences>
-              <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
-                <ItemScoreParameter value="0.33779001235961914" measurementParameter="a"/>
-                <ItemScoreParameter value="4.648680210113525" measurementParameter="b"/>
-                <ItemScoreParameter value="0.0" measurementParameter="c"/>
-              </ItemScoreDimension>
+              <ItemScoreDimensions>
+                <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
+                  <ItemScoreParameter value="0.33779001235961914" measurementParameter="a"/>
+                  <ItemScoreParameter value="4.648680210113525" measurementParameter="b"/>
+                  <ItemScoreParameter value="0.0" measurementParameter="c"/>
+                </ItemScoreDimension>
+              </ItemScoreDimensions>
             </Item>
           </ItemGroup>
           <ItemGroup maxItems="ALL" maxResponses="ALL" id="1927">
@@ -668,12 +676,14 @@
                 <BlueprintReference idRef="2|S-CP"/>
                 <BlueprintReference idRef="2|S-CP|A"/>
               </BlueprintReferences>
-              <ItemScoreDimension measurementModel="IRTGPC" scorePoints="3" weight="1.0">
-                <ItemScoreParameter value="1.0" measurementParameter="a"/>
-                <ItemScoreParameter value="1.0000000036274937E-15" measurementParameter="b0"/>
-                <ItemScoreParameter value="1.0000000036274937E-15" measurementParameter="b1"/>
-                <ItemScoreParameter value="1.0000000036274937E-15" measurementParameter="b2"/>
-              </ItemScoreDimension>
+              <ItemScoreDimensions>
+                <ItemScoreDimension measurementModel="IRTGPC" scorePoints="3" weight="1.0">
+                  <ItemScoreParameter value="1.0" measurementParameter="a"/>
+                  <ItemScoreParameter value="1.0000000036274937E-15" measurementParameter="b0"/>
+                  <ItemScoreParameter value="1.0000000036274937E-15" measurementParameter="b1"/>
+                  <ItemScoreParameter value="1.0000000036274937E-15" measurementParameter="b2"/>
+                </ItemScoreDimension>
+              </ItemScoreDimensions>
             </Item>
           </ItemGroup>
           <ItemGroup maxItems="ALL" maxResponses="ALL" id="1929">
@@ -690,11 +700,13 @@
                 <BlueprintReference idRef="1|A-REI|I|m"/>
                 <BlueprintReference idRef="1|A-REI|I|m|A-REI.4b"/>
               </BlueprintReferences>
-              <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
-                <ItemScoreParameter value="0.5988900065422058" measurementParameter="a"/>
-                <ItemScoreParameter value="-1.6896599531173706" measurementParameter="b"/>
-                <ItemScoreParameter value="0.0" measurementParameter="c"/>
-              </ItemScoreDimension>
+              <ItemScoreDimensions>
+                <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
+                  <ItemScoreParameter value="0.5988900065422058" measurementParameter="a"/>
+                  <ItemScoreParameter value="-1.6896599531173706" measurementParameter="b"/>
+                  <ItemScoreParameter value="0.0" measurementParameter="c"/>
+                </ItemScoreDimension>
+              </ItemScoreDimensions>
             </Item>
           </ItemGroup>
           <ItemGroup maxItems="ALL" maxResponses="ALL" id="1930">
@@ -711,11 +723,13 @@
                 <BlueprintReference idRef="1|G-SRT|P|m"/>
                 <BlueprintReference idRef="1|G-SRT|P|m|G-SRT.8"/>
               </BlueprintReferences>
-              <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
-                <ItemScoreParameter value="1.0" measurementParameter="a"/>
-                <ItemScoreParameter value="1.0000000036274937E-15" measurementParameter="b"/>
-                <ItemScoreParameter value="0.0" measurementParameter="c"/>
-              </ItemScoreDimension>
+              <ItemScoreDimensions>
+                <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
+                  <ItemScoreParameter value="1.0" measurementParameter="a"/>
+                  <ItemScoreParameter value="1.0000000036274937E-15" measurementParameter="b"/>
+                  <ItemScoreParameter value="0.0" measurementParameter="c"/>
+                </ItemScoreDimension>
+              </ItemScoreDimensions>
             </Item>
           </ItemGroup>
           <ItemGroup maxItems="ALL" maxResponses="ALL" id="1936">
@@ -731,11 +745,13 @@
                 <BlueprintReference idRef="1|G-SRT|P|m"/>
                 <BlueprintReference idRef="1|G-SRT|P|m|G-SRT.8"/>
               </BlueprintReferences>
-              <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
-                <ItemScoreParameter value="1.0379600524902344" measurementParameter="a"/>
-                <ItemScoreParameter value="-0.02855999954044819" measurementParameter="b"/>
-                <ItemScoreParameter value="0.0" measurementParameter="c"/>
-              </ItemScoreDimension>
+              <ItemScoreDimensions>
+                <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
+                  <ItemScoreParameter value="1.0379600524902344" measurementParameter="a"/>
+                  <ItemScoreParameter value="-0.02855999954044819" measurementParameter="b"/>
+                  <ItemScoreParameter value="0.0" measurementParameter="c"/>
+                </ItemScoreDimension>
+              </ItemScoreDimensions>
             </Item>
           </ItemGroup>
           <ItemGroup maxItems="ALL" maxResponses="ALL" id="1948">
@@ -752,11 +768,13 @@
                 <BlueprintReference idRef="1|F-IF|K|m"/>
                 <BlueprintReference idRef="1|F-IF|K|m|F-IF.1"/>
               </BlueprintReferences>
-              <ItemScoreDimension measurementModel="IRTGPC" scorePoints="2" weight="1.0">
-                <ItemScoreParameter value="1.0" measurementParameter="a"/>
-                <ItemScoreParameter value="1.0000000036274937E-15" measurementParameter="b0"/>
-                <ItemScoreParameter value="1.0000000036274937E-15" measurementParameter="b1"/>
-              </ItemScoreDimension>
+              <ItemScoreDimensions>
+                <ItemScoreDimension measurementModel="IRTGPC" scorePoints="2" weight="1.0">
+                  <ItemScoreParameter value="1.0" measurementParameter="a"/>
+                  <ItemScoreParameter value="1.0000000036274937E-15" measurementParameter="b0"/>
+                  <ItemScoreParameter value="1.0000000036274937E-15" measurementParameter="b1"/>
+                </ItemScoreDimension>
+              </ItemScoreDimensions>
             </Item>
           </ItemGroup>
           <ItemGroup maxItems="ALL" maxResponses="ALL" id="1956">
@@ -773,11 +791,13 @@
                 <BlueprintReference idRef="1|N-Q|C|m"/>
                 <BlueprintReference idRef="1|N-Q|C|m|N-Q.1"/>
               </BlueprintReferences>
-              <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
-                <ItemScoreParameter value="1.0" measurementParameter="a"/>
-                <ItemScoreParameter value="1.0000000036274937E-15" measurementParameter="b"/>
-                <ItemScoreParameter value="0.0" measurementParameter="c"/>
-              </ItemScoreDimension>
+              <ItemScoreDimensions>
+                <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
+                  <ItemScoreParameter value="1.0" measurementParameter="a"/>
+                  <ItemScoreParameter value="1.0000000036274937E-15" measurementParameter="b"/>
+                  <ItemScoreParameter value="0.0" measurementParameter="c"/>
+                </ItemScoreDimension>
+              </ItemScoreDimensions>
             </Item>
           </ItemGroup>
           <ItemGroup maxItems="ALL" maxResponses="ALL" id="1969">
@@ -794,11 +814,13 @@
                 <BlueprintReference idRef="1|F-IF|M|m"/>
                 <BlueprintReference idRef="1|F-IF|M|m|F-IF.7a"/>
               </BlueprintReferences>
-              <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
-                <ItemScoreParameter value="1.0" measurementParameter="a"/>
-                <ItemScoreParameter value="1.0000000036274937E-15" measurementParameter="b"/>
-                <ItemScoreParameter value="0.0" measurementParameter="c"/>
-              </ItemScoreDimension>
+              <ItemScoreDimensions>
+                <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
+                  <ItemScoreParameter value="1.0" measurementParameter="a"/>
+                  <ItemScoreParameter value="1.0000000036274937E-15" measurementParameter="b"/>
+                  <ItemScoreParameter value="0.0" measurementParameter="c"/>
+                </ItemScoreDimension>
+              </ItemScoreDimensions>
             </Item>
           </ItemGroup>
           <ItemGroup maxItems="ALL" maxResponses="ALL" id="1997">
@@ -816,11 +838,13 @@
                 <BlueprintReference idRef="2|G-SRT|D|NA"/>
                 <BlueprintReference idRef="2|G-SRT|D|NA|NA"/>
               </BlueprintReferences>
-              <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
-                <ItemScoreParameter value="0.831849992275238" measurementParameter="a"/>
-                <ItemScoreParameter value="0.7261499762535095" measurementParameter="b"/>
-                <ItemScoreParameter value="0.0" measurementParameter="c"/>
-              </ItemScoreDimension>
+              <ItemScoreDimensions>
+                <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
+                  <ItemScoreParameter value="0.831849992275238" measurementParameter="a"/>
+                  <ItemScoreParameter value="0.7261499762535095" measurementParameter="b"/>
+                  <ItemScoreParameter value="0.0" measurementParameter="c"/>
+                </ItemScoreDimension>
+              </ItemScoreDimensions>
             </Item>
           </ItemGroup>
           <ItemGroup maxItems="ALL" maxResponses="ALL" id="1998">
@@ -836,11 +860,13 @@
                 <BlueprintReference idRef="3|A-REI|G|NA"/>
                 <BlueprintReference idRef="3|A-REI|G|NA|NA"/>
               </BlueprintReferences>
-              <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
-                <ItemScoreParameter value="0.7411800026893616" measurementParameter="a"/>
-                <ItemScoreParameter value="1.2385799884796143" measurementParameter="b"/>
-                <ItemScoreParameter value="0.0" measurementParameter="c"/>
-              </ItemScoreDimension>
+              <ItemScoreDimensions>
+                <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
+                  <ItemScoreParameter value="0.7411800026893616" measurementParameter="a"/>
+                  <ItemScoreParameter value="1.2385799884796143" measurementParameter="b"/>
+                  <ItemScoreParameter value="0.0" measurementParameter="c"/>
+                </ItemScoreDimension>
+              </ItemScoreDimensions>
             </Item>
           </ItemGroup>
           <ItemGroup maxItems="ALL" maxResponses="ALL" id="1999">
@@ -857,11 +883,13 @@
                 <BlueprintReference idRef="3|A-REI|D|NA"/>
                 <BlueprintReference idRef="3|A-REI|D|NA|NA"/>
               </BlueprintReferences>
-              <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
-                <ItemScoreParameter value="1.1409800052642822" measurementParameter="a"/>
-                <ItemScoreParameter value="2.1034700870513916" measurementParameter="b"/>
-                <ItemScoreParameter value="0.0" measurementParameter="c"/>
-              </ItemScoreDimension>
+              <ItemScoreDimensions>
+                <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
+                  <ItemScoreParameter value="1.1409800052642822" measurementParameter="a"/>
+                  <ItemScoreParameter value="2.1034700870513916" measurementParameter="b"/>
+                  <ItemScoreParameter value="0.0" measurementParameter="c"/>
+                </ItemScoreDimension>
+              </ItemScoreDimensions>
             </Item>
           </ItemGroup>
           <ItemGroup maxItems="ALL" maxResponses="ALL" id="2005">
@@ -877,11 +905,13 @@
                 <BlueprintReference idRef="3|N-RN|E|NA"/>
                 <BlueprintReference idRef="3|N-RN|E|NA|NA"/>
               </BlueprintReferences>
-              <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
-                <ItemScoreParameter value="1.473449945449829" measurementParameter="a"/>
-                <ItemScoreParameter value="-0.6760500073432922" measurementParameter="b"/>
-                <ItemScoreParameter value="0.0" measurementParameter="c"/>
-              </ItemScoreDimension>
+              <ItemScoreDimensions>
+                <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
+                  <ItemScoreParameter value="1.473449945449829" measurementParameter="a"/>
+                  <ItemScoreParameter value="-0.6760500073432922" measurementParameter="b"/>
+                  <ItemScoreParameter value="0.0" measurementParameter="c"/>
+                </ItemScoreDimension>
+              </ItemScoreDimensions>
             </Item>
           </ItemGroup>
           <ItemGroup maxItems="ALL" maxResponses="ALL" id="2006">
@@ -894,11 +924,13 @@
                 <BlueprintReference idRef="G11Math_Claim2/4"/>
                 <BlueprintReference idRef="4"/>
               </BlueprintReferences>
-              <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
-                <ItemScoreParameter value="0.8444499969482422" measurementParameter="a"/>
-                <ItemScoreParameter value="3.013629913330078" measurementParameter="b"/>
-                <ItemScoreParameter value="0.0" measurementParameter="c"/>
-              </ItemScoreDimension>
+              <ItemScoreDimensions>
+                <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
+                  <ItemScoreParameter value="0.8444499969482422" measurementParameter="a"/>
+                  <ItemScoreParameter value="3.013629913330078" measurementParameter="b"/>
+                  <ItemScoreParameter value="0.0" measurementParameter="c"/>
+                </ItemScoreDimension>
+              </ItemScoreDimensions>
             </Item>
           </ItemGroup>
           <ItemGroup maxItems="ALL" maxResponses="ALL" id="2029">
@@ -915,11 +947,13 @@
                 <BlueprintReference idRef="3|G-SRT|A|NA"/>
                 <BlueprintReference idRef="3|G-SRT|A|NA|NA"/>
               </BlueprintReferences>
-              <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
-                <ItemScoreParameter value="0.5327900052070618" measurementParameter="a"/>
-                <ItemScoreParameter value="0.6780300140380859" measurementParameter="b"/>
-                <ItemScoreParameter value="0.0" measurementParameter="c"/>
-              </ItemScoreDimension>
+              <ItemScoreDimensions>
+                <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
+                  <ItemScoreParameter value="0.5327900052070618" measurementParameter="a"/>
+                  <ItemScoreParameter value="0.6780300140380859" measurementParameter="b"/>
+                  <ItemScoreParameter value="0.0" measurementParameter="c"/>
+                </ItemScoreDimension>
+              </ItemScoreDimensions>
             </Item>
           </ItemGroup>
           <ItemGroup maxItems="ALL" maxResponses="ALL" id="2032">
@@ -937,11 +971,13 @@
                 <BlueprintReference idRef="4|G-MG|A|NA"/>
                 <BlueprintReference idRef="4|G-MG|A|NA|NA"/>
               </BlueprintReferences>
-              <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
-                <ItemScoreParameter value="0.7263699769973755" measurementParameter="a"/>
-                <ItemScoreParameter value="-1.4978599548339844" measurementParameter="b"/>
-                <ItemScoreParameter value="0.0" measurementParameter="c"/>
-              </ItemScoreDimension>
+              <ItemScoreDimensions>
+                <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
+                  <ItemScoreParameter value="0.7263699769973755" measurementParameter="a"/>
+                  <ItemScoreParameter value="-1.4978599548339844" measurementParameter="b"/>
+                  <ItemScoreParameter value="0.0" measurementParameter="c"/>
+                </ItemScoreDimension>
+              </ItemScoreDimensions>
             </Item>
           </ItemGroup>
         </Pool>
