@@ -10,6 +10,7 @@ import tds.testpackageconverter.ConvertToNewTestPackageCommandLineRunner;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Optional;
 
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;

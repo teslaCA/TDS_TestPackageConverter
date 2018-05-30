@@ -1,6 +1,8 @@
 package tds.testpackageconverter.converter.impl;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+
+import tds.testpackage.diff.TestPackageDiff;
 import tds.testpackageconverter.converter.mappers.LegacyAdministrationTestPackageMapper;
 import tds.testpackageconverter.converter.TestPackageConverterService;
 import tds.testpackageconverter.converter.mappers.TestPackageMapper;
@@ -19,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -56,30 +59,44 @@ public class TestPackageConverterServiceImpl implements TestPackageConverterServ
 
     @Override
     public void convertTestSpecifications(final String testPackageName, final List<String> adminAndScoringFileNames) throws IOException, ParseException {
-        convertTestSpecifications(testPackageName, adminAndScoringFileNames, null);
+        convertTestSpecifications(testPackageName, adminAndScoringFileNames, Optional.empty());
     }
 
     @Override
-    public void convertTestSpecifications(final String testPackageName, final List<String> adminAndScoringFileNames,
-                                             final String diffFileName) throws IOException, ParseException {
-        File convertedTestPackageFile = new File(testPackageName);
+    public void convertTestSpecifications(final String testPackageName, final List<String> adminAndScoringFileNames, final String diffFileName) throws IOException, ParseException {
+        convertTestSpecifications(testPackageName, adminAndScoringFileNames, Optional.of(diffFileName));
+    }
 
-        List<Testspecification> specifications = adminAndScoringFileNames.stream()
-                .map(this::read)
-                .collect(Collectors.toList());
+    private void convertTestSpecifications(final String testPackageName, final List<String> adminAndScoringFileNames,
+                                          final Optional<String> diffFileName) throws IOException, ParseException {
+        final File convertedTestPackageFile = new File(testPackageName);
 
-        TestPackage testPackage = diffFileName == null
-                ? TestPackageMapper.toNew(testPackageName, specifications)
-                : TestPackageMapper.toNew(testPackageName, specifications); //TODO: Update this conditional to include the diff
+        final List<Testspecification> specifications = adminAndScoringFileNames.stream()
+            .map(this::read)
+            .collect(Collectors.toList());
+        final Optional<TestPackageDiff> diff = diffFileName.map(this::readDiff);
+
+        final TestPackage testPackage = TestPackageMapper.toNew(testPackageName, specifications, diff);
         xmlMapper.writeValue(convertedTestPackageFile, testPackage);
 
         convertedTestPackageFile.createNewFile();
     }
 
+
     @Override
     public void convertTestPackage(final TestPackage testPackage) {
         List<Testspecification> administrationPackages = LegacyAdministrationTestPackageMapper.fromNew(testPackage);
     }
+
+    private TestPackageDiff readDiff(final String fileName) {
+        try {
+            return xmlMapper.readValue(new File(fileName), TestPackageDiff.class);
+        } catch (IOException e) {
+            log.error("An exception occurred while reading the file: {}", fileName, e);
+            throw new RuntimeException(e);
+        }
+    }
+
 
     private Testspecification read(final String fileName) {
         try {

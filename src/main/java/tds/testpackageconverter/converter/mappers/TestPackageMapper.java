@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tds.common.Algorithm;
+import tds.testpackage.diff.TestPackageDiff;
 import tds.testpackage.legacy.model.*;
 import tds.testpackage.legacy.model.Property;
 import tds.testpackage.model.*;
@@ -37,6 +38,23 @@ public class TestPackageMapper {
      * @return The converted {@link TestPackage}
      */
     public static TestPackage toNew(final String testPackageName, final List<Testspecification> testSpecifications) throws ParseException {
+        return toNew(testPackageName, testSpecifications, Optional.empty());
+    }
+
+    /**
+     * Maps one or more legacy {@link Testspecification}s to a {@link TestPackage}. At minimum one administration legacy
+     * test packages are required for the conversion. If a scoring package is identified, scoring data will be added to the
+     * test blueprint
+     *
+     * @param testPackageName    The name that should be used for the created test package
+     * @param testSpecifications A collection of legacy {@link Testspecification}s
+     * @return The converted {@link TestPackage}
+     */
+    public static TestPackage toNew(final String testPackageName, final List<Testspecification> testSpecifications, final TestPackageDiff diff) throws ParseException {
+        return toNew(testPackageName, testSpecifications, Optional.of(diff));
+    }
+
+    public static TestPackage toNew(final String testPackageName, final List<Testspecification> testSpecifications, final Optional<TestPackageDiff> diff) throws ParseException {
         List<Testspecification> adminTestPackages = testSpecifications.stream()
                 .filter(TestPackageUtils::isAdministrationPackage)
                 .collect(Collectors.toList());
@@ -70,27 +88,27 @@ public class TestPackageMapper {
                 .setType(findSingleProperty(testSpecification.getProperty(), "type"))
                 .setBankKey(findBankKey(testSpecification.getAdministration()))
                 /* Child Elements */
-                .setAssessments(mapAssessments(adminTestPackages))
+                .setAssessments(mapAssessments(adminTestPackages, diff))
                 .setBlueprint(TestPackageBlueprintMapper.mapBlueprint(testPackageName, testSpecifications))
                 .build();
     }
 
-    private static List<Assessment> mapAssessments(final List<Testspecification> adminTestPackages) {
-        List<Assessment> assessments = new ArrayList<>();
-
-        for (Testspecification testSpecification : adminTestPackages) {
-            assessments.add(Assessment.builder()
-                    /* Attributes */
-                    .setId(testSpecification.getIdentifier().getName())
-                    .setLabel(testSpecification.getIdentifier().getLabel())
-                    /* Child Elements */
-                    .setGrades(mapGrades(testSpecification.getProperty()))
-                    .setSegments(mapSegments(testSpecification.getAdministration()))
-                    .setTools(new ArrayList<>()) //TODO: Remove this - should be optional
-                    .build());
-        }
-
-        return assessments;
+    private static List<Assessment> mapAssessments(final List<Testspecification> adminTestPackages, final Optional<TestPackageDiff> diff) {
+        return adminTestPackages.stream().map(testSpecification -> {
+            final String id = testSpecification.getIdentifier().getName();
+            final List<Tool> tools = diff.flatMap(d ->
+                d.getAssessments().stream().filter(a -> a.getId().equals(id)).
+                    map(tds.testpackage.diff.Assessment::tools).findFirst()).orElse(Collections.emptyList());
+            return Assessment.builder()
+            /* Attributes */
+            .setId(id)
+            .setLabel(testSpecification.getIdentifier().getLabel())
+            /* Child Elements */
+            .setGrades(mapGrades(testSpecification.getProperty()))
+            .setSegments(mapSegments(testSpecification.getAdministration()))
+//            .setTools(tools)
+            .build();
+        }).collect(Collectors.toList());
     }
 
     private static List<Segment> mapSegments(final Administration administration) {
