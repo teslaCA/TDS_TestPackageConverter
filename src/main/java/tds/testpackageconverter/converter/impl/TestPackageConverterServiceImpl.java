@@ -1,6 +1,8 @@
 package tds.testpackageconverter.converter.impl;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+
+import tds.testpackage.diff.TestPackageDiff;
 import tds.testpackageconverter.converter.mappers.LegacyAdministrationTestPackageMapper;
 import tds.testpackageconverter.converter.TestPackageConverterService;
 import tds.testpackageconverter.converter.mappers.TestPackageMapper;
@@ -70,11 +72,12 @@ public class TestPackageConverterServiceImpl implements TestPackageConverterServ
 
         TestPackage testPackage = diffFileName == null
                 ? TestPackageMapper.toNew(testPackageName, specifications)
-                : TestPackageMapper.toNew(testPackageName, specifications); //TODO: Update this conditional to include the diff
+                : TestPackageMapper.toNew(testPackageName, specifications, readDiff(diffFileName));
         legacyXmlMapper.writeValue(convertedTestPackageFile, testPackage);
 
         convertedTestPackageFile.createNewFile();
     }
+
 
     @Override
     public void convertTestPackage(final String testPackagePath) {
@@ -94,6 +97,16 @@ public class TestPackageConverterServiceImpl implements TestPackageConverterServ
             }
         });
     }
+
+    private TestPackageDiff readDiff(final String fileName) {
+        try {
+            return testPackageMapper.readValue(new File(fileName), TestPackageDiff.class);
+        } catch (IOException e) {
+            log.error("An exception occurred while reading the file: {}", fileName, e);
+            throw new RuntimeException(e);
+        }
+    }
+
 
     private Testspecification readTestSpecification(final String filePath) {
         try {
