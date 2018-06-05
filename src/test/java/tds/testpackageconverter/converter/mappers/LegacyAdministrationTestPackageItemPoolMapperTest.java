@@ -32,7 +32,7 @@ public class LegacyAdministrationTestPackageItemPoolMapperTest extends LegacyTes
         List<Bpref> bpRefs = testitem.getBpref();
         assertThat(bpRefs).hasSize(7);
 
-        assertThat(testitem.getPoolproperty()).hasSize(2);
+        assertThat(testitem.getPoolproperty()).hasSize(3);
 
         assertThat(testitem.getPoolproperty().get(0).getProperty()).isEqualTo("Language");
         assertThat(testitem.getPoolproperty().get(0).getValue()).isEqualTo("ENU");
@@ -42,7 +42,10 @@ public class LegacyAdministrationTestPackageItemPoolMapperTest extends LegacyTes
         assertThat(testitem.getPoolproperty().get(1).getValue()).isEqualTo("EQ");
         assertThat(testitem.getPoolproperty().get(1).getLabel()).isEqualTo("ItemType = EQ");
 
-
+        // DOK pool property
+        assertThat(testitem.getPoolproperty().get(2).getProperty()).isEqualTo("Depth of Knowledge");
+        assertThat(testitem.getPoolproperty().get(2).getValue()).isEqualTo("3");
+        assertThat(testitem.getPoolproperty().get(2).getLabel()).isEqualTo("Depth of Knowledge = 3");
 
         assertThat(testitem.getItemscoredimension()).hasSize(1);
         Itemscoredimension dimension = testitem.getItemscoredimension().get(0);

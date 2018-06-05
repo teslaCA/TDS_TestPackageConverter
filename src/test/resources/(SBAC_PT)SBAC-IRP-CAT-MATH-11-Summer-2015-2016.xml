@@ -227,6 +227,7 @@
                 <bpref>SBAC_PT-1|N-RN|A|a/s|N-RN.2</bpref>
                 <poolproperty property="--ITEMTYPE--" value="EQ" label="EQ" />
                 <poolproperty property="Language" value="ENU" label="English" />
+                <poolproperty property="Depth of Knowledge " value="3" label="Depth of Knowledge  = 3" />
                 <itemscoredimension measurementmodel="IRT3PLn" scorepoints="1" weight="1.000000000000000e+000">
                     <itemscoreparameter measurementparameter="a" value="1.000000000000000e+000" />
                     <itemscoreparameter measurementparameter="b" value="1.000000000000000e-015" />

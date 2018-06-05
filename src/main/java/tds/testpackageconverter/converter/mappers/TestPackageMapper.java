@@ -391,6 +391,7 @@ public class TestPackageMapper {
                                     ? Collections.singletonList(presentation)
                                     : mapPresentations(item.getPoolproperty()))
                             .setItemScoreDimensions(mapItemScoreDimensions(item.getItemscoredimension()))
+                            .setPoolProperties(mapPoolProperties(item.getPoolproperty()))
                             .setBlueprintReferences(mapBlueprintReferences(item.getBpref(), bluePrintIdsToNames))
                             .setDoNotScore(diffItem.map(i -> Optional.of(String.valueOf(i.doNotScore())))
                                     .orElseGet(() -> Optional.of(String.valueOf(false))))
@@ -399,6 +400,16 @@ public class TestPackageMapper {
                                 : Optional.empty())
                             .build();
                 })
+                .collect(Collectors.toList());
+    }
+
+    private static List<PoolProperty> mapPoolProperties(final List<Poolproperty> legacyPoolProperties) {
+        return legacyPoolProperties.stream()
+                .filter(prop -> !prop.getProperty().equals("--ITEMTYPE--") && !prop.getProperty().equals("Language"))
+                .map(prop -> PoolProperty.builder()
+                        .setName(prop.getProperty())
+                        .setValue(prop.getValue())
+                        .build())
                 .collect(Collectors.toList());
     }
 

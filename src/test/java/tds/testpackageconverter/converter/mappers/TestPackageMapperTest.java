@@ -276,6 +276,9 @@ public class TestPackageMapperTest extends TestPackageBaseTest {
         assertThat(fixedFormItem.active()).isTrue();
         assertThat(fixedFormItem.handScored()).isFalse();
         assertThat(fixedFormItem.doNotScore()).isFalse();
+        assertThat(fixedFormItem.poolProperties()).hasSize(1);
+        assertThat(fixedFormItem.poolProperties().get(0).getName()).isEqualTo("Depth of Knowledge");
+        assertThat(fixedFormItem.poolProperties().get(0).getValue()).isEqualTo("3");
         // Item Score Dimension
         assertThat(fixedFormItem.getItemScoreDimensions()).hasSize(1);
         assertThat(fixedFormItem.getItemScoreDimensions().get(0)).isNotNull();
