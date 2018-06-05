@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class TestPackageMapperTest extends TestPackageBaseTest {
     @Test
-    public void shouldParseCohort() throws ParseException {
+    public void shouldParseCohort() {
         // Default-ENU-Braille
         String cohort = TestPackageUtils.parseCohort("(SBAC_PT)SBAC-Perf-MATH-7-Fall-2017-2018:Default-ENU-Braille-1");
         assertThat(cohort).isEqualToIgnoringCase("Default");
@@ -416,5 +416,30 @@ public class TestPackageMapperTest extends TestPackageBaseTest {
         ItemScoreParameter fixedFormParameter = fixedFormItem.getItemScoreDimensions().get(0).itemScoreParameters().get(0);
         assertThat(fixedFormParameter.getMeasurementParameter()).isEqualTo("a");
         assertThat(fixedFormParameter.getValue()).isEqualTo(1.0);
+    }
+
+    @Test
+    public void shouldConvertTestPackagesWithDiff() throws ParseException {
+        assertThat(mockPerfAdminLegacyTestPackage).isNotNull();
+        TestPackage testPackage = TestPackageMapper.toNew("(SBAC_PT)SBAC-IRP-MATH-11-COMBINED-Summer-2015-2016",
+                Arrays.asList(mockPerfAdminLegacyTestPackage, mockCATAdminLegacyTestPackage), mockTestPackageDiff);
+        assertThat(testPackage).isNotNull();
+        assertThat(testPackage.getAcademicYear()).isEqualTo("2015-2016");
+        assertThat(testPackage.getAssessments().get(0).getSegments().get(0).getLabel().get()).isEqualTo("SBAC IRP Performance Segment 1");
+        Item item1434 = testPackage.getAssessments().get(0).getSegments().get(0).segmentForms().get(0).itemGroups().get(0).items().get(0);
+        Item item1432 = testPackage.getAssessments().get(0).getSegments().get(0).segmentForms().get(0).itemGroups().get(0).items().get(1);
+
+        assertThat(item1434.getId()).isEqualTo("1434");
+        assertThat(item1434.doNotScore()).isFalse();
+        assertThat(item1434.getTeacherHandScoring()).isPresent();
+        assertThat(item1434.getTeacherHandScoring().get().getExemplar().get()).isEqualTo("G3_2703_TM.pdf");
+        assertThat(item1434.getTeacherHandScoring().get().getTrainingGuide().get()).isEqualTo("G3_2703_SG.pdf");
+        assertThat(item1434.getTeacherHandScoring().get().layout()).isEqualTo("WAI");
+        assertThat(item1434.getTeacherHandScoring().get().getDescription()).isEqualTo("Mandatory Financial Literacy Classes - SBAC_Field");
+        assertThat(item1434.getTeacherHandScoring().get().dimensions().value).isNotNull();
+
+        assertThat(item1432.getId()).isEqualTo("1432");
+        assertThat(item1432.doNotScore()).isTrue();
+
     }
 }

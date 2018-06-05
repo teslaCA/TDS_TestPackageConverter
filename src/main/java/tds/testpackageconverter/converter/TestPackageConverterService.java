@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * An interface for a service responsible for unzipping and deserializing test packages
@@ -24,7 +25,6 @@ public interface TestPackageConverterService {
      *
      * @param testPackageName          A the name of the test package to produce
      * @param adminAndScoringFileNames The filenames of the administration and scoring packages to convert
-     * @return {@code true} if this test package file was successfully created, {@code false} otherwise
      * @throws IOException    If there is an error reading any of the test packages
      * @throws ParseException If there is an error parsing any of the test packages
      */
@@ -36,7 +36,6 @@ public interface TestPackageConverterService {
      * @param testPackageName          A the name of the test package to produce
      * @param adminAndScoringFileNames The filenames of the administration and scoring packages to convert
      * @param diffFileName             The filename of the "diff" test package
-     * @return {@code true} if this test package file was successfully created, {@code false} otherwise
      * @throws IOException    If there is an error reading any of the test packages
      * @throws ParseException If there is an error parsing any of the test packages
      */

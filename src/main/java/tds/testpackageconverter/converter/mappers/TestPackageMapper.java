@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tds.common.Algorithm;
+import tds.testpackage.diff.TestPackageDiff;
 import tds.testpackage.legacy.model.*;
 import tds.testpackage.legacy.model.Property;
 import tds.testpackage.model.*;
@@ -37,6 +38,23 @@ public class TestPackageMapper {
      * @return The converted {@link TestPackage}
      */
     public static TestPackage toNew(final String testPackageName, final List<Testspecification> testSpecifications) throws ParseException {
+        return toNew(testPackageName, testSpecifications, Optional.empty());
+    }
+
+    /**
+     * Maps one or more legacy {@link Testspecification}s to a {@link TestPackage}. At minimum one administration legacy
+     * test packages are required for the conversion. If a scoring package is identified, scoring data will be added to the
+     * test blueprint
+     *
+     * @param testPackageName    The name that should be used for the created test package
+     * @param testSpecifications A collection of legacy {@link Testspecification}s
+     * @return The converted {@link TestPackage}
+     */
+    public static TestPackage toNew(final String testPackageName, final List<Testspecification> testSpecifications, final TestPackageDiff diff) throws ParseException {
+        return toNew(testPackageName, testSpecifications, Optional.of(diff));
+    }
+
+    private static TestPackage toNew(final String testPackageName, final List<Testspecification> testSpecifications, final Optional<TestPackageDiff> diff) throws ParseException {
         List<Testspecification> adminTestPackages = testSpecifications.stream()
                 .filter(TestPackageUtils::isAdministrationPackage)
                 .collect(Collectors.toList());
@@ -66,41 +84,55 @@ public class TestPackageMapper {
                 .setPublishDate(TestPackageUtils.formatDate(testSpecification.getPublishdate()))
                 // This value is not found in the legacy spec, but is required in the new spec
                 // we will use the current year as a placeholder
-                .setAcademicYear(String.valueOf(Calendar.getInstance().get(Calendar.YEAR)))
+                .setAcademicYear(diff.isPresent()
+                        ? diff.get().getAcademicYear()
+                        : String.valueOf(Calendar.getInstance().get(Calendar.YEAR)))
+                .setSubType(diff.isPresent() && diff.get().getSubType() != null
+                        ? Optional.of(diff.get().getSubType())
+                        : Optional.empty())
                 .setSubject(findSingleProperty(testSpecification.getProperty(), "subject"))
                 .setType(findSingleProperty(testSpecification.getProperty(), "type"))
                 .setBankKey(findBankKey(testSpecification.getAdministration()))
                 /* Child Elements */
-                .setAssessments(mapAssessments(adminTestPackages))
+                .setAssessments(mapAssessments(adminTestPackages, diff))
                 .setBlueprint(TestPackageBlueprintMapper.mapBlueprint(testPackageName, testSpecifications))
                 .build();
     }
 
-    private static List<Assessment> mapAssessments(final List<Testspecification> adminTestPackages) {
-        List<Assessment> assessments = new ArrayList<>();
-
-        for (Testspecification testSpecification : adminTestPackages) {
-            assessments.add(Assessment.builder()
+    private static List<Assessment> mapAssessments(final List<Testspecification> adminTestPackages, final Optional<TestPackageDiff> diff) {
+        return adminTestPackages.stream().map(testSpecification -> {
+            final String id = testSpecification.getIdentifier().getName();
+            final List<Tool> tools = diff.flatMap(d ->
+                    d.getAssessments().stream().filter(a -> a.getId().equals(id))
+                            .map(tds.testpackage.diff.Assessment::tools).findFirst()).orElse(Collections.emptyList());
+            return Assessment.builder()
                     /* Attributes */
-                    .setId(testSpecification.getIdentifier().getName())
+                    .setId(id)
                     .setLabel(testSpecification.getIdentifier().getLabel())
                     /* Child Elements */
                     .setGrades(mapGrades(testSpecification.getProperty()))
-                    .setSegments(mapSegments(testSpecification.getAdministration()))
-                    .setTools(new ArrayList<>()) //TODO: Remove this - should be optional
-                    .build());
-        }
-
-        return assessments;
+                    .setSegments(mapSegments(testSpecification.getAdministration(), diff))
+                    .setTools(tools)
+                    .build();
+        }).collect(Collectors.toList());
     }
 
-    private static List<Segment> mapSegments(final Administration administration) {
+    private static List<Segment> mapSegments(final Administration administration, final Optional<TestPackageDiff> diff) {
         return administration.getAdminsegment().stream()
                 .map(adminSegment -> {
                     boolean isFixedForm = adminSegment.getItemselection().equalsIgnoreCase(Algorithm.FIXED_FORM.getType());
                     Map<String, String> blueprintIdsToNames = administration.getTestblueprint().getBpelement().stream()
                             .map(Bpelement::getIdentifier)
                             .collect(Collectors.toMap(Identifier::getUniqueid, Identifier::getName, (a1, a2) -> a1));
+                    final List<Tool> tools = diff.isPresent()
+                            ? diff.get().getAssessments().stream()
+                                .flatMap(a -> a.getSegments().stream()
+                                        .filter(s -> s.getId().equals(adminSegment.getSegmentid()))
+                                        .flatMap(segment -> segment.tools().stream()))
+                                .collect(Collectors.toList())
+                            : Collections.emptyList();
+                    final String segmentId = blueprintIdsToNames.get(adminSegment.getSegmentid());
+
                     return Segment.builder()
                             /* Attributes */
                             // The legacy spec calls the segmentKey a "segment id". We need to fetch the actual segmentId from the blueprint
@@ -109,13 +141,34 @@ public class TestPackageMapper {
                             .setAlgorithmType(adminSegment.getItemselection().equalsIgnoreCase(Algorithm.ADAPTIVE_2.getType())
                                     ? "adaptive" : adminSegment.getItemselection())
                             .setAlgorithmImplementation(adminSegment.getItemselector().getIdentifier().getUniqueid())
-                            .setLabel(Optional.of(adminSegment.getSegmentid()))
+                            .setLabel(diff.isPresent()
+                                    ?  diff.get().getAssessments().stream()
+                                        .flatMap(a -> a.getSegments().stream())
+                                        .filter(s -> s.getId().equals(segmentId))
+                                        .map(tds.testpackage.diff.Segment::getLabel)
+                                        .findFirst().orElse(Optional.of(adminSegment.getSegmentid()))
+                                    : Optional.of(adminSegment.getSegmentid()))
                             /* Child Elements */
                             .setPool(isFixedForm ? null : mapItemGroups(adminSegment.getSegmentpool().getItemgroup(),
-                                    administration.getItempool(), blueprintIdsToNames, null))
+                                    administration.getItempool(), blueprintIdsToNames, null, diff))
                             .setSegmentForms(mapSegmentForms(adminSegment.getSegmentform(),
-                                    administration.getTestform(), administration.getItempool(), blueprintIdsToNames))
+                                    administration.getTestform(), administration.getItempool(), blueprintIdsToNames, diff))
                             .setSegmentBlueprint(mapSegmentBlueprint(adminSegment, administration.getTestblueprint().getBpelement()))
+                            .setEntryApproval(diff.isPresent()
+                                ? diff.get().getAssessments().stream()
+                                    .flatMap(a -> a.getSegments().stream())
+                                            .filter(s -> s.getId().equals(segmentId))
+                                            .map(tds.testpackage.diff.Segment::entryApproval)
+                                            .findFirst().orElse(false)
+                                : false)
+                            .setExitApproval(diff.isPresent()
+                                    ? diff.get().getAssessments().stream()
+                                        .flatMap(a -> a.getSegments().stream())
+                                            .filter(s -> s.getId().equals(segmentId))
+                                            .map(tds.testpackage.diff.Segment::exitApproval)
+                                            .findFirst().orElse(false)
+                                    : false)
+                            .setTools(tools)
                             .build();
                 })
                 .collect(Collectors.toList());
@@ -208,8 +261,8 @@ public class TestPackageMapper {
     }
 
     private static SegmentForm mergeSegmentForms(
-        final SegmentForm existingSegmentForm,
-        final SegmentForm newSegmentForm) {
+            final SegmentForm existingSegmentForm,
+            final SegmentForm newSegmentForm) {
 
         final Set<Presentation> presentationSet = new HashSet<>(existingSegmentForm.getPresentations());
         presentationSet.addAll(newSegmentForm.getPresentations());
@@ -220,9 +273,9 @@ public class TestPackageMapper {
         }).collect(Collectors.toList());
 
         return existingSegmentForm.toBuilder().
-            setPresentations(new ArrayList<>(presentationSet)).
-            setItemGroups(mergedItemGroups).
-            build();
+                setPresentations(new ArrayList<>(presentationSet)).
+                setItemGroups(mergedItemGroups).
+                build();
     }
 
 
@@ -233,14 +286,14 @@ public class TestPackageMapper {
     }
 
     private static List<SegmentForm> mapSegmentForms(final List<Segmentform> legacySegmentForms, final List<Testform> testForms,
-                                                     final Itempool itemPool, final Map<String, String> bluePrintIdsToNames) {
-        List<SegmentForm> segmentForms = new ArrayList<>();
+                                                     final Itempool itemPool, final Map<String, String> bluePrintIdsToNames, final Optional<TestPackageDiff> diff) {
+        final List<SegmentForm> segmentForms = new ArrayList<>();
 
         // Get the set of unique formKeys - usually in a similar format as item/stimuli keys (<bankKey>-<formId>)
-        Set<String> formPartitionIds = legacySegmentForms.stream().map(Segmentform::getFormpartitionid).collect(Collectors.toSet());
+        final Set<String> formPartitionIds = legacySegmentForms.stream().map(Segmentform::getFormpartitionid).collect(Collectors.toSet());
         // We need data from both the parent "Testform" and "Formpartition". This map contains a mapping from the
         // form partition id to it's parent testform
-        Map<String, Testform> testFormMap = new HashMap<>();
+        final Map<String, Testform> testFormMap = new HashMap<>();
         testForms.forEach(testForm ->
                 testForm.getFormpartition().stream()
                         .filter(formPartition -> formPartitionIds.contains(formPartition.getIdentifier().getUniqueid()))
@@ -264,7 +317,7 @@ public class TestPackageMapper {
                     .setCohort(TestPackageUtils.parseCohort(testForm.getIdentifier().getUniqueid()))
                     .setId(formPartition.getIdentifier().getName())
                     .setPresentations(Collections.singletonList(presentation))
-                    .setItemGroups(mapItemGroups(formPartition.getItemgroup(), itemPool, bluePrintIdsToNames, presentation))
+                    .setItemGroups(mapItemGroups(formPartition.getItemgroup(), itemPool, bluePrintIdsToNames, presentation, diff))
                     .build());
         }
 
@@ -272,9 +325,10 @@ public class TestPackageMapper {
     }
 
     private static List<ItemGroup> mapItemGroups(final List<Itemgroup> itemGroups, final Itempool itemPool,
-                                                 final Map<String, String> bluePrintIdsToNames, final Presentation presentation) {
+                                                 final Map<String, String> bluePrintIdsToNames, final Presentation presentation,
+                                                 final Optional<TestPackageDiff> diff) {
         return itemGroups.stream()
-                .filter(itemgroup -> !itemGroupContainsNonExistentItem(itemgroup, itemPool))
+                .filter(itemGroup -> !itemGroupContainsNonExistentItem(itemGroup, itemPool))
                 .map(ig ->
                         ItemGroup.builder()
                                 // If legacy itemgroup id is "G-187-1234-0", parse out "1234"
@@ -282,7 +336,7 @@ public class TestPackageMapper {
                                 .setMaxItems(Optional.of(ig.getMaxitems()))
                                 .setMaxResponses(Optional.of(ig.getMaxresponses()))
                                 .setStimulus(mapStimuli(ig.getPassageref()))
-                                .setItems(mapItems(ig.getGroupitem(), itemPool, bluePrintIdsToNames, presentation))
+                                .setItems(mapItems(ig.getGroupitem(), itemPool, bluePrintIdsToNames, presentation, diff))
                                 .build())
                 .collect(Collectors.toList());
     }
@@ -296,7 +350,8 @@ public class TestPackageMapper {
     }
 
     private static List<Item> mapItems(final List<Groupitem> groupItems, final Itempool itemPool,
-                                       final Map<String, String> bluePrintIdsToNames, final Presentation presentation) {
+                                       final Map<String, String> bluePrintIdsToNames, final Presentation presentation,
+                                       final Optional<TestPackageDiff> diff) {
         Set<String> groupItemIds = groupItems.stream().map(Groupitem::getItemid).collect(Collectors.toSet());
         Map<String, Testitem> testItemMap = itemPool.getTestitem().stream()
                 .filter(testItem -> groupItemIds.contains(testItem.getIdentifier().getUniqueid()))
@@ -311,7 +366,15 @@ public class TestPackageMapper {
                 })
                 .filter(gi -> testItemMap.containsKey(gi.getItemid()))
                 .map(gi -> {
-                    Testitem item = testItemMap.get(gi.getItemid());
+                    final Testitem item = testItemMap.get(gi.getItemid());
+                    final Optional<tds.testpackage.diff.Item> diffItem = diff.isPresent()
+                            ? diff.get().getAssessments().stream()
+                                .flatMap(assessment -> assessment.getSegments().stream()
+                                        .flatMap(segment -> segment.items().stream()
+                                                .filter(i -> String.format("%s-%s", diff.get().getBankKey(), i.getId()).equals(gi.getItemid()))
+                                        )
+                                ).findFirst()
+                            : Optional.empty();
                     return Item.builder()
                             // If the item key is "187-1234" the item ID is "1234"
                             .setId(TestPackageUtils.parseIdFromKey(gi.getItemid()))
@@ -329,6 +392,11 @@ public class TestPackageMapper {
                                     : mapPresentations(item.getPoolproperty()))
                             .setItemScoreDimensions(mapItemScoreDimensions(item.getItemscoredimension()))
                             .setBlueprintReferences(mapBlueprintReferences(item.getBpref(), bluePrintIdsToNames))
+                            .setDoNotScore(diffItem.map(i -> Optional.of(String.valueOf(i.doNotScore())))
+                                    .orElseGet(() -> Optional.of(String.valueOf(false))))
+                            .setTeacherHandScoring(diffItem.isPresent()
+                                ? diffItem.get().getTeacherHandScoring()
+                                : Optional.empty())
                             .build();
                 })
                 .collect(Collectors.toList());
