@@ -7,6 +7,7 @@ import tds.testpackageconverter.utils.TestPackageUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -110,9 +111,22 @@ public class LegacyAdministrationTestPackageItemPoolMapper {
             }
 
             testItem.getItemscoredimension().addAll(mapItemScoreDimensions(item.getItemScoreDimensions()));
+            testItem.getPoolproperty().addAll(mapPoolProperties(item.poolProperties()));
 
             return testItem;
         }).collect(Collectors.toList());
+    }
+
+    private static List<Poolproperty> mapPoolProperties(final List<PoolProperty> poolProperties) {
+        return poolProperties.stream()
+                .map(prop -> {
+                    final Poolproperty legacyProperty = new Poolproperty();
+                    legacyProperty.setProperty(prop.getName());
+                    legacyProperty.setValue(prop.getValue());
+                    legacyProperty.setLabel(String.format("%s = %s", prop.getName(), prop.getValue()));
+                    return legacyProperty;
+                })
+                .collect(Collectors.toList());
     }
 
     private static List<Itemscoredimension> mapItemScoreDimensions(final List<ItemScoreDimension> itemScoreDimensions) {

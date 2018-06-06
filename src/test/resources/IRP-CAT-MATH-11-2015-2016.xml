@@ -585,6 +585,9 @@
                 <BlueprintReference idRef="1|N-RN|A|a/s"/>
                 <BlueprintReference idRef="1|N-RN|A|a/s|N-RN.2"/>
               </BlueprintReferences>
+              <PoolProperties>
+                <PoolProperty name="Depth of Knowledge" value="3" />
+              </PoolProperties>
               <ItemScoreDimensions>
                 <ItemScoreDimension measurementModel="IRT3PLn" scorePoints="1" weight="1.0">
                   <ItemScoreParameter value="1.0" measurementParameter="a"/>
