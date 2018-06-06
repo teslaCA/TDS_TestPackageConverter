@@ -19,6 +19,14 @@ public class TestPackageUtils {
         return String.format("(%s)%s-%s", testPackage.getPublisher(), assessmentId, testPackage.getAcademicYear());
     }
 
+    public static String getCombinedKey(final TestPackage testPackage, final String segmentId) {
+        return String.format("(%s)%s-COMBINED-%s", testPackage.getPublisher(), segmentId, testPackage.getAcademicYear());
+    }
+
+    public static String getCombinedId(final String segmentId) {
+        return segmentId + "-COMBINED";
+    }
+
     public static String parseCohort(final String formKey) {
         // <segment key>:<cohort>-<language code>
         // e.g., SBAC-OP-FIXED-G8E-Perf-BrainWorks-Spring-2015-2016:SleepDream-ENU - the cohort is "SleepDream"

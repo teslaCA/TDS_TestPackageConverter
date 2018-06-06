@@ -5,6 +5,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import tds.testpackage.diff.TestPackageDiff;
 import tds.testpackageconverter.converter.mappers.LegacyAdministrationTestPackageMapper;
 import tds.testpackageconverter.converter.TestPackageConverterService;
+import tds.testpackageconverter.converter.mappers.LegacyScoringTestPackageMapper;
 import tds.testpackageconverter.converter.mappers.TestPackageMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,6 +84,7 @@ public class TestPackageConverterServiceImpl implements TestPackageConverterServ
     public void convertTestPackage(final String testPackagePath) {
         final TestPackage testPackage = readTestPackage(testPackagePath);
         final List<Testspecification> administrationPackages = LegacyAdministrationTestPackageMapper.fromNew(testPackage);
+        final Testspecification scoringPackage = LegacyScoringTestPackageMapper.fromNew(testPackage, administrationPackages);
 
         administrationPackages.forEach(testSpecification -> {
             final String administrationOutputFilename = testSpecification.getIdentifier().getUniqueid() + ".xml";
