@@ -22,7 +22,7 @@ Once you see that jar you can execute it with by:
 
 This will run and present an error message that you need to provide more information.  The sections below cover the required commands an the optional flags that can be provided.
 
-## Converting To New Pacakge Format
+## Converting Legacy To New Pacakge Format
 
 To convert a legacy format to the new package format one needs to provide the `convert-to-new` command.  By default this works with an xml file.
 
@@ -36,5 +36,13 @@ The tool has the ability to convert zip archive files containing test packages t
 `java -jar tds-test-package-converter-0.0.1-SNAPSHOT.jar convert-to-new -z HandScoreTest.zip handScoreTest.xml`
 
 The `-z` tells the tool you want to convert an ZIP archive of test pacakges.  Note the `HandScoreTest.zip` in the command is a zip file within the same directory as you run the project.  
+
+## Converting from New to Legacy Format
+
+A lot of the same commands can be used for the new to legacy format.  This command allows one to convert a new test package format XML to the legacy XML format.
+
+`java -jar tds-test-package-converter-0.0.1-SNAPSHOT.jar convert-to-new handScoreTestNew.xml handScoreTestLegacy.xml`
+
+
 
 
