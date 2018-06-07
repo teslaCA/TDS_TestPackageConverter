@@ -2,6 +2,7 @@ package tds.testpackageconverter.converter.impl;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
+import org.apache.commons.io.IOUtils;
 import tds.testpackage.diff.TestPackageDiff;
 import tds.testpackageconverter.converter.mappers.LegacyAdministrationTestPackageMapper;
 import tds.testpackageconverter.converter.TestPackageConverterService;
@@ -17,8 +18,10 @@ import tds.testpackage.model.TestPackage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -42,7 +45,7 @@ public class TestPackageConverterServiceImpl implements TestPackageConverterServ
 
         List<Testspecification> specifications = zipFile.stream()
                 .filter(entry -> !entry.isDirectory() && entry.getName().endsWith(".xml")
-                        && !entry.getName().startsWith("__")) // Ignore __MACOSX folder if it exists
+                        && isTestSpecification(zipFile, entry))
                 .map(entry -> unzipAndRead(zipFile, entry))
                 .collect(Collectors.toList());
 
@@ -50,11 +53,21 @@ public class TestPackageConverterServiceImpl implements TestPackageConverterServ
             throw new IOException("No testspecification XML files were located within the zip file");
         }
 
-        TestPackage testPackage = TestPackageMapper.toNew(testPackageName, specifications);
+        Optional<TestPackageDiff> diff = zipFile.stream()
+                .filter(entry -> !entry.isDirectory() && entry.getName().endsWith(".xml")
+                        && isTestPackageDiff(zipFile, entry))
+                .map(entry -> unzipAndReadDiff(zipFile, entry))
+                .findFirst();
+
+        TestPackage testPackage = diff.isPresent()
+                ? TestPackageMapper.toNew(testPackageName, specifications, diff.get())
+                : TestPackageMapper.toNew(testPackageName, specifications);
+
         legacyXmlMapper.writeValue(convertedTestPackageFile, testPackage);
 
         convertedTestPackageFile.createNewFile();
     }
+
 
     @Override
     public void convertTestSpecifications(final String testPackageName, final List<String> adminAndScoringFileNames) throws IOException, ParseException {
@@ -107,7 +120,6 @@ public class TestPackageConverterServiceImpl implements TestPackageConverterServ
         }
     }
 
-
     private Testspecification readTestSpecification(final String filePath) {
         try {
             return legacyXmlMapper.readValue(new File(filePath), Testspecification.class);
@@ -130,10 +142,48 @@ public class TestPackageConverterServiceImpl implements TestPackageConverterServ
         try {
             System.out.println("Reading file in zip: " + entry.getName());
             InputStream inputStream = zipFile.getInputStream(entry);
+
             return legacyXmlMapper.readValue(inputStream, Testspecification.class);
         } catch (IOException e) {
             log.error("An exception occurred: {}", e);
             throw new RuntimeException(e);
         }
+    }
+
+    private TestPackageDiff unzipAndReadDiff(final ZipFile zipFile, final ZipEntry entry) {
+        try {
+            System.out.println("Reading file in zip: " + entry.getName());
+            InputStream inputStream = zipFile.getInputStream(entry);
+
+            return testPackageMapper.readValue(inputStream, TestPackageDiff.class);
+        } catch (IOException e) {
+            log.error("An exception occurred: {}", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    private boolean isTestSpecification(final ZipFile zipFile, final ZipEntry entry) {
+        try {
+            InputStream inputStream = zipFile.getInputStream(entry);
+            String fileText = IOUtils.toString(inputStream, StandardCharsets.UTF_8.name());
+            return fileText.contains("<testspecification");
+        } catch (IOException e) {
+            log.debug("Skipping file {}", entry.getName());
+        }
+
+        return false;
+    }
+
+    private boolean isTestPackageDiff(final ZipFile zipFile, final ZipEntry entry) {
+        try {
+            InputStream inputStream = zipFile.getInputStream(entry);
+            String fileText = IOUtils.toString(inputStream, StandardCharsets.UTF_8.name());
+            return fileText.contains("<TestPackageDiff");
+        } catch (IOException e) {
+            log.debug("Skipping diff file {}", entry.getName());
+        }
+
+        return false;
     }
 }
