@@ -47,8 +47,8 @@ public class LegacyScoringTestPackageBlueprintMapper {
                 .mapToInt(bpEl -> bpEl.getMaxopitems().intValue()).sum()));
         testPackageBpElement.setOpitemcount(BigInteger.valueOf(segmentBlueprintElements.stream()
                 .mapToInt(bpEl -> bpEl.getOpitemcount().intValue()).sum()));
-        testPackageBpElement.setOpitemcount(BigInteger.valueOf(segmentBlueprintElements.stream()
-                .mapToInt(bpEl -> bpEl.getFtitemcount().intValue()).sum()));
+        testPackageBpElement.setFtitemcount(BigInteger.valueOf(segmentBlueprintElements.stream()
+                .mapToInt(bpEl -> bpEl.getFtitemcount() != null ? bpEl.getFtitemcount().intValue() : 0).sum()));
 
         final Identifier identifier = new Identifier();
         identifier.setUniqueid(TestPackageUtils.getCombinedKey(testPackage, testPackage.getId()));

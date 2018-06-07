@@ -4,6 +4,7 @@ import tds.testpackage.legacy.model.*;
 import tds.testpackage.model.TestPackage;
 import tds.testpackageconverter.utils.TestPackageUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -21,7 +22,7 @@ public class LegacyScoringTestPackageItemPoolMapper {
     private static List<Testitem> mapItems(final TestPackage testPackage, final List<Testspecification> administrationPackages) {
         final Map<String, String> segmentBpElements = administrationPackages.stream()
                 .flatMap(adminPackage -> adminPackage.getAdministration().getTestblueprint().getBpelement().stream()
-                        .filter(bpEl -> bpEl.getElementtype().equals("segment") || bpEl.getElementtype().equals("test")))
+                        .filter(bpEl -> bpEl.getElementtype().equals("segment")))
                 .collect(Collectors.toMap(
                         bpEl -> bpEl.getIdentifier().getUniqueid(),
                         bpEl -> TestPackageUtils.getCombinedKey(testPackage, bpEl.getIdentifier().getName())));
@@ -58,6 +59,7 @@ public class LegacyScoringTestPackageItemPoolMapper {
             return Stream.concat(
                     administrationPackages.get(0).getAdministration().getItempool().getPassage().stream(),
                     administrationPackages.get(1).getAdministration().getItempool().getPassage().stream())
+                    .distinct()
                     .collect(Collectors.toList()); // Combine the two passage lists
         }
     }
