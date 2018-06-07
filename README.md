@@ -41,7 +41,7 @@ The `-z` tells the tool you want to convert an ZIP archive of test pacakges.  No
 
 A lot of the same commands can be used for the new to legacy format.  This command allows one to convert a new test package format XML to the legacy XML format.
 
-`java -jar tds-test-package-converter-0.0.1-SNAPSHOT.jar convert-to-new handScoreTestNew.xml handScoreTestLegacy.xml`
+`java -jar tds-test-package-converter-0.0.1-SNAPSHOT.jar convert-from-new handScoreTestNew.xml handScoreTestLegacy.xml`
 
 
 
