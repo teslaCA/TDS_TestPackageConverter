@@ -54,11 +54,11 @@ java -jar tds-test-package-converter.jar convert-to-new handScoreTest.xml -z Han
 The `-z` tells the tool you want to convert an ZIP archive of test pacakges.  Note the `HandScoreTest.zip` in the command is a zip file within the same directory as you run the project.  
 
 #### Options
-Currently there is only a single option for zip converstion.
 
 | Argument | Long Option | Required | Description | Example |
 | -------- | ----------- | -------- | ----------- | ------- |
-| `-a` | `--zip` | Yes if doing zip | zip file to convert | `convert-to-new newPackage.xml -z zipFile.zip`|
+| `-z` | `--zip` | Yes if doing zip | zip file to convert | `convert-to-new newPackage.xml -z zipFile.zip`|
+| `-v` | `--verbose` | No | Verbose logging which can help identify errors | `convert-to-new handScoreTest.xml -a handScoreTestLegacy.xml -v`
 
 ### Converting Legacy format file to new format
 
