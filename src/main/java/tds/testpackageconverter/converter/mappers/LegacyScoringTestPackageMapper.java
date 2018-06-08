@@ -93,6 +93,7 @@ public class LegacyScoringTestPackageMapper {
         scoring.setPerformancelevels(mapPerformanceLevels(testPackage, bpElementNameMap));
         scoring.setScoringrules(mapScoringRules(testPackage, bpElementNameMap));
         scoring.getTestform().addAll(LegacyScoringTestPackageFormMapper.mapTestForms(testPackage, administrationPackages));
+
         return scoring;
     }
 

@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.TimeZone;
+import java.util.UUID;
 
 public class TestPackageUtils {
     public static String DATE_PATTERN = "MMM dd yyyy hh:mma";
@@ -101,5 +102,10 @@ public class TestPackageUtils {
             default:
                 return String.format("%s::%s", formId, languageCode);
         }
+    }
+
+    public static int generateFormKey() {
+        final int generatedKey = (int) UUID.randomUUID().getMostSignificantBits();
+        return generatedKey < 0 ? generatedKey * -1 : generatedKey;
     }
 }

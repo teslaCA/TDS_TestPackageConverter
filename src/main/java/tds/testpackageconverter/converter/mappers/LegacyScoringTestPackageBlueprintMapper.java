@@ -4,6 +4,7 @@ import tds.testpackage.legacy.model.Bpelement;
 import tds.testpackage.legacy.model.Identifier;
 import tds.testpackage.legacy.model.Testblueprint;
 import tds.testpackage.legacy.model.Testspecification;
+import tds.testpackage.model.BlueprintElementTypes;
 import tds.testpackage.model.TestPackage;
 import tds.testpackageconverter.utils.TestPackageUtils;
 
@@ -34,7 +35,7 @@ public class LegacyScoringTestPackageBlueprintMapper {
         final List<Bpelement> segmentBlueprintElements = getSegmentBpElements(testPackage, bpElementIdMap);
 
         final Bpelement testPackageBpElement = new Bpelement();
-        testPackageBpElement.setElementtype("test");
+        testPackageBpElement.setElementtype(BlueprintElementTypes.TEST);
 
         // "roll up" the item counts
         testPackageBpElement.setMinftitems(BigInteger.valueOf(segmentBlueprintElements.stream()
@@ -51,8 +52,8 @@ public class LegacyScoringTestPackageBlueprintMapper {
                 .mapToInt(bpEl -> bpEl.getFtitemcount() != null ? bpEl.getFtitemcount().intValue() : 0).sum()));
 
         final Identifier identifier = new Identifier();
-        identifier.setUniqueid(TestPackageUtils.getCombinedKey(testPackage, testPackage.getId()));
-        identifier.setName(TestPackageUtils.getCombinedId(testPackage.getId()));
+        identifier.setUniqueid(TestPackageUtils.getAssessmentKey(testPackage, testPackage.getId()));
+        identifier.setName(testPackage.getId());
         identifier.setVersion(new BigDecimal(testPackage.getVersion()));
         testPackageBpElement.setIdentifier(identifier);
 
@@ -66,8 +67,8 @@ public class LegacyScoringTestPackageBlueprintMapper {
     private static List<Bpelement> mapMiscellaneousBpElements(final Map<String, List<Bpelement>> bpElementIdMap) {
         // flatten/aggregate all blueprints by id
         return bpElementIdMap.values().stream()
-                .filter(bpElements -> !bpElements.get(0).getElementtype().equals("segment")
-                        && !bpElements.get(0).getElementtype().equals("test"))
+                .filter(bpElements -> !bpElements.get(0).getElementtype().equals(BlueprintElementTypes.SEGMENT)
+                        && !bpElements.get(0).getElementtype().equals(BlueprintElementTypes.TEST))
                 .map(bpElements -> {
                     final Bpelement combinedBpEl = new Bpelement();
                     final Bpelement firstBpEl = bpElements.get(0);
@@ -99,27 +100,39 @@ public class LegacyScoringTestPackageBlueprintMapper {
                 .collect(Collectors.toList());
     }
 
-    private static List<Bpelement> getSegmentBpElements(final TestPackage testPackage, final Map<String, List<Bpelement>> bpElementIdMap) {
+    private static List<Bpelement>getSegmentBpElements(final TestPackage testPackage, final Map<String, List<Bpelement>> bpElementIdMap) {
         return testPackage.getAssessments().stream()
                 .flatMap(assessment -> assessment.getSegments().stream()
                         .map(segment -> {
                             final Bpelement segmentBpElement = new Bpelement();
-                            segmentBpElement.setElementtype("segment");
+                            segmentBpElement.setElementtype(BlueprintElementTypes.SEGMENT);
 
                             List<Bpelement> bpElementsForId = bpElementIdMap.get(segment.getId());
 
                             segmentBpElement.setMinftitems(BigInteger.valueOf(bpElementsForId.stream()
-                                    .mapToInt(bpEl -> bpEl.getMinftitems().intValue()).sum()));
+                                    .filter(bpEl -> bpEl.getElementtype().equals(BlueprintElementTypes.SEGMENT))
+                                    .mapToInt(bpEl -> bpEl.getMinftitems().intValue())
+                                    .sum()));
                             segmentBpElement.setMaxftitems(BigInteger.valueOf(bpElementsForId.stream()
-                                    .mapToInt(bpEl -> bpEl.getMaxftitems().intValue()).sum()));
+                                    .filter(bpEl -> bpEl.getElementtype().equals(BlueprintElementTypes.SEGMENT))
+                                    .mapToInt(bpEl -> bpEl.getMaxftitems().intValue())
+                                    .sum()));
                             segmentBpElement.setMinopitems(BigInteger.valueOf(bpElementsForId.stream()
-                                    .mapToInt(bpEl -> bpEl.getMinopitems().intValue()).sum()));
+                                    .filter(bpEl -> bpEl.getElementtype().equals(BlueprintElementTypes.SEGMENT))
+                                    .mapToInt(bpEl -> bpEl.getMinopitems().intValue())
+                                    .sum()));
                             segmentBpElement.setMaxopitems(BigInteger.valueOf(bpElementsForId.stream()
-                                    .mapToInt(bpEl -> bpEl.getMaxopitems().intValue()).sum()));
+                                    .filter(bpEl -> bpEl.getElementtype().equals(BlueprintElementTypes.SEGMENT))
+                                    .mapToInt(bpEl -> bpEl.getMaxopitems().intValue())
+                                    .sum()));
                             segmentBpElement.setOpitemcount(BigInteger.valueOf(bpElementsForId.stream()
-                                    .mapToInt(bpEl -> bpEl.getOpitemcount().intValue()).sum()));
-                            segmentBpElement.setOpitemcount(BigInteger.valueOf(bpElementsForId.stream()
-                                    .mapToInt(bpEl -> bpEl.getFtitemcount().intValue()).sum()));
+                                    .filter(bpEl -> bpEl.getElementtype().equals(BlueprintElementTypes.SEGMENT))
+                                    .mapToInt(bpEl -> bpEl.getOpitemcount().intValue())
+                                    .sum()));
+                            segmentBpElement.setFtitemcount(BigInteger.valueOf(bpElementsForId.stream()
+                                    .filter(bpEl -> bpEl.getElementtype().equals(BlueprintElementTypes.SEGMENT))
+                                    .mapToInt(bpEl -> bpEl.getFtitemcount().intValue())
+                                    .sum()));
 
                             final Identifier identifier = new Identifier();
                             identifier.setUniqueid(TestPackageUtils.getCombinedKey(testPackage, segment.getId()));
