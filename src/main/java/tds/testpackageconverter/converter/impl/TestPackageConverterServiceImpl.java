@@ -97,7 +97,6 @@ public class TestPackageConverterServiceImpl implements TestPackageConverterServ
     public void convertTestPackage(final String testPackagePath) {
         final TestPackage testPackage = readTestPackage(testPackagePath);
         final List<Testspecification> administrationPackages = LegacyAdministrationTestPackageMapper.fromNew(testPackage);
-        final Testspecification scoringPackage = LegacyScoringTestPackageMapper.fromNew(testPackage, administrationPackages);
 
         administrationPackages.forEach(testSpecification -> {
             final String administrationOutputFilename = testSpecification.getIdentifier().getUniqueid() + ".xml";
@@ -111,6 +110,20 @@ public class TestPackageConverterServiceImpl implements TestPackageConverterServ
                 throw new RuntimeException(e);
             }
         });
+
+        if (isScoringDataIncluded(testPackage)) {
+            final Testspecification scoringPackage = LegacyScoringTestPackageMapper.fromNew(testPackage, administrationPackages);
+            final String scoringOutputFilename = scoringPackage.getIdentifier().getUniqueid() + "-SCORING.xml";
+            final File scoringFile = new File(scoringOutputFilename);
+            try {
+                legacyXmlMapper.writeValue(scoringFile, scoringPackage);
+                scoringFile.createNewFile();
+                System.out.println("Successfully created the scoring testspecification file " + scoringOutputFilename);
+            } catch (IOException e) {
+                log.error("An exception occurred while creating the file: {}", scoringOutputFilename, e);
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     private TestPackageDiff readDiff(final String fileName) {
@@ -187,5 +200,10 @@ public class TestPackageConverterServiceImpl implements TestPackageConverterServ
         }
 
         return false;
+    }
+
+    private boolean isScoringDataIncluded(final TestPackage testPackage) {
+        return testPackage.getBlueprintMap().values().stream()
+                .anyMatch(blueprintElement -> blueprintElement.getScoring().isPresent());
     }
 }
