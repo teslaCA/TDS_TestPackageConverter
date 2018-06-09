@@ -42,7 +42,7 @@ public class LegacyScoringTestPackageFormMapper {
                                                          final List<Testspecification> administrationPackages) {
         final List<Testform> combinedForms = new ArrayList<>();
 
-        // language -> formpartitions map
+        // language -> form partitions map
         final Multimap<String, Formpartition> formPartitionsByCohortLanguage = ArrayListMultimap.create();
         administrationPackages
                 .forEach(admin -> admin.getAdministration().getTestform()
@@ -54,12 +54,10 @@ public class LegacyScoringTestPackageFormMapper {
 
         formPartitionsByCohortLanguage.asMap().forEach((cohortLanguage, formPartitions) -> {
             final Testform combinedTestForm = new Testform();
-            long formLength = formPartitions.stream()
-                    .mapToLong(formPartition -> formPartition.getItemgroup().stream()
-                            .map(Itemgroup::getGroupitem)
-                            .collect(Collectors.toList())
-                            .size())
-                    .sum();
+            final long formLength = formPartitions.stream()
+                    .flatMap(formPartition -> formPartition.getItemgroup().stream()
+                            .flatMap(itemGroup -> itemGroup.getGroupitem().stream()))
+                    .count();
 
             combinedTestForm.setLength(BigInteger.valueOf(formLength));
             final String formKey = String.format("%s:%s", TestPackageUtils.getAssessmentKey(testPackage, testPackage.getId()),
@@ -74,9 +72,19 @@ public class LegacyScoringTestPackageFormMapper {
             for (Formpartition formPartition : formPartitions) {
                 // Generate a new form key - apparently this cannot be the same as the original "forms" and needs to be
                 // manually mapped in the TIS database
-                formPartition.getIdentifier().setUniqueid(String.format("%s-%s", testPackage.getBankKey(),
-                        TestPackageUtils.generateFormKey()));
+                final String originalFormPartitionId = formPartition.getIdentifier().getUniqueid();
+                final String combinedFormPartitionId = String.format("%s-%s", testPackage.getBankKey(), TestPackageUtils.generateFormKey());
+                formPartition.getIdentifier().setUniqueid(combinedFormPartitionId);
                 formPartition.getIdentifier().setName(formPartition.getIdentifier().getName() + " COMBINED");
+
+                // Update each item group's form key with the newly generated "combined" form key
+                for (Itemgroup itemGroup: formPartition.getItemgroup()) {
+                    final String newCombinedGroupKey = itemGroup.getIdentifier().getName()
+                            .replace(originalFormPartitionId, combinedFormPartitionId);
+
+                    itemGroup.getIdentifier().setUniqueid(newCombinedGroupKey);
+                    itemGroup.getIdentifier().setName(newCombinedGroupKey);
+                }
             }
 
             combinedTestForm.getFormpartition().addAll(formPartitions);
