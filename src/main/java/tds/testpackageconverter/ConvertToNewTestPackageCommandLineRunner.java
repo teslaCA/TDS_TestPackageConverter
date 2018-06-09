@@ -174,7 +174,7 @@ public class ConvertToNewTestPackageCommandLineRunner implements CommandLineRunn
     }
 
     private void convertTestPackageFromZipFile(final String outputFilename) {
-        System.out.println("Attempting to open and extract the zip file: " + outputFilename);
+        System.out.println("Attempting to open and extract the zip file: " + cmd.getOptionValue(ZIP_FLAG));
 
         try {
             service.extractAndConvertTestSpecifications(outputFilename, new File(cmd.getOptionValue(ZIP_FLAG)));
