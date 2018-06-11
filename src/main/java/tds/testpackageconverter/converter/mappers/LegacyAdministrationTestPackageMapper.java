@@ -97,8 +97,7 @@ public class LegacyAdministrationTestPackageMapper {
     private static Map<String,Long> generateFormKeys(final Assessment assessment) {
         final Map<String, Long> formKeyMap = new HashMap<>();
         // Down cast the auto-generated long to an int so its a bit more human readable;
-        final int generatedKey = (int) UUID.randomUUID().getMostSignificantBits();
-        final int finalGenKey = generatedKey < 0 ? generatedKey * -1 : generatedKey; // Ensure the key is positive
+        final int finalGenKey = TestPackageUtils.generateFormKey();
 
         assessment.getSegments()
                 .forEach(segment -> segment.segmentForms()

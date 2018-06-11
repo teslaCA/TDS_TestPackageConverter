@@ -35,6 +35,7 @@ public class LegacyAdministrationTestPackageFormMapper {
                                                         .collect(Collectors.toList())
                                                         .size())
                                                 .sum();
+
                                         testform.setLength(BigInteger.valueOf(itemCount));
                                         final Identifier testFormIdentifier = new Identifier();
                                         testFormIdentifier.setVersion(new BigDecimal(testPackage.getVersion()));
