@@ -87,9 +87,7 @@ public class TestPackageMapper {
                 .setAcademicYear(diff.isPresent()
                         ? diff.get().getAcademicYear()
                         : String.valueOf(Calendar.getInstance().get(Calendar.YEAR)))
-                .setSubType(diff.isPresent() && diff.get().getSubType() != null
-                        ? Optional.of(diff.get().getSubType())
-                        : Optional.empty())
+                .setSubType(diff.isPresent() ? diff.get().getSubType() : Optional.empty())
                 .setSubject(findSingleProperty(testSpecification.getProperty(), "subject"))
                 .setType(findSingleProperty(testSpecification.getProperty(), "type"))
                 .setBankKey(findBankKey(testSpecification.getAdministration()))
