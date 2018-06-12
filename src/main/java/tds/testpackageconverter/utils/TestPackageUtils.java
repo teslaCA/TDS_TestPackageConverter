@@ -11,12 +11,21 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.TimeZone;
+import java.util.UUID;
 
 public class TestPackageUtils {
     public static String DATE_PATTERN = "MMM dd yyyy hh:mma";
 
     public static String getAssessmentKey(final TestPackage testPackage, final String assessmentId) {
         return String.format("(%s)%s-%s", testPackage.getPublisher(), assessmentId, testPackage.getAcademicYear());
+    }
+
+    public static String getCombinedKey(final TestPackage testPackage, final String segmentId) {
+        return String.format("(%s)%s-COMBINED-%s", testPackage.getPublisher(), segmentId, testPackage.getAcademicYear());
+    }
+
+    public static String getCombinedId(final String segmentId) {
+        return segmentId + "-COMBINED";
     }
 
     public static String parseCohort(final String formKey) {
@@ -93,5 +102,9 @@ public class TestPackageUtils {
             default:
                 return String.format("%s::%s", formId, languageCode);
         }
+    }
+
+    public static int generateFormKey(final String formId) {
+        return Math.abs(formId.hashCode());
     }
 }

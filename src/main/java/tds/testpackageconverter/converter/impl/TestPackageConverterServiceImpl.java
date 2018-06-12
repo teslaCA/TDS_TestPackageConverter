@@ -6,6 +6,7 @@ import org.apache.commons.io.IOUtils;
 import tds.testpackage.diff.TestPackageDiff;
 import tds.testpackageconverter.converter.mappers.LegacyAdministrationTestPackageMapper;
 import tds.testpackageconverter.converter.TestPackageConverterService;
+import tds.testpackageconverter.converter.mappers.LegacyScoringTestPackageMapper;
 import tds.testpackageconverter.converter.mappers.TestPackageMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -109,6 +110,20 @@ public class TestPackageConverterServiceImpl implements TestPackageConverterServ
                 throw new RuntimeException(e);
             }
         });
+
+        if (isScoringDataIncluded(testPackage)) {
+            final Testspecification scoringPackage = LegacyScoringTestPackageMapper.fromNew(testPackage, administrationPackages);
+            final String scoringOutputFilename = scoringPackage.getIdentifier().getUniqueid() + "-SCORING.xml";
+            final File scoringFile = new File(scoringOutputFilename);
+            try {
+                legacyXmlMapper.writeValue(scoringFile, scoringPackage);
+                scoringFile.createNewFile();
+                System.out.println("Successfully created the scoring testspecification file " + scoringOutputFilename);
+            } catch (IOException e) {
+                log.error("An exception occurred while creating the file: {}", scoringOutputFilename, e);
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     private TestPackageDiff readDiff(final String fileName) {
@@ -185,5 +200,10 @@ public class TestPackageConverterServiceImpl implements TestPackageConverterServ
         }
 
         return false;
+    }
+
+    private boolean isScoringDataIncluded(final TestPackage testPackage) {
+        return testPackage.getBlueprintMap().values().stream()
+                .anyMatch(blueprintElement -> blueprintElement.getScoring().isPresent());
     }
 }

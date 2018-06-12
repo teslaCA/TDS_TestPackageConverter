@@ -1,15 +1,8 @@
 package tds.testpackageconverter.converter;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import org.junit.Before;
 import tds.support.tool.testpackage.configuration.TestPackageObjectMapperConfiguration;
-import tds.testpackage.legacy.model.Testspecification;
 import tds.testpackage.model.TestPackage;
 
 import java.io.IOException;
@@ -23,6 +16,8 @@ public class LegacyTestPackageBaseTest {
 
     protected TestPackage mockFixedMultiSegmentPackage;
 
+    protected TestPackage mockTestPackageWithScoring;
+
     protected XmlMapper xmlMapper;
 
     @Before
@@ -35,6 +30,8 @@ public class LegacyTestPackageBaseTest {
         mockCombinedAdministrationPackage = xmlMapper.readValue(this.getClass().getResourceAsStream("/IRP-COMBINED-MATH-11-2015-2016-NoScoring.xml"),
                 TestPackage.class);
         mockFixedMultiSegmentPackage = xmlMapper.readValue(this.getClass().getResourceAsStream("/Practice-Fixed-MATH-6-Fall-2017-2018.xml"),
+                TestPackage.class);
+        mockTestPackageWithScoring = xmlMapper.readValue(this.getClass().getResourceAsStream("/(SBAC)SBAC-ICA-FIXED-G7E-COMBINED-2017-Winter-2016-2017-WithScoring.xml"),
                 TestPackage.class);
     }
 
