@@ -74,6 +74,8 @@ public class LegacyScoringTestPackageFormMapper {
                 // manually mapped in the TIS database
                 final String originalFormPartitionId = formPartition.getIdentifier().getUniqueid();
                 final String combinedFormPartitionId = String.format("%s-%s", testPackage.getBankKey(), TestPackageUtils.generateFormKey());
+                final String combinedFormPartitionId = String.format("%s-%s", testPackage.getBankKey(),
+                        TestPackageUtils.generateFormKey(formPartition.getIdentifier().getName()));
                 formPartition.getIdentifier().setUniqueid(combinedFormPartitionId);
                 formPartition.getIdentifier().setName(formPartition.getIdentifier().getName() + " COMBINED");
 

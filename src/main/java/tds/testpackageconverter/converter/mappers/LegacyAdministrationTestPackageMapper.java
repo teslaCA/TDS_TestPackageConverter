@@ -96,14 +96,12 @@ public class LegacyAdministrationTestPackageMapper {
 
     private static Map<String,Long> generateFormKeys(final Assessment assessment) {
         final Map<String, Long> formKeyMap = new HashMap<>();
-        // Down cast the auto-generated long to an int so its a bit more human readable;
-        final int finalGenKey = TestPackageUtils.generateFormKey();
-
         assessment.getSegments()
                 .forEach(segment -> segment.segmentForms()
                         .forEach(form -> form.getPresentations()
                             .forEach(presentation ->
-                                    formKeyMap.put(TestPackageUtils.getFormIdForLanguage(form.getId(), presentation.getCode()), (long) finalGenKey))
+                                    formKeyMap.put(TestPackageUtils.getFormIdForLanguage(form.getId(), presentation.getCode()),
+                                            (long) TestPackageUtils.generateFormKey(form.getId())))
                         )
                 );
         return formKeyMap;

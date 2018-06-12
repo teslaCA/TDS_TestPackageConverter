@@ -141,7 +141,6 @@ public class TestPackageConverterServiceImpl implements TestPackageConverterServ
             log.error("An exception occurred while creating the file {}", diffOutputFilePath, e);
             throw new RuntimeException(e);
         }
-
     }
 
     private TestPackageDiff readDiff(final String fileName) {
